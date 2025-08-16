@@ -1,0 +1,106 @@
+.toc-widget
+  margin-bottom: 1.5rem
+  background: var(--widget-bg)
+  border-radius: 8px
+  padding: 1rem
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)
+  max-height: 80vh
+  overflow: hidden
+  display: flex
+  flex-direction: column
+
+.toc-title
+  font-size: 1.1rem
+  font-weight: 600
+  margin: 0 0 0.8rem 0
+  color: var(--text-color)
+  border-bottom: 1px solid var(--border-color)
+  padding-bottom: 0.5rem
+
+.toc-content
+  font-size: 0.9rem
+  line-height: 1.4
+  overflow-y: auto
+  overflow-x: hidden
+  flex: 1
+  padding-right: 8px
+  
+  // 自定义滚动条样式
+  &::-webkit-scrollbar
+    width: 4px
+    
+  &::-webkit-scrollbar-track
+    background: transparent
+    
+  &::-webkit-scrollbar-thumb
+    background: var(--text-color-tertiary)
+    border-radius: 2px
+    
+    &:hover
+      background: var(--text-color-secondary)
+  
+  // Firefox 滚动条样式
+  scrollbar-width: thin
+  scrollbar-color: var(--text-color-tertiary) transparent
+
+.toc-list
+  list-style: none
+  padding: 0
+  margin: 0
+
+  ol
+    list-style: none
+    padding-left: 1.2rem
+    margin: 0.3rem 0
+
+  li
+    margin: 0.2rem 0
+    
+  a
+    color: var(--text-color-secondary)
+    text-decoration: none
+    display: block
+    padding: 0.2rem 0.5rem
+    border-radius: 4px
+    transition: all 0.2s ease
+    
+    &:hover
+      color: var(--primary-color)
+      background: var(--hover-bg)
+      transform: translateX(3px)
+      
+    &.active
+      color: var(--primary-color)
+      background: var(--hover-bg)
+      font-weight: 700
+      border-left: 3px solid var(--primary-color)
+      padding-left: 0.3rem
+
+  .toc-number
+    color: var(--text-color-tertiary)
+    margin-right: 0.5rem
+    font-size: 0.85rem
+
+// 不同层级的缩进和样式
+.toc-list
+  .toc-level-1 > a
+    font-weight: 500
+    
+  .toc-level-2 > a
+    font-size: 0.85rem
+    
+  .toc-level-3 > a
+    font-size: 0.8rem
+    opacity: 0.8
+    
+  .toc-level-4,
+  .toc-level-5,
+  .toc-level-6
+    > a
+      font-size: 0.75rem
+      opacity: 0.7
+
+// 响应式设计
+@media (max-width: 768px)
+  .toc-widget
+    display: none

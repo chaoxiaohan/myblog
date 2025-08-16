@@ -1,0 +1,16 @@
+<sidebar id="sidebar">
+  <% theme.sidebar.widgets.normal.forEach(function(widget){ %>
+    <%- partial('_widget/' + widget) %>
+  <% }) %>
+  <div class="sticky">
+    <% theme.sidebar.widgets.sticky.forEach(function(widget){ %>
+      <% if (widget === 'toc') { %>
+        <% if (is_post()) { %>
+          <%- partial('_widget/' + widget) %>
+        <% } %>
+      <% } else { %>
+        <%- partial('_widget/' + widget) %>
+      <% } %>
+    <% }) %>
+  </div>
+</sidebar>
