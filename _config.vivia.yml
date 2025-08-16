@@ -9,7 +9,7 @@ menu:                      # 导航栏（Header）中的链接配置，键是显
 rss: /atom.xml            # 站点 RSS / Atom 链接，供订阅使用
 
 home:
-  style: default          # 首页展示样式：可选 "default"（默认简洁样式）、"detail"（详细模式，显示更多文章信息）
+  style: default         # 首页展示样式：可选 "default"（默认简洁样式）、"detail"（详细模式，显示更多文章信息）
 
 favicon:                  # 网站自定义 favicon 的路径（相对于 /source 目录）
                           # 例如：若 favicon 存放在 /source/favicon.png，则填写 "/favicon.png"
@@ -33,7 +33,7 @@ hue: 250                  # 主题色相（Hue），取值 0-360，控制主题�
 # 个人信息与社交链接
 avatar: /blogBasic/head.jpg  # 头像图片相对于/source的路径
 author: 超小韓
-subtitle: 無限進步
+subtitle: 生活明朗，万物可爱！
                           # 站点副标题或简短描述，显示在首页或主题指定位置
 
 links:                    # 社交或外部链接列表，用于在侧边或页脚显示常用链接
