@@ -1,0 +1,68 @@
+# 网站全局配置（Hexo 用）
+title: 超小韓の个人博客          # 网站标题，通常显示在浏览器标签和主题的站点名位置
+subtitle: '生活明朗，万物可爱'           # 副标题，可为空
+description: '一个个人博客'        # 网站描述，常用于 SEO meta 描述
+keywords: null         # 关键词列表或以逗号分隔的字符串，用于 SEO
+author: 超小韓      # 默认作者名
+language: zh-CN           # 站点语言（如 zh-CN、en），会影响部分主题显示与 i18n
+timezone: ''           # 时区设置，例如 "Asia/Shanghai"，默认留空使用系统时区
+url: http://example.com  # 站点主域名（生成绝对链接时使用）
+permalink: ':year/:month/:day/:title/'  # 文章永久链接格式，可自定义参数
+permalink_defaults: null  # permalink 的默认值映射
+pretty_urls:
+  trailing_index: true   # 是否在目录末尾保留 index.html 的漂亮 URL（如 /about/）
+  trailing_html: true    # 是否保留 .html 后缀的漂亮 URL（如 /page.html）
+source_dir: source      # 源文件目录（Hexo 默认）
+public_dir: public      # 生成的静态文件输出目录
+tag_dir: tags           # 标签页面生成目录
+archive_dir: archives   # 归档页面目录
+category_dir: categories # 分类页面目录
+code_dir: downloads/code  # 代码/附件存放目录
+i18n_dir: ':lang'       # 多语言目录占位符，Hexo i18n 使用
+skip_render: null       # 不需要渲染的文件或目录列表（支持数组/字符串/正则）
+new_post_name: ':title.md'  # 新建文章的默认文件名模板
+default_layout: post    # 默认布局（主题提供的 layout 名称）
+titlecase: false        # 是否自动将标题转为首字母大写（true/false）
+external_link:
+  enable: true          # 是否启用外部链接的处理（如在新标签打开）
+  field: site           # 作用域字段（主题自定义用）
+  exclude: ''           # 排除规则（不需要外部链接处理的域名或路径）
+filename_case: 0        # 文件名大小写处理（0 原样，1 转小写等）
+render_drafts: false    # 是否渲染草稿（_drafts 目录）
+post_asset_folder: false # 是否为每篇文章创建单独的资源文件夹（用于托管图片等）
+relative_link: false    # 是否使用相对链接（部署到子路径时可能有用）
+future: true            # 是否显示未来日期的文章
+highlight:
+  enable: true          # 是否启用代码高亮（Hexo highlight）
+  line_number: true     # 是否显示代码行号
+  auto_detect: true    # 是否自动检测语言
+  tab_replace: ''       # 制表符替换字符串（如两个空格）
+  wrap: true            # 是否启用代码块换行
+  hljs: true            # 是否启用 highlight.js（与内置 highlighter 互斥）
+prismjs:
+  enable: false         # 是否启用 Prism.js（另一种代码高亮方案）
+  preprocess: true      # 是否预处理代码高亮
+  line_number: true     # Prism 是否显示行号
+  tab_replace: ''       # Prism 的 tab 替换配置
+index_generator:
+  path: ''              # 主页路径（空为默认）
+  per_page: 0           # 每页文章数量，0 表示不进行分页
+  order_by: '-date'     # 列表排序方式（如 -date 表示倒序）
+default_category: uncategorized  # 默认分类名称
+category_map: null      # 分类别名映射（如 { old: new }）
+tag_map: null           # 标签别名映射
+meta_generator: true    # 是否在页面 head 中输出生成器 meta 标签
+date_format: YYYY-MM-DD # 默认日期格式，影响主题显示
+time_format: HH:mm:ss   # 默认时间格式
+updated_option: mtime   # 更新检测选项（如 mtime、date 等）
+per_page: 10            # 列表分页每页文章数
+pagination_dir: page    # 分页目录前缀（如 /page/2）
+include: null           # 构建时包含的额外文件或目录
+exclude: null           # 构建时排除的文件或目录
+ignore: null            # Hexo 忽略列表（不监控、不发布）
+theme: vivia            # 使用的主题名称（需要在 themes/ 下存在）
+deploy:
+  type: git             # 部署方式（hexo-deployer 插件类型，如 git、rsync 等）
+  repository: git@github.com:chaoxiaohan/chaoxiaohan.github.io.git  # 部署目标仓库（git）
+aplayer:
+  asset_inject: false   # 是否自动注入 aplayer（音频播放器）资源到页面

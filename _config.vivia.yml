@@ -1,0 +1,102 @@
+# 站点配置文件（Vivia 主题示例）
+# 本文件用于配置站点的导航、外观、个人信息、侧边栏、评论与统计等选项。
+# 所有注释均为中文说明，请根据需要修改对应的值；注释不会影响配置解析。
+
+menu:                      # 导航栏（Header）中的链接配置，键是显示名称，值是对应的路径或 URL
+  主页: /                 # 首页链接，通常为根路径
+  文章: /archives     # 归档页链接，指向文章归档列表
+  关于我的: /about           # 关于页链接，指向站点关于信息页面
+rss: /atom.xml            # 站点 RSS / Atom 链接，供订阅使用
+
+home:
+  style: default          # 首页展示样式：可选 "default"（默认简洁样式）、"detail"（详细模式，显示更多文章信息）
+
+favicon:                  # 网站自定义 favicon 的路径（相对于 /source 目录）
+                          # 例如：若 favicon 存放在 /source/favicon.png，则填写 "/favicon.png"
+                          # 若不设置则使用主题默认 favicon 或浏览器默认图标
+
+# 横幅（Banner）设置，用于在首页或所有页面顶部显示一张横幅图像
+banner:
+  enable: true           # 是否启用横幅显示。true 启用，false 禁用
+  url: /blogBasic/background.png # 横幅图片相对于/source的路径，也支持网络链接
+                          # 示例："/images/banner.jpg" 或 "https://example.com/banner.jpg"
+  position: center        # 图片对齐方式，对应 CSS 的 object-position
+                          # 可选值示例："left", "center", "right", "top", "bottom" 以及百分比或组合
+  onAllPages: true        # 是否在所有页面显示横幅（true），还是仅在首页显示（false）
+
+# 主题外观设置
+hue: 250                  # 主题色相（Hue），取值 0-360，控制主题主色调
+                          # 例如：红色 0，橙色 60，蓝色 260，紫色 300，粉色 345
+                          # 更改此值可改变主题色预览，参考主题预览地址进行选择：
+                          # saicaca.github.io/vivia-preview
+
+# 个人信息与社交链接
+avatar: /blogBasic/head.jpg  # 头像图片相对于/source的路径
+author: 超小韓
+subtitle: 無限進步
+                          # 站点副标题或简短描述，显示在首页或主题指定位置
+
+links:                    # 社交或外部链接列表，用于在侧边或页脚显示常用链接
+  - name: QQ
+    icon: fa-brands fa-qq
+    url: tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=2537037482&website=www.oicqzone.com
+  - name: 哔哩哔哩
+    icon: fa-brands fa-bilibili
+    url: https://space.bilibili.com/353687950
+  - name: GitHub
+    icon: fa-brands fa-github
+    url: https://github.com/chaoxiaohan/
+  - name: Email
+    icon: fa-solid fa-envelope
+    url: mailto:chaoxiaohanhan@outlook.com
+
+# 侧边栏（Sidebar）配置
+sidebar:
+  widgets:                # 指定在侧边栏启用的插件或小部件（插件名称由主题定义）
+                           # 常见插件：profile（个人信息）、category（分类）、tag（标签）、archive（归档）、recent_posts（最近文章）
+    normal:               # normal 区域：随页面滚动，一般置于侧边栏的普通位置
+      - profile
+      - category
+      - tag
+      - archive           # 取消注释可启用 archive 小部件
+      - recent_posts      # 取消注释可启用最近文章小部件
+    sticky:               # sticky 区域：固定在视口顶部（sticky），在页面滚动时保持可见
+      - toc               # 文章目录小部件，显示文章大纲
+
+# 侧边栏小部件的行为与限制
+archive_type: 'monthly'   # 归档显示类型，例如 'monthly'（按月）或 'yearly'（按年）等，具体由主题支持
+recent_posts_limits: 5    # 最近文章列表显示条数限制，整数
+categories:
+  max_depth: 2            # 分类显示的最大嵌套深度：整数或 null（null 表示不限深度）
+
+# 第三方评论系统配置
+# 本主题支持多种评论系统，这里给出 Valine 与 Twikoo 的示例配置
+comment:
+  valine:
+    enable: false         # 是否启用 Valine 评论系统（基于 LeanCloud 的无后端评论系统）
+    appId:                # Valine 所需的 LeanCloud appId（启用时必填）
+    appKey:               # Valine 所需的 LeanCloud appKey（启用时必填）
+    placeholder: Just go go
+                          # 评论输入框的占位文本，可自定义提示语
+    pageSize: 10          # 每页评论数量，控制分页大小
+    highlight: true       # 是否高亮显示代码（与 Valine 的代码高亮集成相关）
+    serverURLs:           # 若使用 Valine 的 serverURLs 代理或特殊服务器配置，可在此填写
+    # 其他支持的参数可按需添加（如 avatar、meta、visitor 等）
+    # 详细配置参考：https://valine.js.org/configuration.html
+  twikoo:
+    enable: false         # 是否启用 Twikoo（另一种轻量评论系统，支持云函数与自建服务）
+    envID:                # Twikoo 的环境 ID（启用时必填）
+    region:               # Twikoo 服务区域（可选，按托管服务要求填写）
+    path: location.pathname
+                          # Twikoo 用于识别页面的路径，默认为当前页面 location.pathname
+    lang:                 # 可选项，设置 Twikoo 的界面语言，如 'zh-CN'、'en' 等
+    # 更多使用说明见：https://github.com/imaegoo/twikoo
+
+# 统计与分析工具配置
+# 根据需求启用或填写对应的统计 ID / key
+gauges_analytics: true   # 是否启用 Gauges 统计（布尔）
+google_analytics: false  # Google Analytics（UA 格式，如 UA-XXXXXX），填写字符串以启用
+                          # 注意：新版 Google Analytics（GA4）使用不同的测量 ID，主题可能只支持 UA 格式
+baidu_analytics: false   # 百度统计（填入站点提供的 ID 即可）
+                          # 示例注释：在使用百度统计时，通常需要在模板中引入 hm.js，填写 ID 后主题会插入相应脚本
+                          # 如果需要特别配置，请参考主题文档与百度统计接入说明
