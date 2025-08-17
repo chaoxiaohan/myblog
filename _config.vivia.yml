@@ -118,3 +118,25 @@ google_analytics: false  # Google Analytics（UA 格式，如 UA-XXXXXX），填
 baidu_analytics: false   # 百度统计（填入站点提供的 ID 即可）
                           # 示例注释：在使用百度统计时，通常需要在模板中引入 hm.js，填写 ID 后主题会插入相应脚本
                           # 如果需要特别配置，请参考主题文档与百度统计接入说明
+
+# 音乐播放器配置
+music_player:
+  enable: true            # 是否启用音乐播放器
+  auto_play: false        # 是否自动播放
+  playlist:               # 播放列表
+    - title: "示例歌曲 1"
+      artist: "示例艺术家"
+      cover: "/images/default-cover.svg"
+      lyrics:
+        - { time: 0, text: "这是第一句示例歌词" }
+        - { time: 3000, text: "这是第二句示例歌词" }
+        - { time: 6000, text: "这是第三句示例歌词" }
+        - { time: 10000, text: "这是第四句示例歌词" }
+    - title: "示例歌曲 2"
+      artist: "示例艺术家"  
+      cover: "/images/default-cover.svg"
+      lyrics:
+        - { time: 0, text: "另一首歌的第一句" }
+        - { time: 4000, text: "另一首歌的第二句" }
+        - { time: 8000, text: "另一首歌的第三句" }
+        - { time: 12000, text: "另一首歌的第四句" }
