@@ -49,7 +49,7 @@ links:                    # 社交或外部链接列表，用于在侧边或页�
     url: https://github.com/chaoxiaohan/
   - name: Email
     icon: fa-solid fa-envelope
-    url: mailto:chaoxiaohanhan@outlook.com
+    url: mailto:chaoxiaohan@chaoxiaohan.cyou
 
 # 侧边栏（Sidebar）配置
 sidebar:

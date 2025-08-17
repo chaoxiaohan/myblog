@@ -1,8 +1,8 @@
 ---
-title: 安卓学习笔记
+title: 安卓学习笔记（一）
 date: 2025-08-01 00:00:00
 type: paper
-photos: /AndroidDevNote.assets/android.svg
+photos: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/androidNote1.png
 tags:
   - Android
   - Kotlin

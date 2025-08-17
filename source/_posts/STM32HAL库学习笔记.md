@@ -2,7 +2,7 @@
 title: STM32HAL库学习笔记
 date: 2025-03-24 00:00:00
 type: paper
-photos: 
+photos: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/HAL1.png
 tags:
   - STM32
   - HAL
