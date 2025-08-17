@@ -70,7 +70,7 @@ categories:
   max_depth: 2            # 分类显示的最大嵌套深度：整数或 null（null 表示不限深度）
 
 # 第三方评论系统配置
-# 本主题支持多种评论系统，这里给出 Valine 与 Twikoo 的示例配置
+# 本主题支持多种评论系统，这里给出 Valine、Twikoo 与 Giscus 的示例配置
 comment:
   valine:
     enable: false         # 是否启用 Valine 评论系统（基于 LeanCloud 的无后端评论系统）
@@ -91,6 +91,23 @@ comment:
                           # Twikoo 用于识别页面的路径，默认为当前页面 location.pathname
     lang:                 # 可选项，设置 Twikoo 的界面语言，如 'zh-CN'、'en' 等
     # 更多使用说明见：https://github.com/imaegoo/twikoo
+  giscus:
+    enable: true         # 是否启用 Giscus（基于 GitHub Discussions 的评论系统）
+    repo: chaoxiaohan/myblog # GitHub 仓库名，格式：用户名/仓库名（启用时必填）
+    repo_id: R_kgDOPe4zOQ   # 仓库的 Repository ID（启用时必填，从 https://giscus.app/zh-CN 获取）
+    category: Announcements     # 更新为 script 中的 data-category
+    category_id: DIC_kwDOPe4zOc4CuRDG   # 更新为 script 中的 data-category-id
+    mapping: pathname     # 评论与页面的映射方式：pathname, url, title, og:title
+    strict: 0             # 严格匹配模式：0(松散) 或 1(严格)
+    reactions_enabled: 1  # 是否启用反应功能：1(启用) 或 0(禁用)
+    emit_metadata: 0      # 是否发送页面元数据：1(发送) 或 0(不发送)
+    input_position: bottom # 输入框位置：top(顶部) 或 bottom(底部)
+    theme: noborder_light # 更新为 script 中的 data-theme
+    lang: zh-CN           # 界面语言：zh-CN, en, ja 等
+    # 获取配置信息的步骤：
+    # 1. 在 GitHub 仓库开启 Discussions 功能
+    # 2. 安装 Giscus GitHub App：https://github.com/apps/giscus
+    # 3. 访问 https://giscus.app/zh-CN 获取配置参数
 
 # 统计与分析工具配置
 # 根据需求启用或填写对应的统计 ID / key

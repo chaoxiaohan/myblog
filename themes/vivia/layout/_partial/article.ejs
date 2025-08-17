@@ -103,4 +103,29 @@
           lang: '<%- theme.comment.twikoo.lang %>',
       })
   </script>
+<% } %>
+
+<% if (!index && theme.comment.giscus && theme.comment.giscus.enable) { %>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title"><%= __('comment') %> </div>
+    </div>
+    <div id="giscus-container"></div>
+  </div>
+  <script src="https://giscus.app/client.js"
+    data-repo="<%= theme.comment.giscus.repo %>"
+    data-repo-id="<%= theme.comment.giscus.repo_id %>"
+    data-category="<%= theme.comment.giscus.category %>"
+    data-category-id="<%= theme.comment.giscus.category_id %>"
+    data-mapping="<%= theme.comment.giscus.mapping || 'pathname' %>"
+    data-strict="<%= theme.comment.giscus.strict || '0' %>"
+    data-reactions-enabled="<%= theme.comment.giscus.reactions_enabled || '1' %>"
+    data-emit-metadata="<%= theme.comment.giscus.emit_metadata || '0' %>"
+    data-input-position="<%= theme.comment.giscus.input_position || 'bottom' %>"
+    data-theme="<%= theme.comment.giscus.theme || 'preferred_color_scheme' %>"
+    data-lang="<%= theme.comment.giscus.lang || 'zh-CN' %>"
+    crossorigin="anonymous"
+    async>
+  </script>
   <% } %>
