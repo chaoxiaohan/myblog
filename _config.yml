@@ -6,7 +6,7 @@ keywords: null         # 关键词列表或以逗号分隔的字符串，用于 
 author: 超小韓      # 默认作者名
 language: zh-CN           # 站点语言（如 zh-CN、en），会影响部分主题显示与 i18n
 timezone: ''           # 时区设置，例如 "Asia/Shanghai"，默认留空使用系统时区
-url: http://example.com  # 站点主域名（生成绝对链接时使用）
+url: https://blog.chaoxiaohan.cyou  # 站点主域名（生成绝对链接时使用）
 permalink: ':year/:month/:day/:title/'  # 文章永久链接格式，可自定义参数
 permalink_defaults: null  # permalink 的默认值映射
 pretty_urls:
