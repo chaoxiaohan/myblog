@@ -10,7 +10,9 @@ class MusicPlayer {
         this.audio = null;
         this.currentSong = null;
         this.autoPlay = true; // 自动播放
+        this.storageKey = 'musicPlayer_state';
         
+        this.loadState();
         this.init();
     }
 
@@ -18,9 +20,96 @@ class MusicPlayer {
         this.createPlayerHTML();
         this.bindEvents();
         this.loadDefaultSong();
+        this.setupPageUnloadHandler();
+    }
+
+    // 加载保存的播放状态
+    loadState() {
+        try {
+            const savedState = localStorage.getItem(this.storageKey);
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                // 检查状态是否是最近保存的（避免使用过期状态）
+                const timeDiff = Date.now() - (state.timestamp || 0);
+                if (timeDiff < 24 * 60 * 60 * 1000) { // 24小时内的状态才有效
+                    this.currentTime = Math.max(0, state.currentTime || 0);
+                    this.volume = Math.max(0, Math.min(1, state.volume || 0.7));
+                    this.isExpanded = Boolean(state.isExpanded);
+                    this.isPlaying = Boolean(state.isPlaying);
+                    this.autoPlay = false; // 有保存状态时根据保存的状态决定
+                    console.log('已加载音乐播放器状态:', {
+                        currentTime: this.formatTime(this.currentTime),
+                        isPlaying: this.isPlaying,
+                        volume: this.volume,
+                        isExpanded: this.isExpanded
+                    });
+                } else {
+                    console.log('保存的状态已过期，使用默认设置');
+                    this.autoPlay = true;
+                    localStorage.removeItem(this.storageKey); // 清除过期状态
+                }
+            } else {
+                // 首次访问时自动播放
+                console.log('首次访问，使用默认设置');
+                this.autoPlay = true;
+            }
+        } catch (e) {
+            console.warn('加载音乐播放器状态失败:', e);
+            this.autoPlay = true; // 出错时默认自动播放
+            localStorage.removeItem(this.storageKey); // 清除损坏的状态
+        }
+    }
+
+    // 保存播放状态
+    saveState() {
+        try {
+            // 如果音频存在，使用实际播放位置
+            const realCurrentTime = this.audio ? this.audio.currentTime : this.currentTime;
+            const state = {
+                currentTime: realCurrentTime || 0,
+                volume: this.volume,
+                isExpanded: this.isExpanded,
+                isPlaying: this.isPlaying,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(this.storageKey, JSON.stringify(state));
+            console.log('已保存播放器状态:', {
+                currentTime: this.formatTime(state.currentTime),
+                isPlaying: state.isPlaying,
+                isExpanded: state.isExpanded
+            });
+        } catch (e) {
+            console.warn('保存音乐播放器状态失败:', e);
+        }
+    }
+
+    // 设置页面卸载处理程序
+    setupPageUnloadHandler() {
+        // 页面卸载时保存状态
+        window.addEventListener('beforeunload', () => {
+            this.saveState();
+        });
+        
+        // 页面隐藏时也保存状态（用户切换标签页或最小化窗口）
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.saveState();
+            }
+        });
+        
+        // 定期保存状态 - 无论是否在播放都保存
+        setInterval(() => {
+            this.saveState();
+        }, 3000); // 每3秒保存一次状态，确保及时更新
     }
 
     createPlayerHTML() {
+        // 检查是否已存在播放器
+        if (document.getElementById('musicPlayer')) {
+            console.log('音乐播放器HTML已存在，跳过创建');
+            return;
+        }
+        
         const playerHTML = `
             <div class="music-player" id="musicPlayer">
                 <div class="music-player-header" id="musicPlayerHeader">
@@ -107,6 +196,8 @@ class MusicPlayer {
         } else {
             player.classList.remove('expanded');
         }
+        
+        this.saveState(); // 保存展开状态
     }
 
     // 解析LRC歌词格式
@@ -189,7 +280,7 @@ class MusicPlayer {
     loadSong(song) {
         this.currentSong = song;
         this.lyrics = song.lyrics || [];
-        this.currentTime = 0;
+        // 不重置 currentTime，保持之前的播放位置
         this.currentLyricIndex = 0;
         
         document.getElementById('musicTitle').textContent = song.title;
@@ -216,9 +307,27 @@ class MusicPlayer {
             document.getElementById('totalTime').textContent = this.formatTime(this.duration);
             console.log('音频元数据加载完成:', song.title, '时长:', this.formatTime(this.duration));
             
-            // 如果设置了自动播放，则开始播放
-            if (this.autoPlay) {
+            // 恢复之前的播放位置
+            if (this.currentTime > 0 && this.currentTime < this.duration) {
+                this.audio.currentTime = this.currentTime;
+                console.log('恢复播放位置:', this.formatTime(this.currentTime));
+                // 更新进度条显示
+                this.updateProgress();
+            }
+            
+            // 立即更新UI状态
+            this.restoreUIState();
+            
+            // 根据状态决定是否播放
+            if (this.isPlaying) {
+                console.log('根据保存状态恢复播放');
                 this.startAutoPlay();
+            } else if (this.autoPlay && this.currentTime === 0) {
+                console.log('首次访问自动播放');
+                this.isPlaying = true; // 设置播放状态
+                this.startAutoPlay();
+            } else {
+                console.log('保持暂停状态');
             }
         });
 
@@ -243,12 +352,43 @@ class MusicPlayer {
 
         // 重置显示
         this.displayLyrics();
-        document.getElementById('currentTime').textContent = '00:00';
+        document.getElementById('currentTime').textContent = this.formatTime(this.currentTime);
+    }
+
+    // 恢复UI状态
+    restoreUIState() {
+        const player = document.getElementById('musicPlayer');
+        const playBtn = document.getElementById('playPauseBtn');
+        
+        // 恢复播放器展开状态
+        if (this.isExpanded) {
+            player.classList.add('expanded');
+        }
+        
+        // 恢复播放按钮状态
+        if (this.isPlaying) {
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            player.classList.add('playing');
+        } else {
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            player.classList.remove('playing');
+        }
+        
+        // 恢复音量条状态
+        document.getElementById('musicVolumeBar').style.width = (this.volume * 100) + '%';
+        
+        console.log('UI状态已恢复');
     }
 
     startAutoPlay() {
-        // 延迟自动播放，确保音频完全加载
-        console.log('准备自动播放音频...');
+        // 检查是否应该播放
+        if (!this.isPlaying) {
+            console.log('播放状态为false，不需要自动播放');
+            return;
+        }
+        
+        // 延迟播放，确保音频完全加载
+        console.log('准备恢复播放音频，当前位置:', this.formatTime(this.currentTime));
         
         setTimeout(() => {
             if (this.audio && this.audio.readyState >= 2) {
@@ -257,7 +397,7 @@ class MusicPlayer {
                 console.log('音频尚未准备就绪，等待加载...');
                 // 如果音频还没准备好，等待canplay事件自动触发播放
             }
-        }, 2000);
+        }, 500); // 减少延迟
     }
 
     loadSingleAudioSource(audioUrl) {
@@ -441,6 +581,7 @@ class MusicPlayer {
             this.audio.play().then(() => {
                 console.log('✅ 手动播放成功');
                 document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 正在播放';
+                this.saveState(); // 保存状态
             }).catch(e => {
                 console.error('❌ 手动播放失败:', e.name, e.message);
                 this.isPlaying = false;
@@ -454,6 +595,7 @@ class MusicPlayer {
             this.audio.pause();
             console.log('音频已暂停');
             document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 已暂停';
+            this.saveState(); // 保存状态
         }
     }
 
@@ -539,19 +681,22 @@ class MusicPlayer {
 
 // 页面加载完成后初始化音乐播放器
 document.addEventListener('DOMContentLoaded', () => {
+    // 检查是否已经存在音乐播放器实例
+    if (window.musicPlayer && document.getElementById('musicPlayer')) {
+        console.log('🎵 音乐播放器已存在，跳过初始化');
+        return;
+    }
+    
     // 延迟初始化，确保页面完全加载
     setTimeout(() => {
+        // 再次检查，防止重复创建
+        if (window.musicPlayer && document.getElementById('musicPlayer')) {
+            console.log('🎵 音乐播放器已存在，跳过初始化');
+            return;
+        }
+        
         window.musicPlayer = new MusicPlayer();
         console.log('🎵 音乐播放器初始化完成');
-        
-        // 自动展开播放器
-        setTimeout(() => {
-            const player = document.getElementById('musicPlayer');
-            if (player) {
-                player.classList.add('expanded');
-                window.musicPlayer.isExpanded = true;
-            }
-        }, 2000);
         
         // 尝试启用音频上下文（某些浏览器需要）
         document.addEventListener('click', function enableAudio() {

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>音乐播放器状态持久化测试</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-nav {
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .test-nav h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .test-nav a {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #4a90e2, #87ceeb);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .test-nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+        
+        .content {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .test-controls {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .test-controls h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .test-btn {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+        
+        #status {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4a90e2;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-indicator.playing {
+            background: #4caf50;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .status-indicator.paused {
+            background: #ff9800;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+    <link rel="stylesheet" href="./themes/vivia/source/css/music-player.css">
+</head>
+<body>
+    <div class="test-nav">
+        <h2>🎵 音乐播放器状态持久化测试</h2>
+        <a href="#" onclick="simulatePageChange('首页')">🏠 首页</a>
+        <a href="#" onclick="simulatePageChange('关于')">ℹ️ 关于</a>
+        <a href="#" onclick="simulatePageChange('文章')">📝 文章</a>
+        <a href="#" onclick="simulatePageChange('友链')">🔗 友链</a>
+        <a href="#" onclick="location.reload()">🔄 刷新页面</a>
+    </div>
+    
+    <div class="content">
+        <h1 id="page-title">🎵 音乐播放器状态持久化测试 - 首页</h1>
+        <p id="page-content">
+            这是一个测试页面，用来验证音乐播放器在切换页面和刷新页面时是否能够正确保持播放状态。
+        </p>
+        <p>
+            <strong>🎯 测试目标：</strong>
+            <br>✅ 暂停音乐后刷新页面，音乐应该保持暂停状态
+            <br>✅ 播放音乐时切换页面，播放位置应该保持不变
+            <br>✅ 音量和播放器展开状态应该在页面切换间保持一致
+            <br>✅ 首次访问时应该自动开始播放
+        </p>
+    </div>
+
+    <div class="test-controls">
+        <h3>🔧 测试控制</h3>
+        <button class="test-btn" onclick="checkPlayerState()">检查播放器状态</button>
+        <button class="test-btn" onclick="clearStoredState()">清除保存状态</button>
+        <button class="test-btn" onclick="showStoredState()">显示保存状态</button>
+        <button class="test-btn" onclick="togglePlayer()">切换播放/暂停</button>
+        <div style="margin-top: 15px;">
+            <div id="current-status">
+                <span class="status-indicator paused"></span>
+                状态检查中...
+            </div>
+            <div id="status" style="margin-top: 10px;">控制台输出将在这里显示...</div>
+        </div>
+    </div>
+
+    <script src="./themes/vivia/source/js/music-player.js"></script>
+    
+    <script>
+        let statusEl = document.getElementById('status');
+        let currentStatusEl = document.getElementById('current-status');
+        
+        function log(message) {
+            console.log(message);
+            const timestamp = new Date().toLocaleTimeString();
+            statusEl.textContent += `[${timestamp}] ${message}\n`;
+            statusEl.scrollTop = statusEl.scrollHeight;
+        }
+        
+        function updateCurrentStatus() {
+            if (window.musicPlayer) {
+                const indicator = currentStatusEl.querySelector('.status-indicator');
+                const isPlaying = window.musicPlayer.isPlaying;
+                const currentTime = window.musicPlayer.formatTime(window.musicPlayer.currentTime);
+                
+                indicator.className = `status-indicator ${isPlaying ? 'playing' : 'paused'}`;
+                currentStatusEl.innerHTML = `
+                    <span class="status-indicator ${isPlaying ? 'playing' : 'paused'}"></span>
+                    ${isPlaying ? '▶️ 播放中' : '⏸️ 已暂停'} - ${currentTime} - 音量: ${Math.round(window.musicPlayer.volume * 100)}%
+                `;
+            }
+        }
+        
+        function simulatePageChange(pageName) {
+            log(`🔄 模拟切换到页面: ${pageName}`);
+            
+            // 更新页面内容
+            document.getElementById('page-title').textContent = `🎵 音乐播放器状态持久化测试 - ${pageName}`;
+            
+            const contents = {
+                '首页': '这里是首页内容。音乐播放器应该保持当前的播放状态和播放位置。',
+                '关于': '这里是关于页面。音乐播放器的播放状态和位置应该保持不变，不会重新开始播放。',
+                '文章': '这里是文章列表页面。音乐播放器应该继续正常工作，播放位置不会重置。',
+                '友链': '这里是友链页面。音乐播放器的所有功能和状态都应该正常保持。'
+            };
+            
+            document.getElementById('page-content').textContent = contents[pageName] || '未知页面';
+            
+            // 检查播放器状态
+            if (window.musicPlayer) {
+                log(`📊 页面切换后状态: 播放=${window.musicPlayer.isPlaying}, 位置=${window.musicPlayer.formatTime(window.musicPlayer.currentTime)}, 展开=${window.musicPlayer.isExpanded}`);
+            }
+        }
+        
+        function checkPlayerState() {
+            if (window.musicPlayer) {
+                const state = {
+                    isPlaying: window.musicPlayer.isPlaying,
+                    currentTime: window.musicPlayer.formatTime(window.musicPlayer.currentTime),
+                    volume: Math.round(window.musicPlayer.volume * 100) + '%',
+                    isExpanded: window.musicPlayer.isExpanded,
+                    audioReady: window.musicPlayer.audio ? window.musicPlayer.audio.readyState : 'N/A'
+                };
+                log(`📊 当前播放器状态: ${JSON.stringify(state, null, 2)}`);
+            } else {
+                log('❌ 播放器未初始化');
+            }
+            updateCurrentStatus();
+        }
+        
+        function clearStoredState() {
+            localStorage.removeItem('musicPlayer_state');
+            log('🗑️ 已清除保存的播放器状态');
+        }
+        
+        function showStoredState() {
+            const stored = localStorage.getItem('musicPlayer_state');
+            if (stored) {
+                try {
+                    const state = JSON.parse(stored);
+                    const timeAgo = Math.round((Date.now() - state.timestamp) / 1000);
+                    log(`💾 保存的状态 (${timeAgo}秒前): ${JSON.stringify(state, null, 2)}`);
+                } catch (e) {
+                    log(`❌ 保存的状态格式错误: ${stored}`);
+                }
+            } else {
+                log('💾 没有保存的状态');
+            }
+        }
+        
+        function togglePlayer() {
+            if (window.musicPlayer) {
+                window.musicPlayer.togglePlay();
+                setTimeout(() => {
+                    checkPlayerState();
+                }, 100);
+            } else {
+                log('❌ 播放器未准备好');
+            }
+        }
+        
+        // 页面加载完成后的自动测试
+        window.addEventListener('load', () => {
+            log('🚀 页面加载完成，开始自动测试...');
+            
+            setTimeout(() => {
+                checkPlayerState();
+                showStoredState();
+                
+                // 设置定时检查状态
+                setInterval(updateCurrentStatus, 1000);
+            }, 2000);
+        });
+        
+        // 监听页面卸载事件
+        window.addEventListener('beforeunload', () => {
+            log('📤 页面即将卸载，播放器应该保存状态');
+        });
+    </script>
+</body>
+</html>
