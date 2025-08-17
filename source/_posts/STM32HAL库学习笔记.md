@@ -1,6 +1,7 @@
 ---
 title: STM32HAL库学习笔记
 date: 2025-03-24 00:00:00
+type: paper
 photos: 
 tags:
   - STM32

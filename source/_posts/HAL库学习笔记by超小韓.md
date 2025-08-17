@@ -1,6 +1,7 @@
 ---
 title: HAL库函数
 date: 2025-03-01 00:00:00
+type: paper
 photos:
 tags:
   - STM32

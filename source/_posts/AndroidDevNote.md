@@ -1,6 +1,7 @@
 ---
 title: 安卓学习笔记
 date: 2025-08-01 00:00:00
+type: paper
 photos: /AndroidDevNote.assets/android.svg
 tags:
   - Android

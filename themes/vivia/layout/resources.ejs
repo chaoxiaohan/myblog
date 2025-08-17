@@ -1,41 +1,40 @@
-<% 
-    function build_tags_string(tags) {
-        let str = "";
-        for(let tag of tags.data) {
-            str += "#" + tag.name + " ";
-        }
-        return str.trim();
-    }
-
-    // 筛选type为paper的文章或没有指定type的文章（默认为文章）
-    let articlePosts = page.posts.filter(function(post) {
-        return !post.type || post.type === 'paper';
-    });
-
-    let countByYear = {};
-    articlePosts.each(function(post, i) {
-        let year = post.date.year();
-        countByYear[year] = countByYear[year] ? countByYear[year] + 1 : 1;
-    })
-
-    function getCountText(year) {
-        let count = countByYear[year];
-        if (count == 1)
-            return "1 " + __('article_count');
-        else
-            return count + " " + __('article_count_plural');
-    }
-%> 
-
 <div class="archive-main-card">
     <div class="archive-top">
       <div class="main-title-bar">
         <div class="main-title-dot"></div>
-        <h1 class="article-title"><%= __('archive_a') %></h1>
+        <h1 class="article-title">资料</h1>
       </div>    
     </div>
+    <% 
+        function build_tags_string(tags) {
+            let str = "";
+            for(let tag of tags.data) {
+                str += "#" + tag.name + " ";
+            }
+            return str.trim();
+        }
+
+        // 筛选type为resource的文章
+        let resourcePosts = site.posts.filter(function(post) {
+            return post.type === 'resource';
+        }).sort('date', -1);
+
+        let countByYear = {};
+        resourcePosts.each(function(post, i) {
+            let year = post.date.year();
+            countByYear[year] = countByYear[year] ? countByYear[year] + 1 : 1;
+        })
+
+        function getCountText(year) {
+            let count = countByYear[year];
+            if (count == 1)
+                return "1 项资料";
+            else
+                return count + " 项资料";
+        }
+    %>
     <% let currYear = -1; %>
-    <% articlePosts.each(function(post, i) { %>
+    <% resourcePosts.each(function(post, i) { %>
       <% let year = post.date.year(); %>
       <% if (year != currYear) { %>
         <% currYear = year; %>
@@ -57,7 +56,7 @@
                 <% if (post.title) { %>
                     <%- post.title %>
                 <% } else { %>
-                    <%= __('untitled') %>
+                    未命名
                 <% } %>
             </div>
         </div>
