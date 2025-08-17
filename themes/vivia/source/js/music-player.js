@@ -205,19 +205,11 @@ class MusicPlayer {
         this.audio.volume = this.volume;
         this.audio.crossOrigin = "anonymous";
         
-        // 直接使用网易云音乐的真实链接
-        if (song.netease_id) {
-            // 使用更可靠的音频API源
-            const audioSources = [
-                `https://link.hhtjim.com/163/${song.netease_id}.mp3`,
-                `https://api.injahow.cn/meting/?type=song&id=${song.netease_id}&source=netease&format=mp3`,
-                `https://music.163.com/song/media/outer/url?id=${song.netease_id}.mp3`
-            ];
-            
-            this.tryLoadAudio(audioSources, 0);
-        } else {
-            console.log('没有有效的音乐ID');
-        }
+        // 使用本地音频文件
+        const audioUrl = '/background_music.mp3';
+        console.log('正在加载本地音频:', audioUrl);
+        
+        this.loadSingleAudioSource(audioUrl);
 
         this.audio.addEventListener('loadedmetadata', () => {
             this.duration = this.audio.duration;
@@ -255,133 +247,187 @@ class MusicPlayer {
     }
 
     startAutoPlay() {
-        // 自动开始播放
+        // 延迟自动播放，确保音频完全加载
         console.log('准备自动播放音频...');
         
-        // 尝试立即播放
-        const attemptAutoPlay = () => {
+        setTimeout(() => {
             if (this.audio && this.audio.readyState >= 2) {
-                this.audio.play().then(() => {
-                    console.log('✅ 自动播放成功');
-                    this.isPlaying = true;
-                    const playBtn = document.getElementById('playPauseBtn');
-                    const player = document.getElementById('musicPlayer');
-                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                    player.classList.add('playing');
-                }).catch(e => {
-                    console.log('⚠️ 自动播放被浏览器阻止:', e.message);
-                    this.showPlayTip();
-                    
-                    // 添加用户交互后自动播放
-                    const enableAutoPlay = () => {
-                        if (!this.isPlaying) {
-                            this.togglePlay();
-                        }
-                        document.removeEventListener('click', enableAutoPlay);
-                        document.removeEventListener('keydown', enableAutoPlay);
-                    };
-                    
-                    document.addEventListener('click', enableAutoPlay, { once: true });
-                    document.addEventListener('keydown', enableAutoPlay, { once: true });
-                });
+                this.startPlayback();
             } else {
-                // 如果音频还没准备好，等待一下再试
-                setTimeout(attemptAutoPlay, 500);
+                console.log('音频尚未准备就绪，等待加载...');
+                // 如果音频还没准备好，等待canplay事件自动触发播放
             }
-        };
-        
-        setTimeout(attemptAutoPlay, 1500); // 延迟1.5秒开始播放，确保页面完全加载
+        }, 2000);
     }
 
-    tryLoadAudio(sources, index) {
-        if (index >= sources.length) {
-            console.log('所有音频源都无法加载，请检查网络连接或音乐版权限制');
-            document.getElementById('musicArtist').textContent = '音频加载失败 • 请检查网络';
-            return;
-        }
-
-        const source = sources[index];
-        console.log(`正在加载音频源 ${index + 1}/${sources.length}:`, source);
+    loadSingleAudioSource(audioUrl) {
+        console.log('开始加载音频:', audioUrl);
+        document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 正在连接音频...';
         
-        // 重置audio对象
+        // 重置音频对象
         this.audio.src = '';
         this.audio.load();
         
+        // 设置超时检查
         const loadTimeout = setTimeout(() => {
-            console.log('音频加载超时，尝试下一个源');
-            this.tryLoadAudio(sources, index + 1);
-        }, 8000); // 增加超时时间，给音频加载更多时间
+            console.log('音频加载超时');
+            this.showAudioError('加载超时，请检查网络连接');
+        }, 15000); // 15秒超时
 
-        // 成功加载事件
+        // 音频可以播放事件
         const onCanPlay = () => {
             clearTimeout(loadTimeout);
             this.audio.removeEventListener('canplay', onCanPlay);
             this.audio.removeEventListener('error', onError);
             this.audio.removeEventListener('loadstart', onLoadStart);
-            console.log('✅ 音频加载成功:', source);
             
-            // 更新UI显示已连接音频
+            console.log('✅ 音频加载成功，可以播放');
             document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 音频已就绪';
             
-            // 如果用户已经点击了播放或设置了自动播放，则开始播放
-            if (this.isPlaying || this.autoPlay) {
-                this.audio.play().then(() => {
-                    console.log('音频开始播放');
-                    this.isPlaying = true;
-                    const playBtn = document.getElementById('playPauseBtn');
-                    const player = document.getElementById('musicPlayer');
-                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                    player.classList.add('playing');
-                }).catch(e => {
-                    console.log('自动播放被浏览器阻止，需要用户交互:', e.message);
-                    this.showPlayTip();
-                });
+            // 自动播放
+            if (this.autoPlay) {
+                console.log('开始自动播放...');
+                this.startPlayback();
             }
         };
 
-        // 加载开始事件
+        // 开始加载事件
         const onLoadStart = () => {
-            console.log('开始加载音频:', source);
+            console.log('音频开始下载...');
             document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 正在加载...';
         };
 
-        // 错误加载事件
+        // 错误事件
         const onError = (e) => {
             clearTimeout(loadTimeout);
             this.audio.removeEventListener('canplay', onCanPlay);
             this.audio.removeEventListener('error', onError);
             this.audio.removeEventListener('loadstart', onLoadStart);
-            console.log('❌ 音频源加载失败:', source, e.type);
-            this.tryLoadAudio(sources, index + 1);
+            
+            console.error('❌ 音频加载失败:', e.type, e);
+            this.showAudioError('音频加载失败，请检查网络或稍后重试');
         };
 
+        // 音频可以开始播放事件(有足够数据)
+        const onCanPlayThrough = () => {
+            console.log('音频数据足够，可以完整播放');
+        };
+
+        // 添加事件监听器
         this.audio.addEventListener('canplay', onCanPlay, { once: true });
+        this.audio.addEventListener('canplaythrough', onCanPlayThrough, { once: true });
         this.audio.addEventListener('error', onError, { once: true });
         this.audio.addEventListener('loadstart', onLoadStart, { once: true });
 
+        // 添加更多调试事件
+        this.audio.addEventListener('progress', () => {
+            console.log('音频下载进度更新');
+        });
+
+        this.audio.addEventListener('suspend', () => {
+            console.log('音频数据加载暂停');
+        });
+
+        this.audio.addEventListener('loadeddata', () => {
+            console.log('音频第一帧数据加载完成');
+        });
+
         // 设置音频源并开始加载
-        this.audio.src = source;
-        this.audio.load();
+        try {
+            this.audio.src = audioUrl;
+            console.log('设置音频源:', audioUrl);
+            this.audio.load();
+            console.log('开始加载音频数据...');
+        } catch (error) {
+            console.error('设置音频源时出错:', error);
+            this.showAudioError('音频源设置失败');
+        }
     }
 
-    showNoAudioTip() {
-        // 显示无音频提示
+    startPlayback() {
+        if (!this.audio || !this.audio.src) {
+            console.error('音频未准备好 - 无音频对象或音频源');
+            return;
+        }
+
+        console.log('尝试开始播放音频...');
+        console.log('音频状态 - readyState:', this.audio.readyState, 'networkState:', this.audio.networkState);
+        
+        this.audio.play().then(() => {
+            console.log('✅ 音频播放成功启动');
+            this.isPlaying = true;
+            const playBtn = document.getElementById('playPauseBtn');
+            const player = document.getElementById('musicPlayer');
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            player.classList.add('playing');
+            
+            // 更新显示状态
+            document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 正在播放';
+            
+        }).catch(e => {
+            console.error('⚠️ 音频播放失败:', e.name, e.message);
+            
+            if (e.name === 'NotAllowedError') {
+                console.log('浏览器阻止自动播放，需要用户交互');
+                this.showPlayTip();
+                this.setupUserInteractionPlay();
+            } else {
+                console.log('其他播放错误:', e);
+                this.showAudioError('播放失败: ' + e.message);
+            }
+        });
+    }
+
+    setupUserInteractionPlay() {
+        console.log('设置用户交互播放...');
+        
+        const enablePlay = () => {
+            console.log('用户交互触发，尝试播放...');
+            if (!this.isPlaying && this.audio && this.audio.src) {
+                this.startPlayback();
+            }
+            // 移除事件监听器
+            document.removeEventListener('click', enablePlay);
+            document.removeEventListener('keydown', enablePlay);
+            document.removeEventListener('touchstart', enablePlay);
+        };
+        
+        // 监听多种用户交互事件
+        document.addEventListener('click', enablePlay, { once: true });
+        document.addEventListener('keydown', enablePlay, { once: true });
+        document.addEventListener('touchstart', enablePlay, { once: true });
+    }
+
+    showAudioError(message) {
         const artistEl = document.getElementById('musicArtist');
-        const originalText = artistEl.textContent;
+        artistEl.textContent = message;
+        artistEl.style.color = '#ff6b6b';
         
-        artistEl.textContent = '演示模式 • 无实际音频';
-        artistEl.style.color = '#ff8e8e';
-        
+        // 3秒后恢复原始文本
         setTimeout(() => {
+            artistEl.textContent = this.currentSong.artist;
             artistEl.style.color = '';
         }, 3000);
+        
+        console.error('音频播放错误:', message);
     }
 
     togglePlay() {
+        console.log('用户点击播放/暂停按钮');
+        
         if (!this.audio || !this.audio.src) {
-            console.log('音频尚未准备好');
+            console.error('音频尚未准备好 - 无音频对象或音频源');
+            this.showAudioError('音频未加载，请稍后重试');
             return;
         }
+
+        console.log('当前音频状态:', {
+            isPlaying: this.isPlaying,
+            readyState: this.audio.readyState,
+            networkState: this.audio.networkState,
+            paused: this.audio.paused,
+            src: this.audio.src
+        });
 
         this.isPlaying = !this.isPlaying;
         const playBtn = document.getElementById('playPauseBtn');
@@ -393,18 +439,21 @@ class MusicPlayer {
             
             // 播放真实音频
             this.audio.play().then(() => {
-                console.log('音频播放开始');
+                console.log('✅ 手动播放成功');
+                document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 正在播放';
             }).catch(e => {
-                console.log('播放失败:', e.message);
+                console.error('❌ 手动播放失败:', e.name, e.message);
                 this.isPlaying = false;
                 playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
                 player.classList.remove('playing');
-                this.showPlayTip();
+                this.showAudioError('播放失败: ' + e.message);
             });
         } else {
             playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
             player.classList.remove('playing');
             this.audio.pause();
+            console.log('音频已暂停');
+            document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 已暂停';
         }
     }
 
