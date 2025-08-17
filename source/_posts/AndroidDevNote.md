@@ -12,9 +12,9 @@ tags:
 
 ### 数据类型
 
-![image-20250718104812545](/AndroidDevNote.assets/image-20250718104812545.png)
+![image-20250718104812545](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250718104812545.png)
 
-![image-20250718104842561](AndroidDevNote.assets/image-20250718104842561.png)
+![image-20250718104842561](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250718104842561.png)
 
 
 
@@ -26,11 +26,11 @@ tags:
 
 ## Kotlin创建和使用函数
 
-![image-20250718110638822](AndroidDevNote.assets/image-20250718110638822.png)
+![image-20250718110638822](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250718110638822.png)
 
 ### 传入形参
 
-![image-20250718111529864](AndroidDevNote.assets/image-20250718111529864.png)
+![image-20250718111529864](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250718111529864.png)
 
 ```kotlin
 fun birthdayGreeting(name: String): String {
@@ -42,15 +42,15 @@ fun birthdayGreeting(name: String): String {
 
 ### 函数语法
 
-![image-20250718183828848](AndroidDevNote.assets/image-20250718183828848.png)
+![image-20250718183828848](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250718183828848.png)
 
 ### 具名实参
 
-![image-20250718184140936](AndroidDevNote.assets/image-20250718184140936.png)
+![image-20250718184140936](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250718184140936.png)
 
 ### 默认实参
 
-![image-20250718184318075](AndroidDevNote.assets/image-20250718184318075.png)
+![image-20250718184318075](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250718184318075.png)
 
 ## 文本元素
 
@@ -82,7 +82,7 @@ fun GreetingText(message: String, from: String, modifier: Modifier = Modifier) {
 
 选择方式：选择两个 `Text` 可组合项，然后点击灯泡。依次选择 **Surround with widget** > **Surround with Row**
 
-![image-20250719181143222](AndroidDevNote.assets/image-20250719181143222.png)
+![image-20250719181143222](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20250719181143222.png)
 
 ## 图片元素
 

@@ -18,7 +18,7 @@ favicon:                  # 网站自定义 favicon 的路径（相对于 /sourc
 # 横幅（Banner）设置，用于在首页或所有页面顶部显示一张横幅图像
 banner:
   enable: true           # 是否启用横幅显示。true 启用，false 禁用
-  url: /blogBasic/background.png # 横幅图片相对于/source的路径，也支持网络链接
+  url: /blogBasic/banner.jpg # 横幅图片相对于/source的路径，也支持网络链接
                           # 示例："/images/banner.jpg" 或 "https://example.com/banner.jpg"
   position: center        # 图片对齐方式，对应 CSS 的 object-position
                           # 可选值示例："left", "center", "right", "top", "bottom" 以及百分比或组合

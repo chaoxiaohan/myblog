@@ -1,0 +1,114 @@
+- class_name: 关于页
+  subtitle: 生活明朗，万物可爱✨
+  avatarImg: /blogBasic/head.jpg
+  avatarSkills:
+    left:
+      - 🤖️ 数码科技爱好者
+      - 🔍 分享与热心帮助
+      - 🏠 智能家居小能手
+      - 🔨 设计开发一条龙
+    right:
+      - 专修交互与设计 🤝
+      - 脚踏实地行动派 🏃
+      - 团队小组发动机 🧱
+      - 壮汉人狠话不多 💢
+  name: 超小韓
+  description: 是一名 程序员、学生、独立开发者、博主
+  aboutsiteTips:
+    tips: 追求
+    title1: 源于
+    title2: 热爱而去 感受
+    word:
+      - 学习
+      - 生活
+      - 程序
+      - 体验
+  helloAbout: Hello there! 👋
+  skillsTips:
+    tips: 技能
+    title: 开启创造力
+  careers:
+    tips: 生涯
+    title: 无限进步
+    list:
+      - desc: 湖南信息学院，软件工程专业
+        color: "#357ef5"
+      - desc: 前端开发学习中
+        color: "#42b883"
+      - desc: 全栈开发探索中
+        color: "#e67e22"
+    img: /blogBasic/background.png
+  statistic:
+    link: /archives
+    text: 文章隧道
+    cover: /blogBasic/background.png
+  map:
+    title: 我现在住在
+    StrengthenTitle: 中国，长沙市
+    background: /blogBasic/background.png
+    backgroundDark: /blogBasic/background.png
+  selfInfo:
+    selfInfoTips1: 生于
+    selfInfoContentYear: 2002
+    selfInfoTips2: 湖南信息学院
+    selfInfoContent2: 软件工程
+    selfInfoTips3: 现在职业
+    selfInfoContent3: 大三学生👨‍🎓
+  personalities:
+    author_name: 执政官
+    personality_type: ESFJ-A
+    photo_url: /blogBasic/head.jpg
+    personality_img: /blogBasic/head.jpg
+    name_url: https://www.16personalities.com/ch/esfj-%E4%BA%BA%E6%A0%BC
+  maxim:
+    maxim_tips: 座右铭
+    maxim_top: 生活明朗，
+    maxim_bottom: 万物可爱。
+  buff:
+    buff_tips: 特长
+    buff_top: 脑回路新奇的 程序员
+    buff_bottom: 二次元指数 MAX
+  game:
+    game_tips: 爱好游戏
+    game_title: 王者荣耀
+    game_uid: "游戏ID: 超小韓"
+    game_bg: /blogBasic/background.png
+  comic:
+    comic_tips: 爱好番剧
+    comic_title: 追番
+    comic_list:
+      - name: 鬼灭之刃
+        href: https://www.bilibili.com/bangumi/media/md22718131/
+        cover: /blogBasic/background.png
+      - name: 咒术回战
+        href: https://www.bilibili.com/bangumi/media/md28229899/
+        cover: /blogBasic/background.png
+      - name: 进击的巨人
+        href: https://www.bilibili.com/bangumi/media/md1575/
+        cover: /blogBasic/background.png
+      - name: 海贼王
+        href: https://www.bilibili.com/bangumi/media/md737/
+        cover: /blogBasic/background.png
+      - name: 火影忍者
+        href: https://www.bilibili.com/bangumi/media/md1565/
+        cover: /blogBasic/background.png
+  like:
+    like_tips: 关注偏好
+    like_title: 数码科技
+    like_bg: /blogBasic/background.png
+    like_bottom: 手机、电脑软硬件
+  music:
+    music_tips: 音乐偏好
+    music_title: 华语流行、古风、轻音乐
+    music_bg: /blogBasic/background.png
+    music_link: /music
+  reward_list:
+    - name: 匿名好友
+      amount: 10
+      datatime: 2024-08-01
+    - name: 小明
+      amount: 5
+      datatime: 2024-07-15
+    - name: 小红
+      amount: 20
+      datatime: 2024-07-10
