@@ -3,6 +3,7 @@ title: C语言教程-环境搭建（VS）
 date: 2025-08-17 00:00:00
 type: paper
 photos: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/PixPin_2025-08-17_21-12-34.png
+excerpt: 本教程详细介绍了如何使用Visual Studio搭建C语言开发环境。从下载安装Visual Studio，到创建第一个“Hello World”项目，再到编写和运行代码，本文为初学者提供了清晰、分步的指导，帮助读者快速上手C语言编程。
 tags:
   - C
   - teach
@@ -28,6 +29,8 @@ tags:
 ​	1，不要有中文，不要有空格，不要有一些特殊符号
 
 ​	2，选择一个统一的文件夹进行管理
+
+​	3，最好不要放C盘
 
 <img src="https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/安装2.png" style="zoom:50%">
 

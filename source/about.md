@@ -28,7 +28,7 @@ layout: page
 - [x] 致力于成为一个程序小姥🐷!
 - [x] 又菜又爱玩🎮 ctrl + C、ctrl + V高级CV工程师🏆
 - [x] 擅长PS、Pr、Ae等软件的安装与卸载🎃
-- [x] 精通Java、Python、C等单词的拼写🎲
+- [x] 精通KotLin、Python、C等单词的拼写🎲
 - [x] 熟悉Windows、Linux、Mac、Android、IOS等系统的开关机👻
 
 ## TodoList

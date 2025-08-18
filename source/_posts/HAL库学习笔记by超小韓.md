@@ -3,6 +3,7 @@ title: HAL库函数
 date: 2025-03-01 00:00:00
 type: paper
 photos:
+excerpt: 本文详细介绍了STM32 HAL库中关于GPIO、UART及I2C的关键函数。内容涵盖了各模块的基础知识、主要参数配置，并列举了如HAL_GPIO_WritePin、HAL_UART_Transmit、HAL_I2C_Master_Transmit等核心API的使用方法，是STM32嵌入式开发的实用参考。
 tags:
   - STM32
   - HAL

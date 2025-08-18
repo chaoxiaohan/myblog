@@ -3,6 +3,7 @@ title: 安卓学习笔记（一）
 date: 2025-08-01 00:00:00
 type: paper
 photos: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/androidNote1.png
+excerpt: 本篇安卓开发笔记记录了Kotlin语言基础，包括变量创建与函数定义。同时涵盖Jetpack Compose中Text和Image组件的使用，如布局、内边距和资源管理，是入门安卓UI开发的实用总结。
 tags:
   - Android
   - Kotlin

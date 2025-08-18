@@ -3,6 +3,7 @@ title: STM32HAL库学习笔记
 date: 2025-03-24 00:00:00
 type: paper
 photos: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/HAL1.png
+excerpt: 本笔记详细记录了STM32 HAL库的工程配置过程，包括引脚分配和时钟配置。文中提供了设置LED的GPIO输出和配置系统时钟源的详细步骤，为嵌入式开发初学者提供了实用的参考。
 tags:
   - STM32
   - HAL
