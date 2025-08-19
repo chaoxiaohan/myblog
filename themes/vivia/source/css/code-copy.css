@@ -1,0 +1,123 @@
+/* 代码块复制功能样式 */
+.code-block-wrapper {
+  position: relative;
+  display: block;
+  margin: 16px auto;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.copy-code-button:hover {
+  background: rgba(0, 0, 0, 0.85);
+  color: #ffffff;
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.copy-code-button.copied {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+}
+
+.copy-code-button.copy-error {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+.code-block-wrapper:hover .copy-code-button {
+  opacity: 1;
+}
+
+/* 确保代码块容器有足够的空间 */
+.code-block-wrapper pre,
+.code-block-wrapper .highlight,
+.code-block-wrapper figure {
+  margin: 0;
+  padding-right: 50px; /* 为复制按钮留出空间 */
+}
+
+/* 特别处理 figure.highlight 结构 */
+.code-block-wrapper figure.highlight {
+  position: relative;
+}
+
+.code-block-wrapper figure.highlight table {
+  width: 100%;
+}
+
+.code-block-wrapper figure.highlight .code pre {
+  padding-right: 50px;
+}
+
+/* 暗色主题下的样式调整 */
+[theme="dark"] .copy-code-button {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[theme="dark"] .copy-code-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 白色主题下的样式 - 确保良好的对比度 */
+[theme="light"] .copy-code-button {
+  background: rgba(0, 0, 0, 0.75);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[theme="light"] .copy-code-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .copy-code-button {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    top: 6px;
+    right: 6px;
+  }
+  
+  .code-block-wrapper pre,
+  .code-block-wrapper .highlight {
+    padding-right: 40px;
+  }
+}
+
+/* 为小屏幕始终显示复制按钮 */
+@media (max-width: 480px) {
+  .copy-code-button {
+    opacity: 0.7;
+  }
+}
