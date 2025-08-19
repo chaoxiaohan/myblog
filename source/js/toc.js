@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const tocWidget = document.querySelector('.toc-widget');
   if (!tocWidget) return;
 
-  const tocLinks = tocWidget.querySelectorAll('.toc-list a');
+  const tocLinks = tocWidget.querySelectorAll('.toc-list a, .toc-list .toc-list-link');
   const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
   
   if (!tocLinks.length || !headings.length) return;
@@ -50,8 +50,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // 移除所有活动状态
     tocLinks.forEach(link => link.classList.remove('active'));
     
-    // 添加当前活动状态
-    const activeTocLink = tocWidget.querySelector(`a[href="#${headingId}"]`);
+    // 尝试匹配原始ID和编码的ID
+    const encodedId = encodeURIComponent(headingId);
+    const activeTocLink = tocWidget.querySelector(
+      `a[href="#${headingId}"], .toc-list-link[href="#${headingId}"], ` +
+      `a[href="#${encodedId}"], .toc-list-link[href="#${encodedId}"]`
+    );
+    
     if (activeTocLink) {
       activeTocLink.classList.add('active');
       
@@ -88,7 +93,15 @@ document.addEventListener('DOMContentLoaded', function() {
   tocLinks.forEach(function(link) {
     link.addEventListener('click', function(e) {
       e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
+      
+      // 获取href属性并处理URL编码
+      let targetId = this.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
+        targetId = targetId.substring(1);
+        // 解码URL编码的字符
+        targetId = decodeURIComponent(targetId);
+      }
+      
       const targetElement = document.getElementById(targetId);
       
       if (targetElement) {
@@ -106,6 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
           updateActiveTocLink(targetId);
           isUserScrolling = false; // 重置标记
         }, 100);
+      } else {
+        console.log('目标元素未找到:', targetId);
       }
     });
   });
@@ -169,7 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // 处理页面内锚点跳转（例如从其他页面跳转到特定章节）
   if (window.location.hash) {
     setTimeout(function() {
-      const targetId = window.location.hash.substring(1);
+      let targetId = window.location.hash.substring(1);
+      // 解码URL编码的字符
+      targetId = decodeURIComponent(targetId);
       const targetElement = document.getElementById(targetId);
       if (targetElement) {
         updateActiveTocLink(targetId);

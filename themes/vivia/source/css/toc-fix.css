@@ -1,0 +1,165 @@
+/* TOC 样式修复 */
+.toc-widget {
+  margin-bottom: 16px;
+}
+
+.toc-title {
+  color: var(--widget-title);
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  transition: color 0.15s ease-out;
+  display: flex;
+}
+
+.toc-title:before {
+  content: '';
+  display: block;
+  height: 14px;
+  width: 4px;
+  border-radius: 2px;
+  background-color: var(--primary);
+  margin-right: 10px;
+  margin-top: 4px;
+  margin-left: -4px;
+}
+
+.toc-content {
+  background: var(--card-background);
+  border-radius: 16px;
+  transition: background 0.15s ease-out;
+  color: #777;
+  padding: 20px 0 20px 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 60vh;
+}
+
+.toc-content a {
+  color: var(--link);
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.toc-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.toc-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.toc-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 2px;
+}
+
+.toc-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.5);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-list ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.3rem 0;
+}
+
+.toc-list .toc-list-child {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.2rem 0;
+}
+
+.toc-list li {
+  margin: 0.2rem 0;
+}
+
+.toc-list a {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--btn-text-neutral-text) !important;
+  font-weight: medium;
+  border-radius: inner-radius;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 16px;
+  transition: background 0.15s ease-out, color 0.15s ease-out, padding 0.15s ease-out;
+  text-decoration: none;
+}
+
+.toc-list a:hover {
+  padding-left: 12px;
+  background: var(--btn-text-hover);
+  color: var(--btn-text-light-text) !important;
+}
+
+.toc-list a.active {
+  background: var(--btn-text-active);
+  color: var(--btn-text-content) !important;
+  font-weight: medium;
+  padding-left: 12px;
+}
+
+.toc-list .toc-number {
+  color: rgba(255,255,255,0.5);
+  margin-right: 0.5rem;
+  font-size: 0.85rem;
+}
+
+/* 不同层级的缩进和样式 */
+.toc-list .toc-list-level-1 > a {
+  font-weight: 500;
+}
+
+.toc-list .toc-list-level-2 > a {
+  font-size: 15px;
+  padding-left: 24px;
+}
+
+.toc-list .toc-list-level-2 > a:hover,
+.toc-list .toc-list-level-2 > a.active {
+  padding-left: 28px;
+}
+
+.toc-list .toc-list-level-3 > a {
+  font-size: 14px;
+  padding-left: 36px;
+  opacity: 0.8;
+}
+
+.toc-list .toc-list-level-3 > a:hover,
+.toc-list .toc-list-level-3 > a.active {
+  padding-left: 40px;
+}
+
+.toc-list .toc-list-level-4 > a,
+.toc-list .toc-list-level-5 > a,
+.toc-list .toc-list-level-6 > a {
+  font-size: 13px;
+  padding-left: 48px;
+  opacity: 0.7;
+}
+
+.toc-list .toc-list-level-4 > a:hover,
+.toc-list .toc-list-level-4 > a.active,
+.toc-list .toc-list-level-5 > a:hover,
+.toc-list .toc-list-level-5 > a.active,
+.toc-list .toc-list-level-6 > a:hover,
+.toc-list .toc-list-level-6 > a.active {
+  padding-left: 52px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .toc-widget {
+    display: none;
+  }
+}
