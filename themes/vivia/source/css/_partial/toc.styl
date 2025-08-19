@@ -1,29 +1,35 @@
 .toc-widget
-  margin-bottom: 1.5rem
-  background: var(--widget-bg)
-  border-radius: 8px
-  padding: 1rem
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1)
-  max-height: 80vh
-  overflow: hidden
-  display: flex
-  flex-direction: column
+  margin-bottom: block-margin
 
 .toc-title
-  font-size: 1.1rem
-  font-weight: 600
-  margin: 0 0 0.8rem 0
-  color: var(--text-color)
-  border-bottom: 1px solid var(--border-color)
-  padding-bottom: 0.5rem
+  color: var(--widget-title)
+  font-size: 20px
+  font-weight: bold
+  margin-bottom: 12px
+  transition: color trans-style
+  display: flex
+  &:before
+    content: ''
+    display: block
+    height: 14px
+    width: 4px
+    border-radius: 2px
+    background-color: var(--primary)
+    margin-right: 10px
+    margin-top: 4px
+    margin-left: -4px
 
 .toc-content
-  font-size: 0.9rem
-  line-height: 1.4
+  @extend $card
+  color: color-sidebar-text
+  padding: 20px 0 20px 20px
   overflow-y: auto
   overflow-x: hidden
-  flex: 1
-  padding-right: 8px
+  max-height: 60vh
+  a
+    color: var(--link)
+    text-decoration: none
+    font-size: 16px
   
   // 自定义滚动条样式
   &::-webkit-scrollbar
@@ -33,15 +39,15 @@
     background: transparent
     
   &::-webkit-scrollbar-thumb
-    background: var(--text-color-tertiary)
+    background: var(--neut-L30)
     border-radius: 2px
     
     &:hover
-      background: var(--text-color-secondary)
+      background: var(--neut-L50)
   
   // Firefox 滚动条样式
   scrollbar-width: thin
-  scrollbar-color: var(--text-color-tertiary) transparent
+  scrollbar-color: var(--neut-L30) transparent
 
 .toc-list
   list-style: none
@@ -57,27 +63,31 @@
     margin: 0.2rem 0
     
   a
-    color: var(--text-color-secondary)
+    height: 40px
+    display: flex
+    align-items: center
+    justify-content: space-between
+    color: var(--btn-text-neutral-text) !important
+    font-weight: medium
+    border-radius: inner-radius
+    padding-left: 8px
+    padding-right: 8px
+    transition: background trans-style, color trans-style, padding trans-style
     text-decoration: none
-    display: block
-    padding: 0.2rem 0.5rem
-    border-radius: 4px
-    transition: all 0.2s ease
     
     &:hover
-      color: var(--primary-color)
-      background: var(--hover-bg)
-      transform: translateX(3px)
+      padding-left: 12px
+      background: var(--btn-text-hover)
+      color: var(--btn-text-light-text) !important
       
     &.active
-      color: var(--primary-color)
-      background: var(--hover-bg)
-      font-weight: 700
-      border-left: 3px solid var(--primary-color)
-      padding-left: 0.3rem
+      background: var(--btn-text-active)
+      color: var(--btn-text-content) !important
+      font-weight: medium
+      padding-left: 12px
 
   .toc-number
-    color: var(--text-color-tertiary)
+    color: var(--neut-L50)
     margin-right: 0.5rem
     font-size: 0.85rem
 
@@ -87,18 +97,30 @@
     font-weight: 500
     
   .toc-level-2 > a
-    font-size: 0.85rem
+    font-size: 15px
+    padding-left: 24px
+    
+    &:hover, &.active
+      padding-left: 28px
     
   .toc-level-3 > a
-    font-size: 0.8rem
+    font-size: 14px
+    padding-left: 36px
     opacity: 0.8
+    
+    &:hover, &.active
+      padding-left: 40px
     
   .toc-level-4,
   .toc-level-5,
   .toc-level-6
     > a
-      font-size: 0.75rem
+      font-size: 13px
+      padding-left: 48px
       opacity: 0.7
+      
+      &:hover, &.active
+        padding-left: 52px
 
 // 响应式设计
 @media (max-width: 768px)
