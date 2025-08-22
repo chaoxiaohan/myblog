@@ -9,7 +9,7 @@ class MusicPlayer {
         this.lyrics = [];
         this.audio = null;
         this.currentSong = null;
-        this.autoPlay = true; // 自动播放
+        this.autoPlay = false; // 禁用自动播放
         this.storageKey = 'musicPlayer_state';
         
         this.loadState();
@@ -36,7 +36,7 @@ class MusicPlayer {
                     this.volume = Math.max(0, Math.min(1, state.volume || 0.7));
                     this.isExpanded = Boolean(state.isExpanded);
                     this.isPlaying = Boolean(state.isPlaying);
-                    this.autoPlay = false; // 有保存状态时根据保存的状态决定
+                    this.autoPlay = false; // 有保存状态时也不自动播放
                     console.log('已加载音乐播放器状态:', {
                         currentTime: this.formatTime(this.currentTime),
                         isPlaying: this.isPlaying,
@@ -45,17 +45,17 @@ class MusicPlayer {
                     });
                 } else {
                     console.log('保存的状态已过期，使用默认设置');
-                    this.autoPlay = true;
+                    this.autoPlay = false; // 禁用自动播放
                     localStorage.removeItem(this.storageKey); // 清除过期状态
                 }
             } else {
-                // 首次访问时自动播放
+                // 首次访问时也不自动播放
                 console.log('首次访问，使用默认设置');
-                this.autoPlay = true;
+                this.autoPlay = false; // 禁用自动播放
             }
         } catch (e) {
             console.warn('加载音乐播放器状态失败:', e);
-            this.autoPlay = true; // 出错时默认自动播放
+            this.autoPlay = false; // 出错时也不自动播放
             localStorage.removeItem(this.storageKey); // 清除损坏的状态
         }
     }
@@ -322,12 +322,8 @@ class MusicPlayer {
             if (this.isPlaying) {
                 console.log('根据保存状态恢复播放');
                 this.startAutoPlay();
-            } else if (this.autoPlay && this.currentTime === 0) {
-                console.log('首次访问自动播放');
-                this.isPlaying = true; // 设置播放状态
-                this.startAutoPlay();
             } else {
-                console.log('保持暂停状态');
+                console.log('保持暂停状态，不自动播放');
             }
         });
 
@@ -424,11 +420,8 @@ class MusicPlayer {
             console.log('✅ 音频加载成功，可以播放');
             document.getElementById('musicArtist').textContent = this.currentSong.artist + ' • 音频已就绪';
             
-            // 自动播放
-            if (this.autoPlay) {
-                console.log('开始自动播放...');
-                this.startPlayback();
-            }
+            // 不再自动播放，等待用户手动点击
+            console.log('音频已准备就绪，等待用户手动播放');
         };
 
         // 开始加载事件
