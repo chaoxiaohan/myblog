@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>移动端警告测试</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/mobile-warning.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-button {
+            background: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #5a4fcf;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>移动端警告弹窗测试</h1>
+        
+        <div class="info">
+            <h3>测试说明：</h3>
+            <ul>
+                <li>当页面在移动设备上打开时，会自动显示警告弹窗</li>
+                <li>弹窗内容：推荐使用电脑端打开此网站，手机端目录及视频显示可能有问题</li>
+                <li>提供两个按钮：「下次不再提示」和「好的」</li>
+                <li>如果点击「下次不再提示」，之后访问不会再显示弹窗</li>
+            </ul>
+        </div>
+        
+        <div class="info">
+            <h3>测试功能：</h3>
+            <button class="test-button" onclick="testShowWarning()">手动显示弹窗</button>
+            <button class="test-button" onclick="clearStorage()">清除存储（重新启用弹窗）</button>
+            <button class="test-button" onclick="checkStorage()">检查存储状态</button>
+        </div>
+        
+        <div class="info" id="status">
+            <h3>状态：</h3>
+            <p>页面已加载，等待检测移动设备...</p>
+        </div>
+    </div>
+
+    <script src="/js/mobile-warning.js"></script>
+    
+    <script>
+        function testShowWarning() {
+            // 临时清除存储来测试弹窗
+            const dismissed = localStorage.getItem('mobile-warning-dismissed');
+            localStorage.removeItem('mobile-warning-dismissed');
+            
+            // 手动触发弹窗
+            if (typeof showWarning === 'undefined') {
+                // 如果函数不可访问，直接创建弹窗
+                const modalHTML = `
+                    <div id="mobile-warning-overlay" class="mobile-warning-overlay">
+                        <div id="mobile-warning-modal" class="mobile-warning-modal">
+                            <div class="mobile-warning-content">
+                                <h3>温馨提示</h3>
+                                <p>推荐使用电脑端打开此网站，手机端目录及视频显示可能有问题</p>
+                                <div class="mobile-warning-buttons">
+                                    <button id="mobile-warning-dismiss" class="mobile-warning-btn dismiss-btn">下次不再提示</button>
+                                    <button id="mobile-warning-ok" class="mobile-warning-btn ok-btn">好的</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                
+                const overlay = document.getElementById('mobile-warning-overlay');
+                const modal = document.getElementById('mobile-warning-modal');
+                
+                overlay.style.display = 'flex';
+                setTimeout(() => {
+                    overlay.classList.add('show');
+                    modal.classList.add('show');
+                }, 10);
+                
+                // 绑定事件
+                document.getElementById('mobile-warning-dismiss').onclick = function() {
+                    localStorage.setItem('mobile-warning-dismissed', 'true');
+                    hideWarning();
+                };
+                
+                document.getElementById('mobile-warning-ok').onclick = function() {
+                    if (dismissed) localStorage.setItem('mobile-warning-dismissed', dismissed);
+                    hideWarning();
+                };
+                
+                overlay.onclick = function(e) {
+                    if (e.target === overlay) {
+                        if (dismissed) localStorage.setItem('mobile-warning-dismissed', dismissed);
+                        hideWarning();
+                    }
+                };
+            }
+        }
+        
+        function hideWarning() {
+            const overlay = document.getElementById('mobile-warning-overlay');
+            const modal = document.getElementById('mobile-warning-modal');
+            
+            if (overlay && modal) {
+                overlay.classList.remove('show');
+                modal.classList.remove('show');
+                
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            }
+        }
+        
+        function clearStorage() {
+            localStorage.removeItem('mobile-warning-dismissed');
+            updateStatus();
+            alert('存储已清除，弹窗将在下次访问时显示');
+        }
+        
+        function checkStorage() {
+            updateStatus();
+        }
+        
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            const dismissed = localStorage.getItem('mobile-warning-dismissed');
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            
+            statusDiv.innerHTML = `
+                <h3>状态：</h3>
+                <p><strong>是否为移动设备：</strong> ${isMobile ? '是' : '否'}</p>
+                <p><strong>屏幕宽度：</strong> ${window.innerWidth}px</p>
+                <p><strong>用户代理：</strong> ${navigator.userAgent}</p>
+                <p><strong>弹窗已禁用：</strong> ${dismissed ? '是' : '否'}</p>
+                <p><strong>是否应显示弹窗：</strong> ${isMobile && !dismissed ? '是' : '否'}</p>
+            `;
+        }
+        
+        // 页面加载后更新状态
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(updateStatus, 1000);
+        });
+        
+        // 响应窗口大小变化
+        window.addEventListener('resize', updateStatus);
+    </script>
+</body>
+</html>
