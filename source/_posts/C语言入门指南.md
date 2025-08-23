@@ -5,7 +5,6 @@ type: paper
 photos: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/background2.png
 tags:
   - C
-  - 编程入门
   - learn
 excerpt: 一篇为编程初学者量身打造的C语言入门指南，涵盖学习思路、学习路线、推荐资源及环境搭建，助你从零开始，稳步迈向C语言编程世界。
 description: 一篇为编程初学者量身打造的C语言入门指南，涵盖学习思路、学习路线、推荐资源及环境搭建，助你从零开始，稳步迈向C语言编程世界。
