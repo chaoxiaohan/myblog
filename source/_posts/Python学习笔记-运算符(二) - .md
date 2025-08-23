@@ -6,7 +6,7 @@ photos:
 tags:
   -Python
   -learn
-excerpt: 这是摘要
+excerpt: 本文详细介绍了Python的算术、比较、赋值、位、逻辑、成员及身份运算符，并总结了它们的优先级。
 description: 
 ---
 
