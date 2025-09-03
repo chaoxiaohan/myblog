@@ -12,6 +12,17 @@ highlight-aqua = #66cccc
 highlight-blue = #6699cc
 highlight-purple = #cc99cc
 
+// 亮色主题下的语法高亮颜色
+highlight-light-foreground = #333333
+highlight-light-comment = #666666
+highlight-light-red = #d73a49
+highlight-light-orange = #e36209
+highlight-light-yellow = #b08800
+highlight-light-green = #22863a
+highlight-light-aqua = #032f62
+highlight-light-blue = #005cc5
+highlight-light-purple = #6f42c1
+
 $code-block
   background: var(--article-block)
   border-radius: inner-radius
@@ -154,3 +165,60 @@ pre
   .keyword
   .javascript .function
     color: highlight-purple
+
+// 亮色主题下的语法高亮样式覆盖
+:root[theme='light']
+  .article-entry
+    .highlight
+    pre
+      color: highlight-light-foreground
+  
+  pre
+    .comment
+    .title
+      color: highlight-light-comment
+    .variable
+    .attribute
+    .tag
+    .regexp
+    .ruby .constant
+    .xml .tag .title
+    .xml .pi
+    .xml .doctype
+    .html .doctype
+    .css .id
+    .css .class
+    .css .pseudo
+      color: highlight-light-red
+    .number
+    .preprocessor
+    .built_in
+    .literal
+    .params
+    .constant
+      color: highlight-light-orange
+    .class
+    .ruby .class .title
+    .css .rules .attribute
+      color: highlight-light-green
+    .string
+    .value
+    .inheritance
+    .header
+    .ruby .symbol
+    .xml .cdata
+      color: highlight-light-green
+    .css .hexcolor
+      color: highlight-light-aqua
+    .function
+    .python .decorator
+    .python .title
+    .ruby .function .title
+    .ruby .title .keyword
+    .perl .sub
+    .javascript .title
+    .coffeescript .title
+      color: highlight-light-blue
+    .keyword
+    .javascript .function
+      color: highlight-light-purple
