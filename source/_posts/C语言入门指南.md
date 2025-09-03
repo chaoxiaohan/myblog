@@ -1,6 +1,6 @@
 ---
 title: C语言入门指南
-date: 2025-08-22 00:00:00
+date: 2025-07-22 00:00:00
 type: paper
 photos: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/background2.png
 tags:

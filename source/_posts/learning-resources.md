@@ -1,10 +1,10 @@
 ---
 title: 学习资源汇总
-date: 2025-08-17 00:00:00
+date: 2025-07-05 00:00:00
 type: resource
 tags:
-  - 资源
-  - 学习
+  - resourse
+  - learn
 ---
 
 ## 编程学习资源

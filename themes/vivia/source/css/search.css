@@ -11,12 +11,41 @@
   position: relative;
   width: 100%;
   max-width: 400px;
+  display: flex;
+  align-items: center;
+}
+
+/* 搜索模式选择器 */
+#search-mode-selector {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border: none;
+  background: transparent;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  padding: 2px;
+}
+
+#search-mode-selector:hover {
+  background: var(--btn-hover);
+  border-radius: 4px;
+}
+
+#search-mode-selector:focus {
+  background: var(--btn-hover);
+  border-radius: 4px;
 }
 
 #search-input {
   width: 100%;
   height: 40px;
-  padding: 0 45px 0 15px;
+  padding: 0 15px 0 60px;
   border: 2px solid var(--btn-bg);
   border-radius: 20px;
   background-color: var(--card-background);
@@ -33,15 +62,6 @@
 
 #search-input::placeholder {
   color: var(--article-meta);
-}
-
-#search-icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--article-meta);
-  pointer-events: none;
 }
 
 #search-results {
@@ -139,14 +159,15 @@
     max-width: 300px;
   }
   
+  #search-mode-selector {
+    font-size: 10px;
+    left: 6px;
+  }
+  
   #search-input {
     height: 36px;
     font-size: 14px;
-    padding: 0 40px 0 12px;
-  }
-  
-  #search-icon {
-    right: 10px;
+    padding: 0 12px 0 55px;
   }
   
   .search-result-title {

@@ -1,6 +1,6 @@
 /**
  * 前端搜索功能
- * 实现实时搜索文章标题和标签
+ * 实现精确搜索（标题和标签）和模糊搜索（包括所有内容）
  */
 
 class BlogSearch {
@@ -9,6 +9,7 @@ class BlogSearch {
     this.searchInput = null;
     this.searchResults = null;
     this.searchResultsContent = null;
+    this.searchModeSelector = null;
     this.isLoaded = false;
     
     this.init();
@@ -18,6 +19,7 @@ class BlogSearch {
     this.searchInput = document.getElementById('search-input');
     this.searchResults = document.getElementById('search-results');
     this.searchResultsContent = document.getElementById('search-results-content');
+    this.searchModeSelector = document.getElementById('search-mode-selector');
     
     if (!this.searchInput) return;
     
@@ -26,6 +28,9 @@ class BlogSearch {
     
     // 绑定事件
     this.bindEvents();
+    
+    // 根据搜索模式更新搜索框占位符
+    this.updatePlaceholder();
   }
   
   async loadSearchIndex() {
@@ -56,6 +61,16 @@ class BlogSearch {
       }, 300);
     });
     
+    // 搜索模式切换事件
+    this.searchModeSelector.addEventListener('change', () => {
+      this.updatePlaceholder();
+      // 如果有搜索内容，重新搜索
+      const query = this.searchInput.value.trim();
+      if (query) {
+        this.performSearch(query);
+      }
+    });
+    
     // 点击外部隐藏结果
     document.addEventListener('click', (e) => {
       if (!document.getElementById('search-container').contains(e.target)) {
@@ -76,59 +91,108 @@ class BlogSearch {
     });
   }
   
+  updatePlaceholder() {
+    const selectedMode = this.searchModeSelector.value;
+    if (selectedMode === 'exact') {
+      this.searchInput.placeholder = '精确搜索文章标题和标签...';
+    } else {
+      this.searchInput.placeholder = '模糊搜索所有内容...';
+    }
+  }
+  
+  getSearchMode() {
+    return this.searchModeSelector.value;
+  }
+  
   performSearch(query) {
     if (!this.isLoaded) {
       this.showLoading();
       return;
     }
     
-    const results = this.search(query);
-    this.displayResults(results, query);
+    const searchMode = this.getSearchMode();
+    const results = this.search(query, searchMode);
+    this.displayResults(results, query, searchMode);
   }
   
-  search(query) {
+  search(query, mode = 'exact') {
     const lowercaseQuery = query.toLowerCase();
     const results = [];
     
     this.searchIndex.forEach(item => {
       let score = 0;
       let matchedText = '';
+      let excerpt = item.excerpt;
       
-      // 标题匹配 (权重最高)
-      if (item.title.toLowerCase().includes(lowercaseQuery)) {
-        score += 10;
-        matchedText = item.title;
-      }
-      
-      // 标签匹配
-      const matchedTags = item.tags.filter(tag => 
-        tag.toLowerCase().includes(lowercaseQuery)
-      );
-      if (matchedTags.length > 0) {
-        score += 5 * matchedTags.length;
-        matchedText = matchedText || matchedTags.join(', ');
-      }
-      
-      // 分类匹配
-      const matchedCategories = item.categories.filter(cat => 
-        cat.toLowerCase().includes(lowercaseQuery)
-      );
-      if (matchedCategories.length > 0) {
-        score += 3 * matchedCategories.length;
-        matchedText = matchedText || matchedCategories.join(', ');
-      }
-      
-      // 内容匹配 (权重最低)
-      if (item.content.toLowerCase().includes(lowercaseQuery)) {
-        score += 1;
-        matchedText = matchedText || item.content;
+      if (mode === 'exact') {
+        // 精确搜索：只搜索标题和标签
+        // 标题匹配 (权重最高)
+        if (item.title.toLowerCase().includes(lowercaseQuery)) {
+          score += 10;
+          matchedText = item.title;
+        }
+        
+        // 标签匹配
+        const matchedTags = item.tags.filter(tag => 
+          tag.toLowerCase().includes(lowercaseQuery)
+        );
+        if (matchedTags.length > 0) {
+          score += 5 * matchedTags.length;
+          matchedText = matchedText || matchedTags.join(', ');
+        }
+        
+        // 分类匹配
+        const matchedCategories = item.categories.filter(cat => 
+          cat.toLowerCase().includes(lowercaseQuery)
+        );
+        if (matchedCategories.length > 0) {
+          score += 3 * matchedCategories.length;
+          matchedText = matchedText || matchedCategories.join(', ');
+        }
+      } else {
+        // 模糊搜索：搜索所有内容
+        // 标题匹配 (权重最高)
+        if (item.title.toLowerCase().includes(lowercaseQuery)) {
+          score += 10;
+          matchedText = item.title;
+        }
+        
+        // 标签匹配
+        const matchedTags = item.tags.filter(tag => 
+          tag.toLowerCase().includes(lowercaseQuery)
+        );
+        if (matchedTags.length > 0) {
+          score += 5 * matchedTags.length;
+          matchedText = matchedText || matchedTags.join(', ');
+        }
+        
+        // 分类匹配
+        const matchedCategories = item.categories.filter(cat => 
+          cat.toLowerCase().includes(lowercaseQuery)
+        );
+        if (matchedCategories.length > 0) {
+          score += 3 * matchedCategories.length;
+          matchedText = matchedText || matchedCategories.join(', ');
+        }
+        
+        // 内容匹配 (权重最低，但在模糊搜索中启用)
+        if (item.content.toLowerCase().includes(lowercaseQuery)) {
+          score += 1;
+          // 在内容中找到匹配的上下文
+          const contentMatch = this.findContentMatch(item.content, query);
+          if (contentMatch) {
+            excerpt = contentMatch;
+          }
+          matchedText = matchedText || item.title;
+        }
       }
       
       if (score > 0) {
         results.push({
           ...item,
           score,
-          matchedText: matchedText || item.title
+          matchedText: matchedText || item.title,
+          excerpt: excerpt
         });
       }
     });
@@ -137,11 +201,26 @@ class BlogSearch {
     return results.sort((a, b) => b.score - a.score).slice(0, 8);
   }
   
-  displayResults(results, query) {
+  findContentMatch(content, query) {
+    const lowercaseContent = content.toLowerCase();
+    const lowercaseQuery = query.toLowerCase();
+    const index = lowercaseContent.indexOf(lowercaseQuery);
+    
+    if (index === -1) return null;
+    
+    // 获取匹配词汇的上下文
+    const start = Math.max(0, index - 50);
+    const end = Math.min(content.length, index + query.length + 50);
+    const contextMatch = content.substring(start, end);
+    
+    return (start > 0 ? '...' : '') + contextMatch + (end < content.length ? '...' : '');
+  }
+  
+  displayResults(results, query, mode) {
     this.searchResultsContent.innerHTML = '';
     
     if (results.length === 0) {
-      this.showNoResults(query);
+      this.showNoResults(query, mode);
       return;
     }
     
@@ -170,7 +249,7 @@ class BlogSearch {
         <span class="search-result-date">${result.date}</span>
         ${result.tags.length > 0 ? `<span class="search-result-tags">${highlightedTags}</span>` : ''}
       </div>
-      <div class="search-result-excerpt">${result.content}</div>
+      <div class="search-result-excerpt">${this.highlightText(result.excerpt, query)}</div>
     `;
     
     div.addEventListener('click', () => {
@@ -181,8 +260,12 @@ class BlogSearch {
   }
   
   highlightText(text, query) {
-    const regex = new RegExp(`(${query})`, 'gi');
+    const regex = new RegExp(`(${this.escapeRegExp(query)})`, 'gi');
     return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+  }
+  
+  escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
   
   showResults() {
@@ -198,10 +281,11 @@ class BlogSearch {
     this.showResults();
   }
   
-  showNoResults(query) {
+  showNoResults(query, mode) {
+    const modeText = mode === 'exact' ? '精确搜索' : '模糊搜索';
     this.searchResultsContent.innerHTML = `
       <div class="search-no-results">
-        没有找到包含 "${query}" 的文章
+        ${modeText}没有找到包含 "${query}" 的文章
       </div>
     `;
     this.showResults();
