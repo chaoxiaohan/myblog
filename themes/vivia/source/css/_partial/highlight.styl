@@ -30,7 +30,7 @@ $code-block
   margin: 16px auto
   overflow: auto
   color: highlight-foreground
-  line-height: font-size * line-height
+  line-height: (font-size * line-height)
   ::selection
     background-color: var(--code-block-selection-bg)
 
@@ -166,6 +166,43 @@ pre
   .javascript .function
     color: highlight-purple
 
+// hljs 类名支持（用于新版本的语法高亮）
+pre code
+  .hljs-comment,
+  .hljs-title
+    color: highlight-comment
+  .hljs-variable,
+  .hljs-attribute,
+  .hljs-tag,
+  .hljs-regexp,
+  .hljs-deletion
+    color: highlight-red
+  .hljs-number,
+  .hljs-built_in,
+  .hljs-literal,
+  .hljs-params,
+  .hljs-constant
+    color: highlight-orange
+  .hljs-class,
+  .hljs-title.class_,
+  .hljs-title.class_.inherited__
+    color: highlight-green
+  .hljs-string,
+  .hljs-symbol,
+  .hljs-bullet,
+  .hljs-addition
+    color: highlight-green
+  .hljs-meta
+    color: highlight-aqua  
+  .hljs-function,
+  .hljs-title.function_,
+  .hljs-section
+    color: highlight-blue
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-type
+    color: highlight-purple
+
 // 亮色主题下的语法高亮样式覆盖
 :root[theme='light']
   .article-entry
@@ -221,4 +258,41 @@ pre
       color: highlight-light-blue
     .keyword
     .javascript .function
+      color: highlight-light-purple
+  
+  // hljs 类名支持（亮色主题）
+  pre code
+    .hljs-comment,
+    .hljs-title
+      color: highlight-light-comment
+    .hljs-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-regexp,
+    .hljs-deletion
+      color: highlight-light-red
+    .hljs-number,
+    .hljs-built_in,
+    .hljs-literal,
+    .hljs-params,
+    .hljs-constant
+      color: highlight-light-orange
+    .hljs-class,
+    .hljs-title.class_,
+    .hljs-title.class_.inherited__
+      color: highlight-light-green
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet,
+    .hljs-addition
+      color: highlight-light-green
+    .hljs-meta
+      color: highlight-light-aqua  
+    .hljs-function,
+    .hljs-title.function_,
+    .hljs-section
+      color: highlight-light-blue
+    .hljs-keyword,
+    .hljs-selector-tag,
+    .hljs-type
       color: highlight-light-purple
