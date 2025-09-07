@@ -971,7 +971,7 @@ double getAverage(int *arr, int size)
 Average value is: 214.40000
 ```
 
-2.8从函数返回指针
+## 2.8从函数返回指针
 
 在上一章中，我们已经了解了 C 语言中如何从函数返回数组，类似地，C 允许您从函数返回指针。为了做到这点，您必须声明一个返回指针的函数，如下所示：
 
@@ -1051,5 +1051,101 @@ int main ()
 *(p + [8]) : 1604461820
 *(p + [9]) : 149169022
 ```
+
+## 2.9函数指针
+
+函数指针是指向函数的指针变量。
+
+通常我们说的指针变量是指向一个整型、字符型或数组等变量，而函数指针是指向函数。
+
+函数指针可以像一般函数一样，用于调用函数、传递参数。
+
+函数指针类型的声明：
+
+```
+typedef int (*fun_ptr)(int,int); // 声明一个指向同样参数、返回值的函数指针类型
+```
+
+**实例**
+
+以下实例声明了函数指针变量 p，指向函数 max：
+
+```c
+#include <stdio.h>
+ 
+int max(int x, int y)
+{
+    return x > y ? x : y;
+}
+ 
+int main(void)
+{
+    /* p 是函数指针 */
+    int (* p)(int, int) = & max; // &可以省略
+    int a, b, c, d;
+ 
+    printf("请输入三个数字:");
+    scanf("%d %d %d", & a, & b, & c);
+ 
+    /* 与直接调用函数等价，d = max(max(a, b), c) */
+    d = p(p(a, b), c); 
+ 
+    printf("最大的数字是: %d\n", d);
+ 
+    return 0;
+}
+```
+
+编译执行，输出结果如下：
+
+```C
+请输入三个数字:1 2 3
+最大的数字是: 3
+```
+
+## 2.10回调函数
+
+**函数指针作为某个函数的参数**
+
+函数指针变量可以作为某个函数的参数来使用的，回调函数就是一个通过函数指针调用的函数。
+
+简单讲：回调函数是由别人的函数执行时调用你实现的函数。
+
+实例中 **populate_array()** 函数定义了三个参数，其中第三个参数是函数的指针，通过该函数来设置数组的值。
+
+实例中我们定义了回调函数 **getNextRandomValue()**，它返回一个随机值，它作为一个函数指针传递给 **populate_array()** 函数。
+
+**populate_array()** 将调用 **10** 次回调函数，并将回调函数的返回值赋值给数组。
+
+```C
+#include <stdlib.h>  
+#include <stdio.h>
+ 
+void populate_array(int *array, size_t arraySize, int (*getNextValue)(void))
+{
+    for (size_t i=0; i<arraySize; i++)
+        array[i] = getNextValue();
+}
+ 
+// 获取随机值
+int getNextRandomValue(void)
+{
+    return rand();
+}
+ 
+int main(void)
+{
+    int myarray[10];
+    /* getNextRandomValue 不能加括号，否则无法编译，因为加上括号之后相当于传入此参数时传入了 int , 而不是函数指针*/
+    populate_array(myarray, 10, getNextRandomValue);
+    for(int i = 0; i < 10; i++) {
+        printf("%d ", myarray[i]);
+    }
+    printf("\n");
+    return 0;
+}
+```
+
+
 
 > 笔记来源：菜鸟教程
