@@ -65,11 +65,15 @@ description: 一篇为编程初学者量身打造的C语言入门指南，涵盖
 # 学习资料
 
 1. **黑马程序员视频配套资料**（已整理，无需额外获取）
-通过网盘分享的文件：2024年C语言一套通关
-链接: https://pan.baidu.com/s/1yo5m2FfxHLM34TeArG3AWQ?pwd=bq8s 提取码: bq8s
+  通过网盘分享的文件：2024年C语言一套通关
+  链接: https://pan.baidu.com/s/1yo5m2FfxHLM34TeArG3AWQ?pwd=bq8s 提取码: bq8s
 
 2. **个人整理学习笔记**
-[C语言学习笔记-基本语法（一） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/12/C语言学习笔记-基本语法（一）/)
-[C语言学习笔记-运算符（二） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/15/C语言学习笔记-运算符（二）/)
-[C语言学习笔记-条件、循环、数组（三） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/21/语言学习笔记-条件、循环、数组（三）/)
-[C语言学习笔记-函数、指针（四） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/28/C语言学习笔记-函数、指针（四）/)
+  [C语言学习笔记-基本语法（一） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/12/C语言学习笔记-基本语法（一）/)
+  [C语言学习笔记-运算符（二） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/15/C语言学习笔记-运算符（二）/)
+  [C语言学习笔记-条件、循环、数组（三） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/21/语言学习笔记-条件、循环、数组（三）/)
+  [C语言学习笔记-函数、指针（四） | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/09/28/C语言学习笔记-函数、指针（四）/)
+
+  [C语言学习笔记-枚举、结构体(五) | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/10/05/C语言学习笔记-枚举、结构体(五)/)
+
+  [C语言学习笔记-枚举、输入输出、文件(六) | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2024/10/25/C语言学习笔记-枚举、输入输出、文件(六)/)
