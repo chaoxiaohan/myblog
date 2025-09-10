@@ -22,13 +22,13 @@ tags:
   >
   > **右键**点击对应的引脚，选择 User label，分别输入 BLUE、GREEN、RED
 
-![gpio config](STM32HAL库学习笔记.assets/gpio config-b147238d74e1b4a90d7a6ce271df6719.png)
+![gpio config](https://docs.keysking.com/assets/images/gpio%20config-b147238d74e1b4a90d7a6ce271df6719.png)
 
 - **配置GPIO**：在Pinout&Configuration -> GPIO，点击对应的 PIN，可以在下方的 GPIO output level 中设置初始输出电平
 
   > 高电平点亮LED，低电平熄灭LED
 
-![配置](STM32HAL库学习笔记.assets/配置-b0dda05778c3a7cac8e2b15d60776b12.png)
+![配置](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE-b0dda05778c3a7cac8e2b15d60776b12.png)
 
 #### 2、代码
 
@@ -59,17 +59,17 @@ HAL_GPIO_WritePin(GREEN_GPIO_Port, GREEN_Pin, GPIO_PIN_RESET); //绿色，熄灭
     >
     > 右键点击对应的引脚，选择 User label，分别输入 BLUE、GREEN、KEY1、KEY2
 
-![gpio config](STM32HAL库学习笔记.assets/gpio config-a5bebe2cf288b9fc7146fcbd79f621a5.png)
+![gpio config](https://docs.keysking.com/assets/images/gpio%20config-a5bebe2cf288b9fc7146fcbd79f621a5.png)
 
 - **配置GPIO**：在Pinout&Configuration -> GPIO，将 PB13、PB15 的 GPIO Pull-up/Pull-down 配置为 Pull-up
 
   > 学习板仅 KEY1 配置了外部上拉电阻，因此 KEY1 可以不配置 Pull-up。
 
-![配置](STM32HAL库学习笔记.assets/配置-6778d5c04521ea13a7e89c52f44063ae.png)
+![配置](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE-6778d5c04521ea13a7e89c52f44063ae.png)
 
 #### 2、代码
 
-通过 `HAL_GPIO_WritePin` 函数读取 GPIO 状态，如果是**低电平**，则说明按键被按下
+通过 `HAL_GPIO_ReadPin` 函数读取 GPIO 状态，如果是**低电平**，则说明按键被按下
 
 - 如果读取到 KEY1 低电平，就点亮绿灯；否则，熄灭绿灯
 
@@ -117,7 +117,7 @@ if (!HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin)) {
 
   > **按键消抖**
   >
-  > - 读取到 KEY3 是低电平时，先延时 50 ms，再次判断 KEY2 是否还是低电平
+  > - 读取到 KEY3 是低电平时，先延时 50 ms，再次判断 KEY3 是否还是低电平
   > - 如果是，则说明 KEY3 确实被按下
   > - 否则，说明 KEY3 是抖动，不做任何操作
 
@@ -138,6 +138,7 @@ if (!HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin)) {
 }
 ```
 
+
 ## 【GPIO】中断
 
 #### 1、工程配置
@@ -146,13 +147,13 @@ if (!HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin)) {
 
   - **中断引脚**：将 PB12 设置为 GPIO_EXTI12，并设置 User label 为 KEY1
 
-  - **输出引脚**：将 PA7 设置为 GPIO_Outpu，并分别设置 User label 为 GREEN
+  - **输出引脚**：将 PA7 设置为 GPIO_Output，并分别设置 User label 为 GREEN
 
     > 左键点击对应的引脚，选择 GPIO_Output 或 GPIO_EXTI12；
     >
     > 右键点击对应的引脚，选择 User label，分别输入 GREEN、KEY1
 
-![gpio config](STM32HAL库学习笔记.assets/gpio config-b4c9994e707171a1d8981a4c125dfdb5.png)
+![gpio config](https://docs.keysking.com/assets/images/gpio%20config-b4c9994e707171a1d8981a4c125dfdb5.png)
 
 - **配置GPIO**：在Pinout&Configuration -> GPIO
 
@@ -164,7 +165,7 @@ if (!HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin)) {
   > - System Core -> NVIC，将 Time base: System tick timer 的主要优先级调到比EXTI line高
   > - 否则 HAL_Delay() 函数无法在中断回调函数中执行，会导致程序卡在回调函数中
 
-![配置](STM32HAL库学习笔记.assets/配置-7f3465dc33de0e3e4f4e23933d2c9da7.png)
+![配置](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE-7f3465dc33de0e3e4f4e23933d2c9da7.png)
 
 #### 2、代码
 
@@ -246,15 +247,15 @@ AHT20_Read(float *Temperature, float *Humidity)
 
 - **开启外部晶振**：在Pinout&Configuration -> System Core -> RCC 页面，将 High Speed Clock (HSE) 配置为 Crystal/Ceramic Resonator
 
-![配置时钟源](STM32HAL库学习笔记.assets/配置时钟源-d967a2e4219ddd58666f730a79f7def4.png)
+![配置时钟源](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%BA%90-d967a2e4219ddd58666f730a79f7def4.png)
 
 - **配置时钟频率**：在Clock Configuration 页面，将PLL Source 选择为 HSE，将System Clock Mux 选择为 PLLCLK，然后在HCLK (MHz) 输入72并回车，将HCLK频率配置为 72 MHz
 
-![时钟配置](STM32HAL库学习笔记.assets/时钟配置-347ae32e413ed44e85f705a744e42478.png)
+![时钟配置](https://docs.keysking.com/assets/images/%E6%97%B6%E9%92%9F%E9%85%8D%E7%BD%AE-347ae32e413ed44e85f705a744e42478.png)
 
 - **配置I²C1**：在 `I2C1` 配置页，将I2C模式选择为 **`I2C`**，并在下方 `Parameter Settings` 将 `I2C Speed Mode` 选择为 **`Fast Mode`**
 
-![工程配置](STM32HAL库学习笔记.assets/Snipaste_2023-05-04_23-06-38-9b482e4f6ad9da35d13b6bde5d2e5afc.png)
+![工程配置](https://docs.keysking.com/assets/images/Snipaste_2023-05-04_23-06-38-9b482e4f6ad9da35d13b6bde5d2e5afc.png)
 
 - **配置生成单独.c/.h文件**：在Project Manager -> Code Generator页面中，勾选Generate peripheral initialization as ... per peripheral
 
@@ -614,17 +615,17 @@ OLED_ShowFrame(); // 将缓冲区内容显示到屏幕上
 
 - 在线取图模工具：https://led.baud-dance.com/
 
-![取模助手](STM32HAL库学习笔记.assets/取模助手-6cad12174311f98bb95ea9a7f2ac4e72.png)
+![取模助手](https://docs.keysking.com/assets/images/%E5%8F%96%E6%A8%A1%E5%8A%A9%E6%89%8B-6cad12174311f98bb95ea9a7f2ac4e72.png)
 
 #### (4) 额外的内容
 
 - 小恐龙游戏：https://led.baud-dance.com/
 
-![小恐龙游戏](STM32HAL库学习笔记.assets/小恐龙游戏-1d3db5e54615fbbfda42f57e56943513.png)
+![小恐龙游戏](https://docs.keysking.com/assets/images/%E5%B0%8F%E6%81%90%E9%BE%99%E6%B8%B8%E6%88%8F-1d3db5e54615fbbfda42f57e56943513.png)
 
 - SSD1306驱动库：https://led.baud-dance.com/
 
-![SSD1306驱动库](STM32HAL库学习笔记.assets/SSD1306驱动库-d211d937557ab3e2ea01301e2b52693c.png)
+![SSD1306驱动库](https://docs.keysking.com/assets/images/SSD1306%E9%A9%B1%E5%8A%A8%E5%BA%93-d211d937557ab3e2ea01301e2b52693c.png)
 
 ### 故障排除
 
@@ -642,7 +643,7 @@ OLED_ShowFrame(); // 将缓冲区内容显示到屏幕上
 
   - 点击开始菜单，输入“环境变量”搜索，进入系统属性设置
 
-  ![搜索环境变量](STM32HAL库学习笔记.assets/搜索环境变量-1f90d6c95c21d89b203dd406704d63c0.png)
+  ![搜索环境变量](https://docs.keysking.com/assets/images/%E6%90%9C%E7%B4%A2%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-1f90d6c95c21d89b203dd406704d63c0.png)
 
   - 点击系统属性下方的“环境变量”，进入环境变量配置页面。如图，点击新建，添加一个环境变量并保存即可。
 
@@ -650,7 +651,7 @@ OLED_ShowFrame(); // 将缓冲区内容显示到屏幕上
 
     变量值：-Dfile.encoding=UTF-8
 
-  ![添加环境变量](STM32HAL库学习笔记.assets/添加环境变量-113ba49049fc8e3ab51a1b563d216a30.png)
+  ![添加环境变量](https://docs.keysking.com/assets/images/%E6%B7%BB%E5%8A%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F-113ba49049fc8e3ab51a1b563d216a30.png)
 
 ## 【SPI】SPI
 
@@ -693,7 +694,7 @@ SPI（Serial Peripheral Interface）是一种同步串行通信协议，主要�
 
   > 通信波形文件包含在例程zip包中，可以使用【Saleae Logic 2】软件打开查看
 
-![logic1](STM32HAL库学习笔记.assets/logic1-aedc9e0bf75a81da420816be579f2b1a.png)
+![logic1](https://docs.keysking.com/assets/images/logic1-aedc9e0bf75a81da420816be579f2b1a.png)
 
 ## 【ADC】读取电位器电压
 
@@ -756,13 +757,13 @@ HAL_UART_Transmit(&huart2, (uint8_t*) send_buf, strlen(send_buf), 20);
 
 - **分配引脚**：在Pinout&Configuration页面，将PA8、PA9分别配置为TIM1_CH1、TIM1_CH2
 
-![配置PINOUT](STM32HAL库学习笔记.assets/配置PINOUT-06626ba36adb01b3f788d32483f95555.png)
+![配置PINOUT](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AEPINOUT-06626ba36adb01b3f788d32483f95555.png)
 
 - **配置TIM1**：在Pinout&Configuration -> Timers -> TIM1
   - Mode -> Combined Channels设为Encoder Mode，使TIM1进入“编码器模式”
   - Configuration -> Encoder -> Input Filter 设为 15，最大程度滤波，可以获得更稳定的效果
 
-![配置TIM1](STM32HAL库学习笔记.assets/配置TIM1-f26aa0b1f9330fdb673b47611f4f3541.png)
+![配置TIM1](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AETIM1-f26aa0b1f9330fdb673b47611f4f3541.png)
 
 - **打开串口2外设**：Pinout&Configuration -> Connectivity -> USART2，将Mode选择为Asynchronous
 
@@ -808,11 +809,11 @@ htim1.Instance->CNT = 1000;
 
 - **开启外部晶振**：在Pinout&Configuration -> System Core -> RCC 页面，将 High Speed Clock (HSE) 配置为 Crystal/Ceramic Resonator
 
-![配置时钟源](STM32HAL库学习笔记.assets/配置时钟源-d967a2e4219ddd58666f730a79f7def4-1755341749687-35.png)
+![配置时钟源](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%BA%90-d967a2e4219ddd58666f730a79f7def4.png)
 
 - **配置时钟频率**：在Clock Configuration 页面，将PLL Source 选择为 HSE，将System Clock Mux 选择为 PLLCLK，然后在HCLK (MHz) 输入72并回车，将HCLK频率配置为 72 MHz
 
-![时钟配置](STM32HAL库学习笔记.assets/时钟配置-347ae32e413ed44e85f705a744e42478-1755341752755-38.png)
+![时钟配置](https://docs.keysking.com/assets/images/%E6%97%B6%E9%92%9F%E9%85%8D%E7%BD%AE-347ae32e413ed44e85f705a744e42478.png)
 
 - **分配引脚**：在Pinout&Configuration页面，将PA11、PA10分别配置为GPIO_Output、TIM1_CH3，并将PA11命名为TRIG
 - **配置TIM1**：在Pinout&Configuration -> Timers -> TIM1
@@ -821,7 +822,7 @@ htim1.Instance->CNT = 1000;
   - （可选）开启输入滤波，以提高稳定性：Configuration -> Parameter Settings -> Input Capture Channel 3 -> Input Filter，填写范围0 - 15，数值越大，**滤波效果越强**
   - Configuration -> NVIC Settings -> 勾选TIM1 capture compare interrupt，开启**捕获中断**
 
-![TIM1配置](STM32HAL库学习笔记.assets/TIM1配置-817696ebb9da5a74e153636cb53bfb53.png)
+![TIM1配置](https://docs.keysking.com/assets/images/TIM1%E9%85%8D%E7%BD%AE-817696ebb9da5a74e153636cb53bfb53.png)
 
 - **打开串口2外设**：Pinout&Configuration -> Connectivity -> USART2，将Mode选择为Asynchronous
 - **启用float打印**：在cubeIDE菜单栏中，Project Properties -> C/C++ Build -> Settings -> Tool Settings -> MCU Settings，勾选Use float with printf ... -nano
@@ -928,11 +929,11 @@ htim1.Instance->CNT = 1000;
 
 - **开启外部晶振**：在Pinout&Configuration -> System Core -> RCC 页面，将 High Speed Clock (HSE) 配置为 Crystal/Ceramic Resonator
 
-![配置时钟源](STM32HAL库学习笔记.assets/配置时钟源-d967a2e4219ddd58666f730a79f7def4-1755341761583-43.png)
+![配置时钟源](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%BA%90-d967a2e4219ddd58666f730a79f7def4.png)
 
 - **配置时钟频率**：在Clock Configuration 页面，将PLL Source 选择为 HSE，将System Clock Mux 选择为 PLLCLK，然后在HCLK (MHz) 输入72并回车，将HCLK频率配置为 72 MHz
 
-![时钟配置](STM32HAL库学习笔记.assets/时钟配置-347ae32e413ed44e85f705a744e42478-1755341763773-46.png)
+![时钟配置](https://docs.keysking.com/assets/images/%E6%97%B6%E9%92%9F%E9%85%8D%E7%BD%AE-347ae32e413ed44e85f705a744e42478.png)
 
 - **分配引脚**：在Pinout&Configuration页面，将PA6、PA7、PB0分别配置为TIM3_CH1、TIM3_CH2、TIM3_CH3
 
@@ -1009,11 +1010,11 @@ htim1.Instance->CNT = 1000;
 
 - **开启外部晶振**：在Pinout&Configuration -> System Core -> RCC 页面，将 High Speed Clock (HSE) 配置为 Crystal/Ceramic Resonator
 
-![配置时钟源](STM32HAL库学习笔记.assets/配置时钟源-d967a2e4219ddd58666f730a79f7def4-1755341767155-49.png)
+![配置时钟源](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%BA%90-d967a2e4219ddd58666f730a79f7def4.png)
 
 - **配置时钟频率**：在Clock Configuration 页面，将PLL Source 选择为 HSE，将System Clock Mux 选择为 PLLCLK，然后在HCLK (MHz) 输入72并回车，将HCLK频率配置为 72 MHz
 
-![时钟配置](STM32HAL库学习笔记.assets/时钟配置-347ae32e413ed44e85f705a744e42478-1755341769050-52.png)
+![时钟配置](https://docs.keysking.com/assets/images/%E6%97%B6%E9%92%9F%E9%85%8D%E7%BD%AE-347ae32e413ed44e85f705a744e42478.png)
 
 - **分配引脚**：在Pinout&Configuration页面，将PB8配置为TIM4_CH3
 
@@ -1069,11 +1070,11 @@ htim1.Instance->CNT = 1000;
 
   - **开启外部晶振**：在Pinout&Configuration -> System Core -> RCC 页面，将 High Speed Clock (HSE) 配置为 Crystal/Ceramic Resonator
 
-  ![配置时钟源](STM32HAL库学习笔记.assets/配置时钟源-d967a2e4219ddd58666f730a79f7def4-1755341772241-55.png)
+  ![配置时钟源](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%BA%90-d967a2e4219ddd58666f730a79f7def4.png)
 
   - **配置时钟频率**：在Clock Configuration 页面，将PLL Source 选择为 HSE，将System Clock Mux 选择为 PLLCLK，然后在HCLK (MHz) 输入72并回车，将HCLK频率配置为 72 MHz
 
-  ![时钟配置](STM32HAL库学习笔记.assets/时钟配置-347ae32e413ed44e85f705a744e42478-1755341773945-58.png)
+  ![时钟配置](https://docs.keysking.com/assets/images/%E6%97%B6%E9%92%9F%E9%85%8D%E7%BD%AE-347ae32e413ed44e85f705a744e42478.png)
 
   - **分配引脚**：在Pinout&Configuration页面，配置如下引脚
     - 将PB9配置为TIM4_CH4，
@@ -1134,11 +1135,11 @@ htim1.Instance->CNT = 1000;
 
 - **开启外部晶振**：在Pinout&Configuration -> System Core -> RCC 页面，将 High Speed Clock (HSE) 配置为 Crystal/Ceramic Resonator
 
-![配置时钟源](STM32HAL库学习笔记.assets/配置时钟源-d967a2e4219ddd58666f730a79f7def4-1755341777398-61.png)
+![配置时钟源](https://docs.keysking.com/assets/images/%E9%85%8D%E7%BD%AE%E6%97%B6%E9%92%9F%E6%BA%90-d967a2e4219ddd58666f730a79f7def4.png)
 
 - **配置时钟频率**：在Clock Configuration 页面，将PLL Source 选择为 HSE，将System Clock Mux 选择为 PLLCLK，然后在HCLK (MHz) 输入72并回车，将HCLK频率配置为 72 MHz
 
-![时钟配置](STM32HAL库学习笔记.assets/时钟配置-347ae32e413ed44e85f705a744e42478-1755341779254-64.png)
+![时钟配置](https://docs.keysking.com/assets/images/%E6%97%B6%E9%92%9F%E9%85%8D%E7%BD%AE-347ae32e413ed44e85f705a744e42478.png)
 
 - **分配引脚**：在Pinout&Configuration页面，配置如下引脚
   - 将PA0、PA1分别配置为TIM2_CH1、TIM2_CH2
@@ -1213,11 +1214,11 @@ htim1.Instance->CNT = 1000;
 
 **左键**点击对应的引脚，选择 GPIO_Output； **右键**点击对应的引脚，选择 User label，分别输入 BLUE、GREEN、RED
 
-![gpio config](STM32HAL库学习笔记.assets/gpio config-b147238d74e1b4a90d7a6ce271df6719-1755341782022-67.png)
+![gpio config](https://docs.keysking.com/assets/images/gpio%20config-b147238d74e1b4a90d7a6ce271df6719.png)
 
 2️⃣ **打开串口2外设**：`Pinout&Configuration` -> `Connectivity` -> `USART2`，将 `Mode` 选择为 `Asynchronous`
 
-![uart config](STM32HAL库学习笔记.assets/configUART-627416204c717e0c7e61c6228a19ca6a.png)
+![uart config](https://docs.keysking.com/assets/images/configUART-627416204c717e0c7e61c6228a19ca6a.png)
 
 ### 2、代码
 
@@ -1317,12 +1318,12 @@ while (1)
   >
   > 2、**右键**点击对应的引脚，选择 User label，分别输入 BLUE、GREEN、RED
 
-![gpio config](STM32HAL库学习笔记.assets/gpio config-b147238d74e1b4a90d7a6ce271df6719-1755341787471-72.png)
+![gpio config](https://docs.keysking.com/assets/images/gpio%20config-b147238d74e1b4a90d7a6ce271df6719.png)
 
 - **打开串口2外设**：Pinout&Configuration -> Connectivity -> USART2，将Mode选择为Asynchronous
 - **使能串口中断**：在 USART2 -> Configuration -> NVIC Settings 标签卡中，勾选 USART2 global interrupt 的 Enable
 
-![IT config](STM32HAL库学习笔记.assets/enableIT-d2f4f193f635a77d9ad8f514e943ca78.png)
+![IT config](https://docs.keysking.com/assets/images/enableIT-d2f4f193f635a77d9ad8f514e943ca78.png)
 
 ### 2、代码
 
@@ -1399,7 +1400,7 @@ while (1)
 - **打开串口2外设**：Pinout&Configuration -> Connectivity -> USART2，将Mode选择为Asynchronous
 - **添加DMA通道**：在 USART2 -> Configuration -> DMA Settings 标签卡中，点击 Add 按钮，分别添加 USART2_RX 和 USART2_TX 的 DMA 通道
 
-![DMA config](STM32HAL库学习笔记.assets/configDMA-603ec3152ac06c417d674213cb08935c.png)
+![DMA config](https://docs.keysking.com/assets/images/configDMA-603ec3152ac06c417d674213cb08935c.png)
 
 - **使能串口中断**：在 USART2 -> Configuration -> NVIC Settings 标签卡中，勾选 USART2 global interrupt 的 Enable
 
@@ -1465,15 +1466,15 @@ while (1)
 
   > DX-BT24 模块默认波特率为 9600
 
-![configBaud](STM32HAL库学习笔记.assets/configBaud-a22b2ba06f58483550d0dfed5d5d243d.png)
+![configBaud](https://docs.keysking.com/assets/images/configBaud-a22b2ba06f58483550d0dfed5d5d243d.png)
 
 - **添加DMA通道**：在 USART3 -> Configuration -> DMA Settings 标签卡中，点击 Add 按钮，分别添加 USART3_RX 和 USART3_TX 的 DMA 通道
 
-![DMA config](STM32HAL库学习笔记.assets/configDMA-51811dd271ee6795aed167294dff42be.png)
+![DMA config](https://docs.keysking.com/assets/images/configDMA-51811dd271ee6795aed167294dff42be.png)
 
 - **使能串口中断**：在 USART3 -> Configuration -> NVIC Settings 标签卡中，勾选 USART3 global interrupt 的 Enable
 
-![IT config](STM32HAL库学习笔记.assets/enableIT-8ef64087528b33979137745d47dde231.png)
+![IT config](https://docs.keysking.com/assets/images/enableIT-8ef64087528b33979137745d47dde231.png)
 
 ### 2、代码
 
