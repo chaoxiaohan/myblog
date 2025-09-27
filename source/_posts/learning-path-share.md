@@ -4,7 +4,7 @@ date: 2025-09-13 00:00:00
 type: paper
 photos: 
 tags:
-  -learn
+  - learn
 excerpt: 本文分享了一份针对嵌入式和电控专业的学习路线图，从基础知识到专业方向选择，再到进阶提升，为大学生提供系统化的学习指导，帮助避免走弯路。
 description: 
 ---

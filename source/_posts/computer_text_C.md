@@ -4,8 +4,8 @@ date: 2025-09-15 00:00:00
 type: resource
 photos: 
 tags:
-  -learn
-  -C
+  - learn
+  - C
 excerpt: 计算机二级C语言考点（知乎）
 description: 
 ---

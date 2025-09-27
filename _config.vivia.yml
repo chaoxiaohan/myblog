@@ -19,7 +19,7 @@ favicon:                  # 网站自定义 favicon 的路径（相对于 /sourc
 # 横幅（Banner）设置，用于在首页或所有页面顶部显示一张横幅图像
 banner:
   enable: true           # 是否启用横幅显示。true 启用，false 禁用
-  url: /blogBasic/banner.jpg # 横幅图片相对于/source的路径，也支持网络链接
+  url: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/banner.jpg # 横幅图片相对于/source的路径，也支持网络链接
                           # 示例："/images/banner.jpg" 或 "https://example.com/banner.jpg"
   position: center        # 图片对齐方式，对应 CSS 的 object-position
                           # 可选值示例："left", "center", "right", "top", "bottom" 以及百分比或组合
@@ -32,7 +32,7 @@ hue: 250                  # 主题色相（Hue），取值 0-360，控制主题�
                           # saicaca.github.io/vivia-preview
 
 # 个人信息与社交链接
-avatar: /blogBasic/head.jpg  # 头像图片相对于/source的路径
+avatar: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/head.jpg  # 头像图片相对于/source的路径
 author: 超小韓
 subtitle: 生活明朗，万物可爱！
                           # 站点副标题或简短描述，显示在首页或主题指定位置
@@ -121,7 +121,7 @@ baidu_analytics: false   # 百度统计（填入站点提供的 ID 即可）
 
 # 音乐播放器配置
 music_player:
-  enable: true            # 是否启用音乐播放器
+  enable: false            # 是否启用音乐播放器
   auto_play: false        # 是否自动播放
   playlist:               # 播放列表
     - title: "示例歌曲 1"

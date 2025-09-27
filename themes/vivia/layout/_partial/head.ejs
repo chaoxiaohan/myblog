@@ -45,7 +45,9 @@
     <link rel="icon" media="(prefers-color-scheme: dark)" href="<%- url_for("/images/favicon-dark-192.png") %>" sizes="192x192">
   <% } %>
   <%- css('css/style') %>
+  <% if (theme.music_player && theme.music_player.enable) { %>
   <%- css('css/music-player') %>
+  <% } %>
   <%- css('css/search') %>
   <%- css('css/toc-fix') %>
   <%- css('css/code-copy') %>
