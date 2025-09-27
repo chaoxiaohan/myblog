@@ -220,7 +220,3 @@ Windows 10
 
 感谢您阅读《你缺计课》！
 版本日期：2025 年 9 月 26 日
-
-[计算机技术学习札记](https://www.criwits.top/) · [使用条款](https://www.criwits.top/terms)
-[粤ICP备2022104373号-1](https://beian.miit.gov.cn/)
-[粤公网安备44030502009325号](http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030502009325)
