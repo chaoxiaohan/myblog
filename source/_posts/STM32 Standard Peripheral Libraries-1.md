@@ -65,7 +65,9 @@ USB OTG：用OTG功能，可以让STM32作为USB主机去读取其他USB设备�
 
 ### 1.1.2 芯片命名规则
 
-例图：![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/adbe4731ff90b15739adb3cad7d424fe.png#pic_center)
+例图：
+
+![image-20251003173103008](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173103008.png)
 
 **1.产品系列：**
 STM32代表ST品牌Cortex-Mx系列内核（ARM）的32位MCU
@@ -236,7 +238,7 @@ STM32采⽤分区供电的⽅式，因此这些引脚都接对应电压就可以
 频得到了72MHz的主频。连接到5、6引脚，另外还需要两个20pF的电容，作为起振电容，电容的另一端
 接地即可。原理图如下：
 
-![img](https://i-blog.csdnimg.cn/blog_migrate/d273b37d9de4b64a391ee1bf7fcdc017.png)
+![image-20251003173127936](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173127936.png)
 
 > **PCB绘制需要注意的点：**
 >
@@ -399,7 +401,7 @@ while(1)
 
 推荐以后使用**stdint关键字**来表示C语言的数据类型。
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1694589830151-48b298bd-2e1a-4320-8cbf-503b66cdd0a8.png)
+![image-20251003173154189](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173234162.png)
 
 ### 1.3.2 宏定义
 
@@ -487,7 +489,9 @@ EnumName = FALSE;	EnumName = TRUE;
 
 **【教程提供OLED驱动函数说明】：**
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688376525508-6e0efb4b-d6ba-4dc6-ac43-1ec5d968816a.png?x-oss-process=image%2Fcrop%2Cx_0%2Cy_0%2Cw_822%2Ch_361)![位置坐标](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688376506469-982ad915-5b7a-4c40-bb77-8f173e44877a.png)
+![image-20251003173224953](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173247227.png)
+
+![image-20251003173234162](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173314782.png)
 
 **【修改使用位置】：改好后即可使用。****注意函数的使用方式。**
 
@@ -507,21 +511,23 @@ EnumName = FALSE;	EnumName = TRUE;
 
 借助Keil软件的调试模式，可使用单步运行、设置断点、查看寄存器及变量等功能。但需要注意是否支持要调试的芯片。
 
-**【官方文档】：**软件内置。![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688378912591-549266c1-f3ca-4c85-ab08-133b55c76f70.png?x-oss-process=image%2Fcrop%2Cx_0%2Cy_8%2Cw_166%2Ch_53)有最详细的使用步骤说明。
+**【官方文档】：**软件内置。![image-20251003173247227](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173302441.png)有最详细的使用步骤说明。
 
 **【使用步骤】：**
 
-选择好硬件仿真器：![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688377867896-547950fc-9bfb-4347-9cc5-ba67f919f4f4.png)
+选择好硬件仿真器：![image-20251003173302441](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173224953.png)
 
-编译项目之后，点击放大镜即可进入调试模式：![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688377972929-45d73d84-a3de-4e74-93a3-3c018356cb8d.png)
+编译项目之后，点击放大镜即可进入调试模式：![image-20251003173314782](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173154189.png)
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688378225858-90f84530-1111-4ceb-bcf8-f695cdc18f8c.png)程序控制按键。![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688378208111-a8eea099-dc65-42b0-b020-5761d52a4c0b.png?x-oss-process=image%2Fcrop%2Cx_0%2Cy_0%2Cw_1062%2Ch_415)
+![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688378225858-90f84530-1111-4ceb-bcf8-f695cdc18f8c.png)程序控制按键。![image-20251003173327153](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173422116.png)
 
 （图中蓝色的箭头的调试箭头，还有一个黄色的箭头，是程序运行的箭头，如果想看到，可以点击停止）
 
 **另外可以点击外设菜单栏：**就可以查看对应的外设寄存器。
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688378417545-6240861e-134d-4e66-9deb-0f4a37cc5aec.png?x-oss-process=image%2Fcrop%2Cx_0%2Cy_0%2Cw_281%2Ch_252)![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688378455762-c98225b5-5793-4e34-82af-d1529a98bb79.png)
+![image-20251003173422116](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173327153.png)
+
+
 
 在调试过程中，我们点击运行程序，STM32就会跑起来；点击停止，STM32也是会停止。运行时候可以看到寄存器是实时变化的，虽然有那么一些延时，**但是还是非常厉害的。**
 
@@ -541,7 +547,7 @@ FlyMCU通过用串口给STM32下载程序，与51的STC-ISP下载程序的功能
 
 开始编程之前，我们还需配置BOOT引脚，让STM32执行BootLoader程序，否则点击编程会卡住。BOOT引脚可以配置跳线帽，插拔完之后需要在上电状态下摁一下复位键，因为STM32在只有在刚复位时候才会读取BOOT引脚，这样芯片就进入BootLoader程序了：不断接收USART1的程序刷新到主闪存。此时回到FlyMCU选择好.hex文件点击开始编程即可。
 
-![img](https://cdn.nlark.com/yuque/0/2024/png/25954489/1713402390690-63ee533e-101f-4b1a-a81d-3ade9ec0e208.png)
+![image-20251003173440042](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173526744.png)
 
 此时并没有运行程序，因为STM32还在执行BootLoader程序，需要将其跳线帽复原，摁一下复位键，就会运行下载好的程序。
 
@@ -549,15 +555,15 @@ FlyMCU通过用串口给STM32下载程序，与51的STC-ISP下载程序的功能
 
 通过一段程序，不断的接收串口数据并将其放到存储程序代码的地方。刷机程序。
 
-![img](https://cdn.nlark.com/yuque/0/2024/png/25954489/1713402671639-b0cf0e23-c40d-47b7-ac38-9442847c2b92.png)
+![image-20251003173448399](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173448399.png)
 
 在手册里，可以看到通过BOOT[1:0]引脚选择三种不同启动模式。
 
-![启动配置](https://cdn.nlark.com/yuque/0/2024/png/25954489/1713402909725-8e8c13bb-6fd7-413f-bed9-426ee3bf52f4.png?x-oss-process=image%2Fcrop%2Cx_0%2Cy_71%2Cw_1641%2Ch_458)
+![image-20251003173459608](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173440042.png)
 
 **【插拔跳线帽太麻烦，如何解决】**
 
-需要STM32一键下载电路设计，**教程所用的最小系统板没有提供**，一般某些机构的**开发板**会配有，到时候只需要配置![img](https://cdn.nlark.com/yuque/0/2024/png/25954489/1713403096900-63b64cf8-34ee-4e3d-b172-793c0074a251.png)即可。
+需要STM32一键下载电路设计，**教程所用的最小系统板没有提供**，一般某些机构的**开发板**会配有，到时候只需要配置![image-20251003173526744](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173459608.png)即可。
 
 当然也可以先设置BOOT进入BootLoader，再配置FlyMCU编程后执行(去掉编程到FLASH时写字节选项的勾)，下载后立刻就执行程序，可以直接查看现像。此时摁下复位键可直接恢复到BootLoader程序运行，节省了调试过程插拔跳线帽的动作，程序调试结束后再恢复跳线帽即可。
 
@@ -569,7 +575,7 @@ FlyMCU可以直接读取STM32中Flash的程序，生成.bin文件（**相比于.
 
 比如FlyMCU的【选项字节】里边就有一个参数可以配置读保护，防止直接读取。像是一些ST Visual Programmer的下载器也有类似的选项，可以注意。
 
-![img](https://cdn.nlark.com/yuque/0/2024/png/25954489/1713404206019-294ec502-c085-4568-84dc-758601a9dcf8.png)
+![image-20251003173520436](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173520436.png)
 
 阻止之后读保护，下载程序会失败，解除后就正常了，解除的同时也会清除程序。
 
@@ -583,9 +589,9 @@ FlyMCU可以直接读取STM32中Flash的程序，生成.bin文件（**相比于.
 
 STLink Utility配合STLINK进行下载，也可以用作其他操作。目前官方改成了这个：一样使用。
 
-![img](https://cdn.nlark.com/yuque/0/2024/png/25954489/1713401737951-844c6146-d5fb-4c29-9f38-75a4e44f2646.png)
+![image-20251003173537266](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173537266.png)
 
-![img](https://cdn.nlark.com/yuque/0/2024/png/25954489/1713401870031-0af33135-28a0-4539-ae88-9f3e3a5bbd55.png)可下载了解。
+![image-20251003173544357](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173558555.png)可下载了解。
 
 # 二、GPIO输入输出
 
@@ -625,7 +631,7 @@ GPIO大致上来说分为两种模式，输出跟输入，本次只讲解简单�
 
 在下面这个电路中，发光二极管的左侧通过一个限流电阻连接到了单片机的PA0引脚上，右侧接地，这样当我们的单片机输出高电平，发光二极管左右产生电压差，电流就像水流从高处流到低处一样从发光二极管的左侧流到右侧，于是乎发光二极管被点亮，同理STM32引脚输出低电平0V的时候，发光二极管左右两侧没有产生电压差，发光二极管没有电流通过，于是乎发光二极管被熄灭。
 
-![二、GPIO初始化以及使用](https://fastboard-1304675156.cos.ap-shanghai.myqcloud.com/uploads/2023/10/1698048030-2d20ed1dfe26997.png?imageMogr2/format/webp/interlace/1/quality/100)
+![image-20251003173558555](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173706333.png)
 
 #### ①GPIO初始化
 
@@ -683,7 +689,7 @@ GPIO_WriteBit(GPIOC, GPIO_Pin_13, (BitAction)1);
 
 我们这里已读取按键键值为例，下图中按键左侧接到单片机引脚PA0，右侧接到引脚地，我们会将单片机引脚配置为上拉输入模式，在这个模式下在没有外部因素影响之下一直保持为高电平，当我们按下按键时，按键左右两侧被导通，瞬间高电平跳转为低电平，在程序的角度来说，我们只需要一直监测引脚状态，当引脚为低电平时就判断为按键被按下。
 
-![二、GPIO初始化以及使用](https://fastboard-1304675156.cos.ap-shanghai.myqcloud.com/uploads/2023/10/1698049710-c33392a0ffd52ad.png?imageMogr2/format/webp/interlace/1/quality/100)
+![image-20251003173604957](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173544357.png)
 
 #### ①GPIO初始化
 
@@ -743,7 +749,7 @@ return KeyNum;
 
 ## 2.3 开发技巧
 
-![二、GPIO初始化以及使用](https://fastboard-1304675156.cos.ap-shanghai.myqcloud.com/uploads/2023/10/1698051075-39b7d0b923cf70d.png?imageMogr2/format/webp/interlace/1/quality/100)
+![image-20251003173614477](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173630235.png)
 
 在开发过程中，大家肯定要问了，你怎么知道用哪个函数，实际上你需要开发那个外设，就去library组中找到它的头文件（比如说我要开发GPIO，那我就去查看stm32f10x_gpio.h），查看他们的函数声明(一般都在头文件的最底部)，右键跳转到函数主体，大多数函数都有它的注释，包括里面的参数应该填什么，不要看到英文就发怵，实际上单片机开发能用到的单词来来回回就那么几个，多看多练多熟悉，自然而然就能够上手。
 
@@ -763,13 +769,13 @@ return KeyNum;
 
 限流电阻一般是要加上的，以防止电流过大。一下是两种控制LED的方式。该如何选择呢？一般是看IO口的驱动能力了，在单片机电路当中一般是选择第一种，因为很多单片机都采用了高电平弱驱动，低电平强驱动的方式，这样一定程度上可以避免高低电平打架。
 
-![低电平控制亮](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688374110096-6e23842f-d4f2-4d04-9d60-de2519a95299.png)![高电平控制亮](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688373837181-80129a8c-c997-40d2-ab69-71b420ae145f.png)
+![高电平控制亮](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173604957.png)
 
 **（2）蜂鸣器电路**
 
 使用了三极管开关驱动电路方案，三极管开关是最简单的驱动电路了。对于功率稍微大一点的，直接用IO口驱动可能会对单片机负担过重，这时候就可以用一个三极管驱动电路来完成驱动任务。
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688373806667-2e4863e9-890c-48e8-98a5-d830000e820f.png)![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688373817126-549c4178-660a-4451-8ee0-456ab9bd0fa6.png)
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173651044.png)
 
 ## 2.5 面包板的使用方法
 
@@ -785,7 +791,7 @@ return KeyNum;
 
 按键抖动：由于按键内部使用的是机械式弹簧片来进行通断的，所以在按下和松手的瞬间会伴随有一连串的抖动。因此一般程序需要消抖，最简单是就是加一个延时耗过去，在判断高低电平就可以了。
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1693646752898-6d2512b7-975d-4f47-9c0f-d09960507ec4.png)
+![image-20251003173706333](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173614477.png)
 
 
 
@@ -793,11 +799,11 @@ return KeyNum;
 
 传感器元件**（光敏电阻/热敏电阻/红外接收管等)**的电阻会随外界模拟量的变化而变化，**通过与定值电阻分压即可得到模拟电压输出**，再通过电压比较器进行二值化即可得到数字电压输出
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1693646998873-f0302ef9-0a1b-45d5-ab71-d407dfceeac5.png)![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1693646922978-c9382d9b-7004-40a6-852e-5d996c453d6a.png)
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173724549.png)
 
 对于图中分压电路的例子说明：接地的电容是其滤波作用的，分析时候可以直接拿掉。
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1693647981950-ab8aa78e-47d5-4a93-a4c2-1eb1f7a9223c.png)![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1693648029083-7bd542d1-49d7-45e5-b0b0-af006fa57a77.png)
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173839575.png)
 
 电路中经常出现的弱上拉，强上拉，弱下拉，强下拉。这里的去那个若就是指电阻阻值的大小。因此该传感器的最终输出电压就是在弹簧拉车下最终杆子的高低。
 
@@ -805,11 +811,11 @@ return KeyNum;
 
 **3、按键和传感器模块的硬件电路**
 
-![下接摁键方式1](https://cdn.nlark.com/yuque/0/2023/png/25954489/1694588825653-61cd650f-b11a-43e2-80b0-2b20addbfbf1.png)![下接摁键方式2](https://cdn.nlark.com/yuque/0/2023/png/25954489/1694588834085-90d678c2-b033-4063-be6d-22733b7d6f95.png)![上接摁键方式1](https://cdn.nlark.com/yuque/0/2023/png/25954489/1694588852267-92264d84-d45e-40f5-8bf9-bae484f48f39.png)![上接摁键方式2](https://cdn.nlark.com/yuque/0/2023/png/25954489/1694588865002-91b749ca-9235-4b2e-9639-0711148b65ec.png)
+![下接摁键方式2](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173758742.png)
 
 一般常用下接摁键的方式，原因和LED的接法类似，是电路设计常用的规范。**方式1**必须要求引脚是上拉或下拉输入的模式；**方式2**可以允许引脚是浮空输入的模式，因为已经外置了上拉电阻和下拉电阻。
 
-传感器接法，DO接数字量![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1694588877460-82a24917-84f7-4e04-a9e7-85fa54aa4e5e.png)，AO接模拟量。
+传感器接法，DO接数字量![image-20251003173758742](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173715553.png)，AO接模拟量。
 
 # 三、中断
 
@@ -845,7 +851,7 @@ return KeyNum;
 
 ![image-20251001045513880](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251001045630616.png)
 
-3.1.4NVIC优先级分组
+### 3.1.4NVIC优先级分组
 
 **NVIC的中断优先级**由优先级寄存器的**4位（0~15)决定**，这4位可以进行切分，分为高n位的抢占优先级和低4-n位的响应优先级。
 
@@ -968,6 +974,99 @@ NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
 | 配置文件 | `misc.c`                 | `stm32f10x_gpio.c`       |
 | 核心功能 | 中断管理                 | 输入输出管理             |
 | 配置方式 | 结构体`NVIC_InitTypeDef` | 结构体`GPIO_InitTypeDef` |
+
+### 3.2.6 NVIC的使用
+
+**① 配置中断优先级分组**
+
+- 步骤：系统初始化阶段需统一配置中断优先级分组，确定抢占优先级和响应优先级的位数分配，整个系统仅需配置一次。
+
+- 代码示例：
+
+  ```c
+  // 可选分组：NVIC_PriorityGroup_0至NVIC_PriorityGroup_4
+  // 例：2位抢占优先级（0-3），2位响应优先级（0-3）
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
+  ```
+
+**②使能外设中断源**
+
+- 步骤：针对具体外设（如定时器、串口、GPIO 等），开启对应中断类型（需参考外设手册确定可使能的中断）。
+
+- 代码示例（不同外设）：
+
+  ```c
+  // 1. 串口1接收中断使能
+  USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
+  
+  // 2. 定时器2更新中断使能
+  TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+  
+  // 3. GPIO外部中断使能（需配合EXTI配置后）
+  EXTI_ITConfig(EXTI_Line0, ENABLE);
+  ```
+
+**③配置 NVIC 中断通道参数**
+
+- 步骤：定义`NVIC_InitTypeDef`结构体，设置中断通道、抢占优先级、响应优先级，并使能通道。
+
+- 代码示例（多外设示例）：
+
+  ```c
+  // 配置USART1中断
+  NVIC_InitTypeDef NVIC_USART1_Init;
+  NVIC_USART1_Init.NVIC_IRQChannel = USART1_IRQn;                  // 中断通道
+  NVIC_USART1_Init.NVIC_IRQChannelPreemptionPriority = 1;          // 抢占优先级
+  NVIC_USART1_Init.NVIC_IRQChannelSubPriority = 0;                 // 响应优先级
+  NVIC_USART1_Init.NVIC_IRQChannelCmd = ENABLE;                    // 使能通道
+  
+  // 配置TIM2中断
+  NVIC_InitTypeDef NVIC_TIM2_Init;
+  NVIC_TIM2_Init.NVIC_IRQChannel = TIM2_IRQn;
+  NVIC_TIM2_Init.NVIC_IRQChannelPreemptionPriority = 2;
+  NVIC_TIM2_Init.NVIC_IRQChannelSubPriority = 1;
+  NVIC_TIM2_Init.NVIC_IRQChannelCmd = ENABLE;
+  ```
+
+**④应用 NVIC 配置**
+
+- 步骤：调用`NVIC_Init`函数，将配置好的结构体参数写入 NVIC 寄存器，完成硬件层面配置。
+
+- 代码示例：
+
+  ```c
+  NVIC_Init(&NVIC_USART1_Init);  // 应用USART1中断配置
+  NVIC_Init(&NVIC_TIM2_Init);    // 应用TIM2中断配置
+  ```
+
+**⑤编写中断服务函数**
+
+- 步骤：在中断服务文件（如`stm32f10x_it.c`）中，按中断通道名称定义函数，需包含中断标志位检查、清除及业务逻辑。
+
+- 代码示例（多外设）：
+
+  ```c
+  // USART1中断服务函数
+  void USART1_IRQHandler(void)
+  {
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  // 检查接收中断
+    {
+      uint8_t data = USART_ReceiveData(USART1);             // 读取数据
+      USART_ClearITPendingBit(USART1, USART_IT_RXNE);       // 清除标志位
+      // 自定义处理逻辑
+    }
+  }
+  
+  // TIM2中断服务函数
+  void TIM2_IRQHandler(void)
+  {
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)      // 检查更新中断
+    {
+      TIM_ClearITPendingBit(TIM2, TIM_IT_Update);           // 清除标志位
+      // 自定义处理逻辑（如计数、翻转GPIO等）
+    }
+  }
+  ```
 
 ## 3.3 EXTI外部中断
 
@@ -1113,7 +1212,7 @@ EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;		//指定外部中断线
 EXTI_Init(&EXTI_InitStructure);								//配置EXTI外设
 ```
 
-![img](https://i-blog.csdnimg.cn/blog_migrate/14bc0e2186b999a5f18b2df8cb55c331.png)
+![image-20251003173839575](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173732698.png)
 
 **NVIC配置**
 
@@ -1174,5 +1273,244 @@ void EXTI15_10_IRQHandler(void)
 	}
 }
 ```
+
+## 3.4 TIM定时器中断
+
+### 3.4.1 TIM简介
+
+- TIM (Timer) 定时器，定时器可以对输入的时钟进行计数**（****定时器本质是个计数器****）**，并在计数值达到设定值时触发中断。**是STM32中功能最强大、结构最复杂的外设。**
+- 16位计数器、预分频器、自动重装寄存器的**时基单元**，在72MHz计数时钟下可以实现最大59.65s的定时。不仅具备基本的定时中断功能，而且还包含内外时钟源选择、输出比较、输入捕获、主从触发模式、编码器接口等多种功能（其它功能可以自行扩展学习）
+
+**【如果觉得不够长】**STM32支持级联模式（一个定时器的输出当做另一个定时器的输入），一个定时器59.65s定时，级联一个（59.65 x 65536^2）定时8千年，级联两个（59.65 x 65536^4）定时34万亿年。
+
+- 根据复杂度和应用场景分为了**高级定时器、通用定时器、基本定时器**三种类型。库函数中出现TIM9/10/11的定时器一般用不到。还有总线的连接，RCC开启时钟的时候要注意**编号数字**。功能如下所示：
+
+![image-20251003173847647](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173854031.png)
+
+- 使用ST单片机注意看其定时器资源，**不同型号定时器数量不同**。
+
+STM32F103C8T6定时器资源：TIM1（一个高级）、TIM2、TIM3、TIM4（三个通用）
+
+### 3.4.2定时器结构图
+
+**（1）基本定时器**
+
+![image-20251003173854031](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173912151.png)
+
+**基本流程：**基准时钟——预分配器——计数器——产生中断/事件——中断优先级——CPU
+
+**【时基单元】：**与分频器之前就是基准计数时钟的输入，连接到了内部时钟，其频率一般是系统主频72MHz，然后与分频器可以对其进行分频（**是十六位的，可以分0~65535频**，分频的目的是降低频率便于改变计算，使得外设间互不干扰，控制其工作速度，匹配外设要求，有的外设是检测不到72M这么快的速度的）。计数器对分频后的时钟单位进行计数，重装载寄存器保存设定的数值，计数过程二者不断比较，达到设定目标值（0~65535）时候，就会产生中断并清零计数器。
+
+向上的小箭头表示可以产生中断，计数值的中断称为更新中断，中断后通往NVIC，所以接下来配置其定时器通道，就可以得到CPU响应。向下的箭头表示更新事件，更新事件不会触发中断，但是可以触发内部其他电路的工作。
+
+**【主模式触发DAC功能】**STM32的特色主从触发模式，**可以让内部硬件在不受程序控制下实现自动运行，**极大的减轻CPU的负担。因为上图中如果在定时器产生的中断中去控制DAC的输出，此时主程序会被频繁中断，占用CPU资源，影响到程序的运行和其他中断的响应。所以使用**主模式**，产生的中断事件映射到出发输出TRGO的位置，使其控制输出DAC，这样便不需要在中断里触发DAC转换了。
+
+
+
+**（2）通用定时器**
+
+![image-20251003173902973](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173847647.png)
+
+**【定时器计数方式】向上自增（从0开始增加，常用）**，向下自减（从设定值开始），中央对齐模式（先从零开始再从设定值开始），基本定时器只有向上自增一种方式，其余类型的定时器三种模式均有。
+
+**【时钟源输入】**基本定时器只能是内部的时钟源，但是通用定时器可以多选择**外部时钟源信号**。
+
+外部时钟输入模式2的输入：可以走**ETR通道**。经过滤波整形电路，输出基准时钟；
+
+外部时钟输入模式1的输入：可以选择**ITR信号**，这部分信号是来自于其他定时器。TRGO接到**其他定时器**的同时**又接到了ITRx上**，具体连接关系可以通过表格来了解。可**用于级联**；
+
+![image-20251003173912151](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173902973.png)
+
+另外还可以选择CH1引脚边沿，CH1引脚和CH2引脚，可用于**输入捕获，检测频率**。
+
+总结：输入还是比较复杂的，但是一般常用RCC内部时钟，而要使用外部时钟首选ETR输入就行了，其他的输入范围是为了一些特殊应用场景设计的，后续可了解。
+
+【编码器接口】可以读取正交编码器的输出波形，后续讲解。
+
+【输入捕获电路】四个通道，CH1~CH4
+
+【输出比较电路】总共四个通道输出，与输入捕获电路公用一个组寄存器，因此不能同时使用。
+
+
+
+**（3）高级定时器**
+
+![image-20251003173920886](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173935189.png)
+
+【重复计数器】：控制计数器中断的产生，可以隔几个周期触发更新中断，相当于对输出的更新中断信号进行了一次分频。
+
+**【DTG死区生成电路】：**在框图中其前三路可以输出两个互补的PWM波输出，用于**控制三相无刷驱动**。因为其只需要三路，因此第四路没什么变化。在开关切换的瞬间，由于器件的不理想，造成短暂的直通现象，因此在输出之前加上了死区生成电路，**在开关切断的瞬间，产生一定时间的死区，让桥臂的上下管全都关断，防止直通现象**。
+
+【刹车输入】：给电机驱动提供安全保障，如果外部引脚产生了刹车信号，或者内部时钟信号消失，控制电路就会自动切断电机的输出，防止意外。
+
+### 3.4.3详细配置步骤及代码示例
+
+**① 使能定时器时钟**
+
+- **作用**：开启定时器外设的时钟，STM32 通用定时器（TIM2-TIM5）挂载在 APB1 总线上。
+
+- 代码示例：
+
+  ```c
+  // 使能TIM2时钟
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+  ```
+
+**② 配置定时器时基参数**
+
+- **作用**：设置定时器的计数模式、预分频系数、自动重装载值等，决定定时器的计数频率和溢出周期。
+
+- 关键参数：
+
+  - 计数器时钟频率 = 定时器时钟源 / (预分频系数 + 1)
+  - 溢出周期 = (自动重装载值 + 1) / 计数器时钟频率
+
+- 代码示例（配置 TIM2 为 1ms 溢出一次）：
+
+  ```c
+  TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+  
+  // 预分频系数：假设APB1时钟为36MHz（默认分频），则计数器时钟 = 36MHz / (35999 + 1) = 1kHz
+  TIM_TimeBaseStructure.TIM_Prescaler = 35999;
+  // 自动重装载值：计数到999时溢出，溢出周期 = (999 + 1) / 1kHz = 1ms
+  TIM_TimeBaseStructure.TIM_Period = 999;
+  // 计数模式：向上计数（从0到自动重装载值）
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+  // 时钟分割：默认不分割（仅高级定时器需配置）
+  TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+  // 重复计数：仅高级定时器有效，通用定时器设为0
+  TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
+  
+  // 应用时基配置
+  TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+  ```
+
+#### ③ 配置定时器中断（如需中断功能）
+
+- **步骤 1：使能定时器更新中断**开启定时器溢出时的中断触发（更新中断）。
+
+  ```c
+  // 使能TIM2的更新中断
+  TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+  ```
+
+- **步骤 2：配置 NVIC 中断优先级**同外部中断配置，需设置中断分组、抢占优先级和响应优先级。
+
+  ```c
+  NVIC_InitTypeDef NVIC_InitStructure;
+  
+  // 选择TIM2中断通道
+  NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+  // 使能中断通道
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  // 抢占优先级：假设分组2，值为1
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+  // 响应优先级：假设分组2，值为2
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+  
+  // 应用NVIC配置
+  NVIC_Init(&NVIC_InitStructure);
+  ```
+
+#### ④ 使能定时器计数
+
+- **作用**：启动定时器，开始计数。
+
+- 代码示例：
+
+  ```c
+  // 使能TIM2计数器
+  TIM_Cmd(TIM2, ENABLE);
+  ```
+
+#### ⑤ 编写定时器中断服务函数
+
+- **作用**：定时器溢出时自动执行，需处理中断逻辑并清除中断标志位。
+
+- 代码示例（每 1ms 进入一次中断，实现 LED 翻转）：
+
+  ```c
+  void TIM2_IRQHandler(void)
+  {
+    // 检查是否为TIM2更新中断
+    if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+    {
+      // 清除中断标志位
+      TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+      
+      // 自定义逻辑：如每1000ms翻转一次LED（需额外计数变量）
+      static uint16_t cnt = 0;
+      cnt++;
+      if (cnt >= 1000)
+      {
+        cnt = 0;
+        GPIO_WriteBit(GPIOC, GPIO_Pin_13, ~GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_13));
+      }
+    }
+  }
+  ```
+
+## 3.5 时基单元相关时序分析
+
+定时器中断，即定时产生一个中断。需要实现时钟、秒表等计时的时候都需要这个功能。
+
+![image-20251003173926987](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173920886.png)
+
+### 3.5.1 预分频器时序
+
+![image-20251003173935189](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173940078.png)
+
+当与分频器CNT_EN使能时候，计数器时钟才运行，但定时器仍然过了一段时间才发生改变，其改变的位置处于计数器寄存器清零部分，可知其重装值为FC，同时也会产生一个更新事件。后三行时序是一个缓冲机制，在计数周期过程中改变预分频系数，并不会直接改变定时器计数，而是等待计数周期结束后，产生了更新事件，此时预分频寄存器的值才生效，保障了稳定。
+
+**计数器计数频率：**`CK_CNT=CK_PSC/(PSC+1)`
+
+### 3.5.2 计数器时序
+
+![image-20251003173940078](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173945159.png)
+
+**定时器溢出频率：**`CK_CNT_OV=CK_CNT/(ARR+1)=CK_PSC/(PSC+1)/(ARR+1)`
+
+同样的，也存在缓冲机制。**注：框图中的寄存器****带有阴影****的都是这样的缓冲机制，用或者不用均可自行设置。**
+
+### 3.5.3 计数器无预装时序
+
+没有缓冲的情况下
+
+![image-20251003173945159](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173950313.png)
+
+正常的计数周期后，变化分频频率。
+
+### 3.5.4 计数器有预装时序
+
+![image-20251003173950313](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003174011443.png)
+
+修改分频没有缓冲直接改变频率，会导致计数器一直增加至FFFF全满，然后才清零。
+
+## 3.6 RCC时钟树
+
+时钟树是STM32用来产生和配置时钟，并且把配置好的时钟发送到各个外设的系统，是所有外设运行的基础，所以是最先要配置的东西。
+
+![image-20251003174011443](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173926987.png)
+
+上图分为两个部分，一是时钟产生电路，二是时钟配置电路。
+
+### 3.6.1 时钟产生电路
+
+**【资源】：**（可参考F103手册）**一般使用外部晶振， 比较稳定**，除非精度不高可以使用内部。
+
+- 内部8MHz；
+- 外部4~16MHz高速石英晶体振荡器，也就是晶振，一般都是接8MHz；
+- 外部的32.768KHz低速晶振，这个一般是给RTC提供时钟的。
+- 内部40KHz低速RC震荡期，这个可以给看门狗提供时钟。
+
+**【启动过程】：**首先以内部时钟8M启动，再启动外部时钟，进入PLL锁相环进行倍频，8MHz倍频9倍，获得72MHz。（据网友所说PLL不止9倍，可以用倍频16倍，进行超频运行）
+
+如果外部晶振坏了，时钟会慢10倍。
+
+【CSS】：时钟安全系统，负责切换时钟。比如先前提到的刹车系统里也有。
+
+### 3.6.2时钟分配电路
+
+默认情况下，无论是什么定时器，其内部基准时钟都是72MHz。如果更改了系统初始化函数SystemInit()的配置，需要重新计算速度。
 
 > 笔记来源：江协科技、CSDN等
