@@ -1494,23 +1494,178 @@ STM32F103C8T6定时器资源：TIM1（一个高级）、TIM2、TIM3、TIM4（三
 
 上图分为两个部分，一是时钟产生电路，二是时钟配置电路。
 
-### 3.6.1 时钟产生电路
+### 3.6.1 STM32的时钟系统框图
 
-**【资源】：**（可参考F103手册）**一般使用外部晶振， 比较稳定**，除非精度不高可以使用内部。
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/c70c141b505e8884a77a94b6ce45d45d.png)
 
-- 内部8MHz；
-- 外部4~16MHz高速石英晶体振荡器，也就是晶振，一般都是接8MHz；
-- 外部的32.768KHz低速晶振，这个一般是给RTC提供时钟的。
-- 内部40KHz低速RC震荡期，这个可以给看门狗提供时钟。
+乍一看很吓人，但其实很好理解，我们看系统时钟SYSCLK 的左边  系统时钟有很多种选择，而左边的部分就是设置系统时钟使用那个时钟源
 
-**【启动过程】：**首先以内部时钟8M启动，再启动外部时钟，进入PLL锁相环进行倍频，8MHz倍频9倍，获得72MHz。（据网友所说PLL不止9倍，可以用倍频16倍，进行超频运行）
+系统时钟SYSCLK 的右边，则是系统时钟通过AHB预分频器，给相对应的外设设置相对应的时钟频率
 
-如果外部晶振坏了，时钟会慢10倍。
+从左到右可以简单理解为  各个时钟源--->系统时钟来源的设置--->各个外设时钟的设置
 
-【CSS】：时钟安全系统，负责切换时钟。比如先前提到的刹车系统里也有。
+### 3.6.2 时钟系统
 
-### 3.6.2时钟分配电路
+**1各个时钟源    (左边的部分)**
+STM32 有4个独立时钟源:HSI、HSE、LSI、LSE。
+①、HSI是高速内部时钟，RC振荡器，频率为8MHz，精度不高。
+②、HSE是高速外部时钟，可接石英/陶瓷谐振器，或者接外部时钟源，频率范围为4MHz~16MHz。
+③、LSI是低速内部时钟，RC振荡器，频率为40kHz，提供低功耗时钟。　 
+④、LSE是低速外部时钟，接频率为32.768kHz的石英晶体。
 
-默认情况下，无论是什么定时器，其内部基准时钟都是72MHz。如果更改了系统初始化函数SystemInit()的配置，需要重新计算速度。
+**其中LSI是作为IWDGCLK(独立看门狗)时钟源和RTC时钟源 而独立使用** 
+
+**而HSI高速内部时钟 HSE高速外部时钟 PLL锁相环时钟  这三个经过分频或者倍频 作为系统时钟来使用**
+
+ 
+
+PLL为锁相环倍频输出，其时钟输入源可选择为HSI/2、HSE或者HSE/2。倍频可选择为2~16倍，但是其输出频率最大不得超过72MHz。  通过倍频之后作为系统时钟的时钟源
+
+ 
+
+举个例子：Keil编写程序是默认的时钟为72Mhz，其实是这么来的：外部晶振(HSE)提供的8MHz（与电路板上的晶振的相关）通过PLLXTPRE分频器后，进入PLLSRC选择开关，进而通过PLLMUL锁相环进行倍频（x9）后，为系统提供72MHz的系统时钟（SYSCLK）。之后是AHB预分频器对时钟信号进行分频，然后为低速外设提供时钟。
+
+或者内部RC振荡器(HSI) 为8MHz  /2 为4MHz 进入PLLSRC选择开关，通过PLLMUL锁相环进行倍频（x18）后 为72MHz
+
+
+PS:  网上有很多人说是5个时钟源，这种说法有点问题，学习之后就会发现PLL并不是自己产生的时钟源，而是通过其他三个时钟源倍频得到的时钟
+
+**2系统时钟SYSCLK**
+系统时钟SYSCLK可来源于三个时钟源：
+①、HSI振荡器时钟
+②、HSE振荡器时钟
+③、PLL时钟
+最大为72Mhz
+
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/08be1808bb4c4325e5558f19f3fa5a97.png)
+
+
+
+**3USB时钟**
+
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/977e8633b7555843bb37aed1db1416b0.png)
+
+
+STM32中有一个全速功能的USB模块，其串行接口引擎需要一个频率为48MHz的时钟源。该时钟源只能从PLL输出端获取（唯一的），，可以选择为1.5分频或者1分频，也就是，当需要使用USB模块时，PLL必须使能，并且时钟频率配置为48MHz或72MHz
+
+**4把时钟信号输出到外部**
+
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/9a2ac557d7f45ccdba27eccf78bca82e.png)
+
+
+STM32可以选择一个时钟信号输出到MCO脚(PA8)上，可以选择为PLL输出的2分频、HSI、HSE、或者系统时钟。可以把时钟信号输出供外部使用
+
+**5系统时钟通过AHB分频器给外设提供时钟(右边的部分)  重点**
+
+
+从左到右可以简单理解为  系统时钟--->AHB分频器--->各个外设分频倍频器 --->   外设时钟的设置
+
+ 
+
+右边部分为：系统时钟SYSCLK通过AHB分频器分频后送给各模块使用，AHB分频器可选择1、2、4、8、16、64、128、256、512分频。其中AHB分频器输出的时钟送给5大模块使用： 
+
+　①内核总线：送给AHB总线、内核、内存和DMA使用的HCLK时钟。 
+
+　②Tick定时器：通过8分频后送给Cortex的系统定时器时钟。 
+
+　③I2S总线：直接送给Cortex的空闲运行时钟FCLK。 
+
+　④APB1外设：送给APB1分频器。APB1分频器可选择1、2、4、8、16分频，其输出一路供APB1外设使用(PCLK1，最大频率36MHz)，另一路送给通用定时器使用。该倍频器可选择1或者2倍频，时钟输出供定时器2-7使用。 
+
+　⑤APB2外设：送给APB2分频器。APB2分频器可选择1、2、4、8、16分频，其输出一路供APB2外设使用(PCLK2，最大频率72MHz)，另一路送给高级定时器。该倍频器可选择1或者2倍频，时钟输出供定时器1和定时器8使用。
+
+ 
+
+另外，APB2分频器还有一路输出供ADC分频器使用，分频后送给ADC模块使用。ADC分频器可选择为2、4、6、8分频。 
+
+需要注意的是，如果 APB 预分频器分频系数是 1，则定时器时钟频率 (TIMxCLK) 为 PCLKx。否则，定      时器时钟频率将为 APB 域的频率的两倍：TIMxCLK = 2xPCLKx。 
+
+APB1和APB2的对应外设
+F1系列
+
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/ef6dbeb7cd4a5650e4a5949d0ab26a68.png)
+
+
+APB1上面连接的是低速外设，包括电源接口、备份接口、CAN、USB、I2C1、I2C2、USART2、USART3、UART4、UART5、SPI2、SP3等；
+
+而APB2上面连接的是高速外设，包括UART1、SPI1、Timer1、ADC1、ADC2、ADC3、所有的普通I/O口（PA-PE）、第二功能I/O（AFIO）口等。
+
+F4系列
+
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/9415d6d866e86c309a243d980377ee14.png)
+
+
+这个和F1系列类似，我们就举几个特殊的
+
+ APB2总线：高级定时器timer1, timer8以及通用定时器timer9, timer10, timer11   UTART1,USART6
+
+ APB1总线：通用定时器timer2~timer5，通用定时器timer12~timer14以及基本定时器timer6,timer7  UTART2~UTART5
+
+F4系列的系统时钟频率最高能到168M
+
+ 
+
+具体  可以在 stm32f10x_rcc.h  和stm32f40x_rcc.h   中查看
+
+或者通过 STM32参考手册搜索“系统架构”或者“系统结构”  查看外设挂在哪个时钟下
+
+
+
+### 3.6.3 RCC初始化
+
+这里我们使用HSE(外部时钟），正常使用的时候也都是使用外部时钟
+
+使用HSE时钟，程序设置时钟参数流程：
+1、将RCC寄存器重新设置为默认值   RCC_DeInit;
+2、打开外部高速时钟晶振HSE       RCC_HSEConfig(RCC_HSE_ON);
+3、等待外部高速时钟晶振工作      HSEStartUpStatus = RCC_WaitForHSEStartUp();
+4、设置AHB时钟         RCC_HCLKConfig;
+5、设置高速AHB时钟     RCC_PCLK2Config;
+6、设置低速速AHB时钟   RCC_PCLK1Config;
+7、设置PLL              RCC_PLLConfig;
+8、打开PLL              RCC_PLLCmd(ENABLE);
+9、等待PLL工作          while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+10、设置系统时钟        RCC_SYSCLKConfig;
+11、判断是否PLL是系统时钟     while(RCC_GetSYSCLKSource() != 0x08)
+12、打开要使用的外设时钟      RCC_APB2PeriphClockCmd()/RCC_APB1PeriphClockCmd()
+
+代码实现：
+对RCC的配置函数(使用外部8MHz晶振)  
+
+系统时钟72MHz，APH 72MHz，APB2 72MHz，APB1 32MHz，USB 48MHz TIMCLK=72M
+
+```C
+void RCC_Configuration(void)
+{
+	//----------使用外部RC晶振-----------
+	RCC_DeInit();			//初始化为缺省值
+	RCC_HSEConfig(RCC_HSE_ON);	//使能外部的高速时钟 
+	while(RCC_GetFlagStatus(RCC_FLAG_HSERDY) == RESET);	//等待外部高速时钟使能就绪
+	
+	FLASH_PrefetchBufferCmd(FLASH_PrefetchBuffer_Enable);	//Enable Prefetch Buffer
+	FLASH_SetLatency(FLASH_Latency_2);		//Flash 2 wait state
+	
+	RCC_HCLKConfig(RCC_SYSCLK_Div1);		//HCLK = SYSCLK
+	RCC_PCLK2Config(RCC_HCLK_Div1);			//PCLK2 =  HCLK
+	RCC_PCLK1Config(RCC_HCLK_Div2);			//PCLK1 = HCLK/2
+	RCC_PLLConfig(RCC_PLLSource_HSE_Div1,RCC_PLLMul_9);	//PLLCLK = 8MHZ * 9 =72MHZ
+	RCC_PLLCmd(ENABLE);			//Enable PLLCLK
+ 
+	while(RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET);	//Wait till PLLCLK is ready
+    RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);	//Select PLL as system clock
+	while(RCC_GetSYSCLKSource()!=0x08);		//Wait till PLL is used as system clock source
+	
+	//---------打开相应外设时钟--------------------
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);	//使能APB2外设的GPIOA的时钟		 
+}
+```
+
+也就是我们时钟树框图从左到右的配置
+
+### 3.6.4时钟监视系统（CSS）
+
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/8861581b26dca509033e2eabcea827fb.png)
+
+STM32还提供了一个时钟监视系统（CSS），用于监视高速外部时钟（HSE）的工作状态。倘若HSE失效，会自动切换（高速内部时钟）HSI作为系统时钟的输入，保证系统的正常运行。
 
 > 笔记来源：江协科技、CSDN等
