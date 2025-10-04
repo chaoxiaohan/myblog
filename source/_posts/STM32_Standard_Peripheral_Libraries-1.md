@@ -4,6 +4,9 @@ date: 2025-10-01 02:51:00
 type: paper
 photos: 
 tags:
+  - C
+  - STM32
+  - Standard
 excerpt: 内容包括环境搭建，材料准备、基本的GPIO使用、中断详解
 description: 
 ---

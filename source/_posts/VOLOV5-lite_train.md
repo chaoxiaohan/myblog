@@ -7,7 +7,7 @@ tags:
   - YOLOV5
   - OpenCV
   - Pytorch
-excerpt: 这是摘要
+excerpt: 在Windows上使用yolov5-lite部署和训练
 
 ---
 
