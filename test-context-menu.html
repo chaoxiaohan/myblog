@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN" theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义右键菜单测试</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/context-menu.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 40px;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s ease;
+        }
+
+        html[theme="dark"] body {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        html[theme="dark"] .container {
+            background: #2d2d2d;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        html[theme="dark"] h1 {
+            color: #e0e0e0;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #4a90e2;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .section p {
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        html[theme="dark"] .section p {
+            color: #b0b0b0;
+        }
+
+        .highlight-text {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #856404;
+        }
+
+        html[theme="dark"] .highlight-text {
+            background-color: #4a4030;
+            color: #ffc107;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #4a90e2;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        html[theme="dark"] .info-box {
+            background: #1e3a5f;
+            border-left-color: #6ca5e9;
+        }
+
+        .code-block {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        html[theme="dark"] .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        html[theme="dark"] ul {
+            color: #b0b0b0;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: #357abd;
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-adjust"></i> 切换主题
+    </button>
+
+    <div class="container">
+        <h1>🎯 自定义右键菜单测试页面</h1>
+
+        <div class="info-box">
+            <strong>使用说明：</strong>
+            <ul style="margin-top: 10px;">
+                <li>在页面空白处点击右键查看<strong>普通菜单</strong></li>
+                <li>选中文字后点击右键查看<strong>选中菜单</strong></li>
+                <li>在输入框中仍可使用系统默认右键菜单</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>普通菜单功能</h2>
+            <p>在页面任意空白处点击右键，将显示以下功能：</p>
+            <ul>
+                <li><i class="fas fa-sync-alt"></i> 刷新页面</li>
+                <li><i class="fas fa-arrow-up"></i> 转到顶部</li>
+                <li><i class="fas fa-arrow-down"></i> 转到底部</li>
+                <li><i class="fas fa-adjust"></i> 切换亮/暗色模式</li>
+                <li><i class="fas fa-home"></i> 回到首页</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>选中文字菜单功能</h2>
+            <p>选中下面的文字，然后点击右键试试：</p>
+            <p class="highlight-text">这是一段可以选中的测试文字，请选中后点击右键查看菜单。</p>
+            <p>选中文字后的菜单包含：</p>
+            <ul>
+                <li><i class="fas fa-search"></i> 本站搜索</li>
+                <li><i class="fab fa-bing"></i> 必应搜索</li>
+                <li><i class="fas fa-copy"></i> 复制所选内容</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>示例代码</h2>
+            <p>下面是一段示例代码，你可以选中任意部分进行搜索或复制：</p>
+            <div class="code-block">
+function greet(name) {
+    console.log("Hello, " + name + "!");
+}
+
+greet("World");
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>可选中的段落</h2>
+            <p>
+                在前端开发中，自定义右键菜单是提升用户体验的重要功能之一。
+                通过 JavaScript 监听 contextmenu 事件，我们可以阻止浏览器默认的右键菜单，
+                并显示自己定义的菜单项。这种方式可以让用户更方便地访问常用功能。
+            </p>
+            <p>
+                本示例展示了两种菜单模式：普通模式和选中文字模式。
+                根据用户是否选中文字，菜单会动态切换显示不同的选项。
+                这种智能化的交互设计可以大大提高操作效率。
+            </p>
+            <p>
+                尝试选中"前端开发"、"JavaScript"或"右键菜单"等关键词，
+                然后使用右键菜单的搜索功能进行搜索吧！
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>输入框测试</h2>
+            <p>在输入框中，系统默认右键菜单仍然可用：</p>
+            <input type="text" placeholder="在这里点击右键会显示系统菜单" style="width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
+        <div class="section" style="height: 600px;">
+            <h2>测试滚动</h2>
+            <p>这个区域用于测试"转到顶部"和"转到底部"功能。</p>
+            <p>滚动页面后，右键点击选择相应的菜单项。</p>
+        </div>
+
+        <div class="section">
+            <h2>页面底部</h2>
+            <p>恭喜你到达页面底部！现在可以测试"转到顶部"功能了。</p>
+        </div>
+    </div>
+
+    <script src="js/context-menu.js"></script>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('theme', newTheme);
+        }
+    </script>
+</body>
+</html>
