@@ -1340,4 +1340,14 @@ int main(void) {
 }
 ```
 
-> 笔记部分引用
+> 笔记部分引用菜工啊潜
+
+>  STM32标准库系列文章
+>
+>  [STM32标准库笔记（一）-准备、GPIO、中断 | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-1/)
+>
+>  [STM32标准库笔记（二）-PWM、ADC、DMA | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-2/)
+>
+>  [STM32标准库笔记（三）-USART、I2C、SPI | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/05/STM32_Standard_Peripheral_Libraries-3/)
+>
+>  [STM32标准库笔记（四）-BKP、RTC、PWR、WDG、FLASH | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/06/STM32_Standard_Peripheral_Libraries-4/)
