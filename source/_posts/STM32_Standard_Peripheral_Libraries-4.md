@@ -11,6 +11,10 @@ excerpt: 本文探讨STM32备份寄存器、实时时钟、电源控制、看门
 description: 
 ---
 
+[TOC]
+
+
+
 # 一、BKP备份&RTC实时时钟
 
 RTC是一个独立的定时器。BKP并不能完全掉电不丢失，其可以完成一些主电源掉电时，保存少量数据的任务。而RTC在主电源掉电的时候保证掉电不丢失的关键就是BKP，因此二者关联程度比较高，教程放在一起讲。
@@ -1522,7 +1526,7 @@ int main(void) {
 >
 >  [STM32标准库笔记（一）-准备、GPIO、中断 | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-1/)
 >
->  [STM32标准库笔记（二）-PWM、ADC、DMA | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-2/)
+>  [STM32标准库笔记（二）-PWM、ADC、DMA | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/03/STM32_Standard_Peripheral_Libraries-2/)
 >
 >  [STM32标准库笔记（三）-USART、I2C、SPI | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/05/STM32_Standard_Peripheral_Libraries-3/)
 >

@@ -11,7 +11,11 @@ excerpt: 本笔记详细介绍了标准库下的常用通信协议（USART、I2C
 description: 
 ---
 
-## 通信接口了解
+[TOC]
+
+
+
+# 通信接口了解
 
 - **通信的目的︰**将一个设备的数据传送到另一个设备，扩展硬件系统
 - **通信协议︰**制定通信的规则，**通信双方按照协议规则进行数据收发**
@@ -28,6 +32,7 @@ description:
 同步需要时钟线来保证传输数据不冲突。
 
 **【注】**全双工：打电话。	半双工：对讲机。	单工：广播。
+
 
 # 一、USART通信
 
@@ -1346,7 +1351,7 @@ int main(void) {
 >
 >  [STM32标准库笔记（一）-准备、GPIO、中断 | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-1/)
 >
->  [STM32标准库笔记（二）-PWM、ADC、DMA | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-2/)
+>  [STM32标准库笔记（二）-PWM、ADC、DMA | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/03/STM32_Standard_Peripheral_Libraries-2/)
 >
 >  [STM32标准库笔记（三）-USART、I2C、SPI | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/05/STM32_Standard_Peripheral_Libraries-3/)
 >

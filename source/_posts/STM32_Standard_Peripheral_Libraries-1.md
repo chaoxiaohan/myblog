@@ -17,6 +17,10 @@ description:
 > 提取码：1234（教程视频简介区也有官网下载路径）
 > 链接里压缩包的解压密码：32
 
+[TOC]
+
+
+
 # 一、学习前准备
 
 ## 1.1 STM32F103资源
@@ -1677,7 +1681,7 @@ STM32还提供了一个时钟监视系统（CSS），用于监视高速外部时
 >
 >  [STM32标准库笔记（一）-准备、GPIO、中断 | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-1/)
 >
->  [STM32标准库笔记（二）-PWM、ADC、DMA | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/01/STM32_Standard_Peripheral_Libraries-2/)
+>  [STM32标准库笔记（二）-PWM、ADC、DMA | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/03/STM32_Standard_Peripheral_Libraries-2/)
 >
 >  [STM32标准库笔记（三）-USART、I2C、SPI | 超小韓の个人博客](https://blog.chaoxiaohan.cyou/2025/10/05/STM32_Standard_Peripheral_Libraries-3/)
 >
