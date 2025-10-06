@@ -19,14 +19,14 @@ favicon:                  # 网站自定义 favicon 的路径（相对于 /sourc
 # 横幅（Banner）设置，用于在首页或所有页面顶部显示一张横幅图像
 banner:
   enable: true           # 是否启用横幅显示。true 启用，false 禁用
-  url: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/banner.jpg # 横幅图片相对于/source的路径，也支持网络链接
+  url: https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/xiaoxin7284678236.png # 横幅图片相对于/source的路径，也支持网络链接
                           # 示例："/images/banner.jpg" 或 "https://example.com/banner.jpg"
   position: center        # 图片对齐方式，对应 CSS 的 object-position
                           # 可选值示例："left", "center", "right", "top", "bottom" 以及百分比或组合
   onAllPages: true        # 是否在所有页面显示横幅（true），还是仅在首页显示（false）
 
 # 主题外观设置
-hue: 250                  # 主题色相（Hue），取值 0-360，控制主题主色调
+hue: 345                  # 主题色相（Hue），取值 0-360，控制主题主色调
                           # 例如：红色 0，橙色 60，蓝色 260，紫色 300，粉色 345
                           # 更改此值可改变主题色预览，参考主题预览地址进行选择：
                           # saicaca.github.io/vivia-preview
