@@ -638,7 +638,7 @@ GPIO大致上来说分为两种模式，输出跟输入，本次只讲解简单�
 
 在下面这个电路中，发光二极管的左侧通过一个限流电阻连接到了单片机的PA0引脚上，右侧接地，这样当我们的单片机输出高电平，发光二极管左右产生电压差，电流就像水流从高处流到低处一样从发光二极管的左侧流到右侧，于是乎发光二极管被点亮，同理STM32引脚输出低电平0V的时候，发光二极管左右两侧没有产生电压差，发光二极管没有电流通过，于是乎发光二极管被熄灭。
 
-![image-20251003173558555](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173706333.png)
+
 
 #### ①GPIO初始化
 
@@ -696,7 +696,7 @@ GPIO_WriteBit(GPIOC, GPIO_Pin_13, (BitAction)1);
 
 我们这里已读取按键键值为例，下图中按键左侧接到单片机引脚PA0，右侧接到引脚地，我们会将单片机引脚配置为上拉输入模式，在这个模式下在没有外部因素影响之下一直保持为高电平，当我们按下按键时，按键左右两侧被导通，瞬间高电平跳转为低电平，在程序的角度来说，我们只需要一直监测引脚状态，当引脚为低电平时就判断为按键被按下。
 
-![image-20251003173604957](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173544357.png)
+
 
 #### ①GPIO初始化
 
@@ -754,9 +754,11 @@ return KeyNum;
 
 上面的代码中，`GPIO_ReadInputDataBit()`函数是读取指定引脚的电平，我们在上述代码中的延时函数为消抖措施（不清楚的可以去百度一下），` while (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11) == 0)`这一句是我们按键按下后跳转为低电平，程序卡死在while循环中，等我们松手电平跳转为高电平，while中的条件不成立，于是程序继续执行下面的语句，返回键值。
 
+![image-20251003173558555](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173706333.png)
+
 ## 2.3 开发技巧
 
-![image-20251003173614477](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173630235.png)
+
 
 在开发过程中，大家肯定要问了，你怎么知道用哪个函数，实际上你需要开发那个外设，就去library组中找到它的头文件（比如说我要开发GPIO，那我就去查看stm32f10x_gpio.h），查看他们的函数声明(一般都在头文件的最底部)，右键跳转到函数主体，大多数函数都有它的注释，包括里面的参数应该填什么，不要看到英文就发怵，实际上单片机开发能用到的单词来来回回就那么几个，多看多练多熟悉，自然而然就能够上手。
 
@@ -776,6 +778,8 @@ return KeyNum;
 
 限流电阻一般是要加上的，以防止电流过大。一下是两种控制LED的方式。该如何选择呢？一般是看IO口的驱动能力了，在单片机电路当中一般是选择第一种，因为很多单片机都采用了高电平弱驱动，低电平强驱动的方式，这样一定程度上可以避免高低电平打架。
 
+![image-20251003173614477](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173630235.png)
+
 ![高电平控制亮](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173604957.png)
 
 **（2）蜂鸣器电路**
@@ -788,7 +792,7 @@ return KeyNum;
 
 其内部金属条，按着连接即可导通电流。略。
 
-![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688374528299-81b7224a-028a-4e12-a4b7-787879b6f51d.png?x-oss-process=image%2Fcrop%2Cx_0%2Cy_0%2Cw_769%2Ch_281)![img](https://cdn.nlark.com/yuque/0/2023/png/25954489/1688374528299-81b7224a-028a-4e12-a4b7-787879b6f51d.png?x-oss-process=image%2Fcrop%2Cx_0%2Cy_318%2Cw_769%2Ch_267)
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/1688374528299-81b7224a-028a-4e12-a4b7-787879b6f51d.png)![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/1688374528299-81b7224a-028a-4e12-a4b7-787879b6f51d-1762173790945-3.png)
 
 ## 2.6 通用GPIO输入
 
@@ -798,7 +802,7 @@ return KeyNum;
 
 按键抖动：由于按键内部使用的是机械式弹簧片来进行通断的，所以在按下和松手的瞬间会伴随有一连串的抖动。因此一般程序需要消抖，最简单是就是加一个延时耗过去，在判断高低电平就可以了。
 
-![image-20251003173706333](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173614477.png)
+
 
 
 
@@ -810,7 +814,7 @@ return KeyNum;
 
 对于图中分压电路的例子说明：接地的电容是其滤波作用的，分析时候可以直接拿掉。
 
-![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251003173839575.png)
+
 
 电路中经常出现的弱上拉，强上拉，弱下拉，强下拉。这里的去那个若就是指电阻阻值的大小。因此该传感器的最终输出电压就是在弹簧拉车下最终杆子的高低。
 

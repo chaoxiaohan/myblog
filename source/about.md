@@ -18,7 +18,8 @@ layout: page
 
 - [宠物窝Android程序](https://github.com/chaoxiaohan/PetNest_IQ) - 基于Jetpack compose的安卓程序，使用Material Design 3 设计规范。
 - [C语言迷宫生成求解](https://github.com/chaoxiaohan/maze) - 基于C和EasyX的迷宫项目，实现随机生成、DFS 寻路及可视化，含动态演示功能。
-- [24年电赛H题程序](https://github.com/chaoxiaohan/24H) - 基于STM32F103C8T6复刻2024年电赛H题
+- [24年电赛H题程序](https://github.com/chaoxiaohan/24H) - 基于STM32F103C8T6复刻2024年电赛H题。
+- 25年工程实践与创新实践大赛物流搬运小车视觉部分-二维码使用K210识别，物块颜色以及位置计算使用K230运行YOLOV5s运行
 
 ## 心路历程
 
@@ -33,9 +34,12 @@ layout: page
 ## TodoList
 
 - [x] Jetpack Compose
-- [ ] OPenCv
-- [ ] Linux
-- [ ] Openmv
-- [ ] MSPM0芯片
-- [ ] K230
+- [x] OpenCV
+
+- [x] openMV
+- [x] K210
+- [x] K230
+- [ ] linux
+- [ ] C++
+- [ ] CNN
 
