@@ -1,13 +1,5 @@
 ---
-<<<<<<< HEAD
-title: STM32Cube_HAL库笔记（四）
-date: 2025-10-10 00:00:00
-type: paper
-photos: 
-tags:
-excerpt: 正在施工ing...
-=======
-title: STM32Cube_HAL库笔记（三）-ADC
+title: STM32Cube_HAL库笔记（四）-ADC
 date: 2025-11-13 00:00:00
 type: paper
 photos: 
@@ -16,15 +8,9 @@ tags:
   - HAL
   - ADC
 excerpt: 本文介绍了HAL库的ADC模数转换使用。
->>>>>>> 8401b80 (25111302)
 description: 
-
-
 ---
 
-<<<<<<< HEAD
-> 本系列主要讲解STM32CubeHAL的使用，详细的安装部署教程请见[【STM32】STM32 CubeMx使用教程一--安装教程-CSDN博客](https://blog.csdn.net/as480133937/article/details/98885316)
-=======
 > 本系列主要讲解STM32CubeHAL的使用，详细的安装部署教程请见[【STM32】STM32 CubeMx使用教程一--安装教程-CSDN博客](https://blog.csdn.net/as480133937/article/details/98885316)
 
 # 工程配置
@@ -181,4 +167,3 @@ sprintf(send_buf, "原始值: %d，电压值: %.3f V\r\n", result, voltage);
 HAL_UART_Transmit(&huart2, (uint8_t*) send_buf, strlen(send_buf), 20);
 ```
 
->>>>>>> 8401b80 (25111302)
