@@ -18,7 +18,7 @@ description:
 
 
 
-# 工程配置
+## 工程配置
 
 ### 1设置RCC
 
@@ -126,7 +126,7 @@ DMA2: DMA2 Channel 1~DMA1 Channel 5
 
 
 
-# 代码
+## 代码
 
 ## 串口使用DMA发送数据
 
