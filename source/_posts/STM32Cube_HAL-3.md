@@ -20,13 +20,13 @@ description:
 
 # 工程配置
 
-### **1设置RCC**
+### 1设置RCC
 
 ![image-20251113215547522](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251113220402805.png)
 
 设置高速外部时钟HSE 选择外部时钟源
 
-### **2设置串口**
+### 2设置串口
 
 ![image-20251113215654280](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251113215654280.png)
 
@@ -38,7 +38,7 @@ description:
 4GPIO引脚自动设置 USART1_RX/USART_TX
 5 NVIC Settings 一栏使能接收中断
 
-### **3DMA设置**
+### 3DMA设置
 
 ![image-20251113215853242](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251113215547522.png)
 
@@ -49,9 +49,7 @@ description:
 DMA传输模式为正常模式
 DMA内存地址自增，每次增加一个Byte(字节)
 
-
-
-**1DMA基础设置**
+#### 1DMA基础设置
 
 右侧点击System Core 点击DMA
 
@@ -78,7 +76,7 @@ DMA2: DMA2 Channel 1~DMA1 Channel 5
 - 中等优先级 **Medium**
 - 低优先级；**Low**
 
-**2DMA传输模式**
+#### 2DMA传输模式
 
 ![在这里插入图片描述](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/72aa08f192b98af8ce9407d3f221984f.png)
 
@@ -89,7 +87,7 @@ DMA2: DMA2 Channel 1~DMA1 Channel 5
 
 传输完成后又重新开始继续传输，不断循环永不停止
 
-**3DMA指针递增设置**
+#### 3DMA指针递增设置
 
 ![在这里插入图片描述](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/7dc8739d883460ec47d484b4f5ad7a89.png)
 
@@ -114,7 +112,7 @@ DMA2: DMA2 Channel 1~DMA1 Channel 5
 
 就是要注意DMA的传输方向别弄错了，到底是PERIPHERIAL到MEMORY还是MEMORY到PERIPHERIAL或者说是Memory到Memory要配置正确。尤其是在用CubeMx配置时，这里有个默认配置是PERIPHERIAL到MEMORY。如果说你的真实意图根本不是从PERIPHERIAL到MEMORY，而你无意中使用了这个默认配置，结果可想而知，DMA传输根本没法正常运行。
 
-### **4时钟源设置**
+### 4时钟源设置
 
 ![image-20251113220402805](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20251113215853242.png)
 
@@ -126,9 +124,11 @@ DMA2: DMA2 Channel 1~DMA1 Channel 5
 - 4设置APB1分频器为 /2
 - 5 使能CSS监视时钟
 
+
+
 # 代码
 
-## ** 串口使用DMA发送数据**
+## 串口使用DMA发送数据
 
 ```C
  /* USER CODE BEGIN Init */
@@ -195,7 +195,7 @@ HAL_UART_Receive_DMA(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
 - *pData 需要存放接收数据的数组
 - Size 接受的字节数
 
-##  **STM32 IDLE 接收空闲中断**
+## STM32 IDLE 接收空闲中断
 
 STM32的IDLE的中断产生条件：在串口无数据接收的情况下，不会产生，当清除IDLE标志位后，必须有接收到第一个数据后，才开始触发，一但接收的数据断流，没有接收到数据，即产生IDLE中断
 
@@ -332,5 +332,3 @@ void USART1_IRQHandler(void)
 }
 
 ```
-
-# 

@@ -19,17 +19,19 @@ description:
 
 PWM原理详情请见标准库笔记
 
+
+
 # 工程创建
 
-### 1**设置RCC**
+### 1设置RCC
 
 **设置高速外部时钟HSE 选择外部时钟源**
 
 ![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/e08f22ab7da1e0253eaf9d708d07cdd2.png)
 
-### **2设置定时器**
+### 2设置定时器
 
-### ![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/配置时钟源-d967a2e4219ddd58666f730a79f7def4-1763047197510-22.png)
+ ![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/配置时钟源-d967a2e4219ddd58666f730a79f7def4-1763047197510-22.png)
 
 - **1.选择TIM3** 
 - **2.设置定时器时钟源为内部时钟源**
@@ -70,7 +72,7 @@ arr=499,TIM3->CCR1=250   则pwm的占空比为50%
 
 **改CCR1可以修改占空比，修改arr可以修改频率**
 
-### **3时钟源设置**
+### 3时钟源设置
 
 ![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/40ae1752a552913e9c7449e2b3b5850e.png)
 
@@ -220,7 +222,7 @@ arr=499,TIM3->CCR1=250   则pwm的占空比为50%
   }
   ```
 
-  ## 【PWM】无源蜂鸣器
+# 【PWM】无源蜂鸣器
 
   ### 1、工程配置
 
