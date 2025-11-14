@@ -55,7 +55,7 @@ meta_generator: true    # 是否在页面 head 中输出生成器 meta 标签
 date_format: YYYY-MM-DD # 默认日期格式，影响主题显示
 time_format: HH:mm:ss   # 默认时间格式
 updated_option: mtime   # 更新检测选项（如 mtime、date 等）
-per_page: 10            # 列表分页每页文章数
+per_page: 30            # 列表分页每页文章数
 pagination_dir: page    # 分页目录前缀（如 /page/2）
 include: null           # 构建时包含的额外文件或目录
 exclude: null           # 构建时排除的文件或目录
