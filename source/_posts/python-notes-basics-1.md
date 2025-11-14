@@ -2,6 +2,7 @@
 title: Python学习笔记-基本语法（一）
 date: 2025-04-26 00:00:00
 type: paper
+category: Python
 photos: 
 tags:
   - Python

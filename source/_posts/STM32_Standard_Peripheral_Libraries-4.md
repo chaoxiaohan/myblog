@@ -2,6 +2,7 @@
 title: STM32标准库笔记（四）-BKP、RTC、PWR、WDG、FLASH
 date: 2025-10-06 00:00:00
 type: paper
+category: Standard
 photos: 
 tags:
   - C

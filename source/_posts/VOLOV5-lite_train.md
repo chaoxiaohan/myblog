@@ -2,6 +2,7 @@
 title: 使用YOLOV5-Lite训练模型
 date: 2025-09-27 00:00:00
 type: paper
+category: YOLO
 photos: 
 tags:
   - YOLOV5

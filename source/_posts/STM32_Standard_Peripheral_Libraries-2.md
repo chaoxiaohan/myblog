@@ -2,6 +2,7 @@
 title: STM32标准库笔记（二）-PWM、ADC、DMA
 date: 2025-10-03 00:00:00
 type: paper
+category: Standard
 photos: 
 tags:
   - C

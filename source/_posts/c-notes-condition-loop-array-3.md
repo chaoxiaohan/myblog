@@ -2,6 +2,7 @@
 title: C语言学习笔记-条件、循环、数组（三）
 date: 2024-09-21 00:00:00
 type: paper
+category: C
 photos: 
 excerpt: 本文围绕 C 语言的条件语句（if、switch）、循环语句（while、for 等）及数组展开，详解其语法、用法与实例，助你掌握这些基础且关键的编程结构。
 tags:

@@ -59,8 +59,8 @@ sidebar:
       - profile
       - category
       - tag
-      - archive           # 取消注释可启用 archive 小部件
-      - recent_posts      # 取消注释可启用最近文章小部件
+      #- archive           # 取消注释可启用 archive 小部件
+      #- recent_posts      # 取消注释可启用最近文章小部件
     sticky:               # sticky 区域：固定在视口顶部（sticky），在页面滚动时保持可见
       - toc               # 文章目录小部件，显示文章大纲
 

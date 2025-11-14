@@ -2,6 +2,7 @@
 title: STM32标准库笔记（三）-USART、I2C、SPI
 date: 2025-10-05 00:00:00
 type: paper
+category: Standard
 photos: 
 tags:
   - C

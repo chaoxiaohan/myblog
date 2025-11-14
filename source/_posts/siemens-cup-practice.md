@@ -2,6 +2,7 @@
 title: 西门子杯-工程实践资料
 date: 2025-05-01 00:00:00
 type: resource
+category: siemens-cup
 photos: 
 tags:
   - 西门子杯

@@ -2,6 +2,7 @@
 title: OpenCV学习笔记
 date: 2025-05-12 00:00:00
 type: paper
+category: OpenCv
 photos: 
 tags:
   - OpenCv

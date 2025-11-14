@@ -2,6 +2,7 @@
 title: STM32标准库笔记（一）-准备、GPIO、中断
 date: 2025-10-01 02:51:00
 type: paper
+category: STandard
 photos: 
 tags:
   - C

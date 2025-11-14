@@ -2,6 +2,7 @@
 title: C语言学习笔记-基本语法（一）
 date: 2024-09-12 00:00:00
 type: paper
+category: C
 photos: 
 excerpt: 本文是C语言基础语法学习笔记。内容覆盖了注释、常量、变量的定义与使用，并详细讲解了C语言的各种数据类型，如整型、实型、字符型，以及sizeof运算符和ASCII码表的概念。
 tags:

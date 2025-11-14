@@ -2,6 +2,7 @@
 title: C语言学习笔记-枚举、输入输出、文件(六)
 date: 2024-10-25 00:00:00
 type: paper
+category: C
 photos: 
 tags:
   - Virual Studio

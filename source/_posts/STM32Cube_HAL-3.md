@@ -2,6 +2,7 @@
 title: STM32Cube_HAL库笔记（三）-DMA
 date: 2025-10-09 00:00:00
 type: paper
+category: HAL
 photos: 
 tags:
   - DMA

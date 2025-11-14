@@ -2,6 +2,7 @@
 title: Python学习笔记-运算符（二）
 date: 2025-05-12 00:00:00
 type: paper
+category: Python
 photos: 
 tags:
   - Python

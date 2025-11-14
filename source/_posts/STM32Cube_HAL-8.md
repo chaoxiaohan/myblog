@@ -2,6 +2,7 @@
 title: STM32Cube_HAL库笔记（八）-SPI
 date: 2024-10-09 00:00:00
 type: paper
+category: HAL
 photos: 
 tags:
 excerpt: 正在施工ing...

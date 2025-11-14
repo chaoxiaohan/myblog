@@ -2,6 +2,7 @@
 title: 笔记本新机「开荒」指南
 date: 2025-9-27 00:00:00
 type: paper
+category: computer
 photos: 
 tags:
   - computer
