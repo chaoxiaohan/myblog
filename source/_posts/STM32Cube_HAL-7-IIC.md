@@ -1,6 +1,6 @@
 ---
 title: STM32Cube_HAL库笔记（七）-IIC
-date: 2024-10-09 00:00:00
+date: 2025-11-14 00:00:00
 type: paper
 category: HAL
 photos: 
