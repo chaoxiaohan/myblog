@@ -6,7 +6,11 @@ type: paper
 category: HAL
 photos: 
 tags:
-excerpt: 正在施工ing...
+  - UART
+  - STM32
+  - HAL
+  - Serial
+excerpt: 详细介绍STM32 HAL库中UART串口通信的使用方法，包括配置、发送接收等。
 description: 
 ---
 

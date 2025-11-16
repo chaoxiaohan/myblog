@@ -5,7 +5,12 @@ type: paper
 category: HAL
 photos: 
 tags:
-excerpt: 正在施工ing...
+  - IIC
+  - STM32
+  - HAL
+  - I2C
+  - EEPROM
+excerpt: 讲解STM32 HAL库中IIC通信的实现，包括硬件IIC读取AT24C02等应用。
 description: 
 ---
 

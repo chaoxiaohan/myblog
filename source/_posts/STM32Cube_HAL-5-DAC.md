@@ -5,7 +5,12 @@ type: paper
 category: HAL
 photos: 
 tags:
-excerpt: 正在施工ing...
+  - DAC
+  - STM32
+  - HAL
+  - Analog
+  - Converter
+excerpt: 介绍STM32 HAL库中DAC数模转换器的使用，包括原理、配置和波形输出等应用。
 description: 
 ---
 
