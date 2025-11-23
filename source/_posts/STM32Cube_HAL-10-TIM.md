@@ -5,7 +5,12 @@ type: paper
 category: HAL
 photos: 
 tags:
-excerpt: 正在施工ing...
+    - TIM
+    - STM32
+    - HAL
+    - Timer
+    - PWM
+excerpt: 详解STM32 HAL库中TIM定时器的原理、配置方法以及基础和通用定时器的应用示例。
 description: 
 ---
 
