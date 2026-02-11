@@ -1,6 +1,6 @@
 ---
 title: STM32Cube_HAL库笔记（十）-TIM
-date: 2024-11-23 00:00:00
+date: 2025-11-23 00:00:00
 type: paper
 category: HAL
 photos: 
@@ -325,7 +325,6 @@ void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
 - `Counter Period`（计数周期）：设置为500，即自动重载寄存器的值。
 - `Auto-reload preload`（自动重载预加载）：对基础定时器无实质影响。
 - `Trigger Event Selection`（触发事件选择）：设置TIM6的UEV事件信号作为TRGO输出。
-- 
 
 因为APB1定时器时钟频率为50MHz，预分频器值为49999，所以进入计数器的时钟频率为1000Hz，计数周期设置为500，所以TIM6定时器每500ms产生一次计数溢出，也就是产生一次UEV事件。若启用事件的中断使能控制位1，且TIM6的全局中断已打开，则TIM6每500ms就会产生一次硬件中断。
 

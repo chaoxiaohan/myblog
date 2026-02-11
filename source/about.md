@@ -42,4 +42,6 @@ layout: page
 - [ ] linux
 - [ ] C++
 - [ ] CNN
+- [ ] LLM
+- [ ] Maixcam AI
 
