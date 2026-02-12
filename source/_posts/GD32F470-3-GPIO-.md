@@ -1,11 +1,11 @@
 ---
-title: GD32F470入门教程（）
+title: GD32F470入门教程（三）GPIO
 date: 2026-02-11 23:00:00
 type: paper
 category: GD32F470xx
 photos: 
 tags:
-excerpt: 这是摘要
+excerpt: GPIO是单片机通用输入输出端口的简称。本文介绍了GD32F470的GPIO功能，包括引脚配置、输入输出模式、信号流向，并提供了标准库使用方法和固件库函数详解，帮助开发者快速上手GPIO编程。
 description: 
 ---
 

@@ -1,11 +1,11 @@
 ---
 title: GD32F470入门教程（二）时钟系统
-date: 2026-02-10 00:00:00
+date: 2026-02-11 00:00:00
 type: paper
 category: GD32F470xx
 photos: 
 tags:
-excerpt: 这是摘要
+excerpt: GD32F470的时钟系统是其核心组成部分。本文解析了时钟树结构，包括外部晶振、内部RC振荡器、PLL倍频器及分频器，并详细说明了时钟分配到各模块的过程，确保系统高效运行。
 description: 
 ---
 
@@ -15,7 +15,7 @@ description:
 
 ## 时钟树
 
-![GD32F4xx 时钟树](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/GD32F4xx 时钟树.png)
+![GD32F4xx 时钟树](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/GD32F4xxclocktree.png)
 
 ### 一、时钟源（根基）
 
