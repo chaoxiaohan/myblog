@@ -34,6 +34,7 @@
 
         const viewer = document.getElementById('image-viewer');
         const viewerImg = viewer.querySelector('.image-viewer-img');
+        const viewerWrapper = viewer.querySelector('.image-viewer-wrapper');
         const viewerCaption = viewer.querySelector('.image-viewer-caption');
         const closeBtn = viewer.querySelector('.image-viewer-close');
         const prevBtn = viewer.querySelector('.image-viewer-prev');
@@ -42,6 +43,36 @@
 
         let images = [];
         let currentIndex = 0;
+
+        // 缩放和拖拽状态
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let lastTranslateX = 0;
+        let lastTranslateY = 0;
+
+        // 更新图片变换
+        function updateTransform(animate) {
+            if (animate) {
+                viewerImg.style.transition = 'transform 0.3s ease';
+            } else {
+                viewerImg.style.transition = 'none';
+            }
+            viewerImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            // 更新光标样式
+            viewerImg.style.cursor = scale > 1 ? 'grab' : 'zoom-in';
+        }
+
+        // 重置缩放和位移
+        function resetTransform() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform(true);
+        }
 
         // 获取所有文章内容中的图片
         function getContentImages() {
@@ -66,6 +97,13 @@
             currentIndex = index;
             const img = images[currentIndex];
             
+            // 重置缩放状态
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            viewerImg.style.transition = 'none';
+            viewerImg.style.transform = '';
+
             viewerImg.src = img.src;
             viewerImg.alt = img.alt || '';
             
@@ -83,12 +121,18 @@
 
             viewer.classList.add('active');
             document.body.style.overflow = 'hidden';
+            viewerImg.style.cursor = 'zoom-in';
         }
 
         // 关闭查看器
         function closeViewer() {
             viewer.classList.remove('active');
             document.body.style.overflow = '';
+            // 重置缩放状态
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            viewerImg.style.transform = '';
             viewerImg.src = '';
         }
 
@@ -141,24 +185,143 @@
             }
         });
 
-        // 图片缩放功能（鼠标滚轮）
-        let scale = 1;
-        viewerImg.addEventListener('wheel', function(e) {
+        // 图片缩放功能（鼠标滚轮）—— 以鼠标位置为中心缩放
+        viewerWrapper.addEventListener('wheel', function(e) {
             e.preventDefault();
-            
-            const delta = e.deltaY > 0 ? -0.1 : 0.1;
-            scale = Math.min(Math.max(0.5, scale + delta), 3);
-            
-            viewerImg.style.transform = `scale(${scale})`;
+
+            const rect = viewerImg.getBoundingClientRect();
+            // 鼠标相对于图片中心的位置
+            const imgCenterX = rect.left + rect.width / 2;
+            const imgCenterY = rect.top + rect.height / 2;
+            const mouseOffsetX = e.clientX - imgCenterX;
+            const mouseOffsetY = e.clientY - imgCenterY;
+
+            const oldScale = scale;
+            const delta = e.deltaY > 0 ? -0.15 : 0.15;
+            scale = Math.min(Math.max(0.5, scale + delta), 5);
+
+            // 缩放时调整位移，使鼠标指向的点保持不动
+            const ratio = scale / oldScale;
+            translateX = mouseOffsetX - ratio * (mouseOffsetX - translateX);
+            translateY = mouseOffsetY - ratio * (mouseOffsetY - translateY);
+
+            // 如果缩小到1倍以下，重置位移
+            if (scale <= 1) {
+                translateX = 0;
+                translateY = 0;
+            }
+
+            updateTransform(false);
         });
 
-        // 重置缩放
-        viewer.addEventListener('click', function(e) {
-            if (e.target === viewer || e.target === overlay) {
-                scale = 1;
-                viewerImg.style.transform = 'scale(1)';
+        // 双击缩放切换
+        let lastClickTime = 0;
+        viewerImg.addEventListener('click', function(e) {
+            const now = Date.now();
+            if (now - lastClickTime < 300) {
+                // 双击
+                e.stopPropagation();
+                if (scale > 1) {
+                    // 已放大，重置
+                    resetTransform();
+                } else {
+                    // 放大到2倍，以点击位置为中心
+                    const rect = viewerImg.getBoundingClientRect();
+                    const imgCenterX = rect.left + rect.width / 2;
+                    const imgCenterY = rect.top + rect.height / 2;
+                    const mouseOffsetX = e.clientX - imgCenterX;
+                    const mouseOffsetY = e.clientY - imgCenterY;
+
+                    scale = 2;
+                    translateX = -mouseOffsetX;
+                    translateY = -mouseOffsetY;
+                    updateTransform(true);
+                }
+                lastClickTime = 0;
+            } else {
+                lastClickTime = now;
             }
         });
+
+        // 拖拽功能（放大时可拖动图片）
+        viewerImg.addEventListener('mousedown', function(e) {
+            if (scale <= 1) return;
+            e.preventDefault();
+            isDragging = true;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            lastTranslateX = translateX;
+            lastTranslateY = translateY;
+            viewerImg.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            translateX = lastTranslateX + (e.clientX - dragStartX);
+            translateY = lastTranslateY + (e.clientY - dragStartY);
+            updateTransform(false);
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (!isDragging) return;
+            isDragging = false;
+            viewerImg.style.cursor = scale > 1 ? 'grab' : 'zoom-in';
+        });
+
+        // 触摸拖拽支持（移动端）
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let lastTouchTranslateX = 0;
+        let lastTouchTranslateY = 0;
+
+        // 触摸双指缩放
+        let lastTouchDist = 0;
+        let lastTouchScale = 1;
+
+        viewerImg.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 2) {
+                // 双指缩放开始
+                lastTouchDist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                lastTouchScale = scale;
+            } else if (e.touches.length === 1 && scale > 1) {
+                // 单指拖拽
+                isDragging = true;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                lastTouchTranslateX = translateX;
+                lastTouchTranslateY = translateY;
+            }
+        }, { passive: true });
+
+        viewerImg.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const dist = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                scale = Math.min(Math.max(0.5, lastTouchScale * (dist / lastTouchDist)), 5);
+                if (scale <= 1) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+                updateTransform(false);
+            } else if (isDragging && e.touches.length === 1) {
+                e.preventDefault();
+                translateX = lastTouchTranslateX + (e.touches[0].clientX - touchStartX);
+                translateY = lastTouchTranslateY + (e.touches[0].clientY - touchStartY);
+                updateTransform(false);
+            }
+        }, { passive: false });
+
+        viewerImg.addEventListener('touchend', function() {
+            isDragging = false;
+            lastTouchDist = 0;
+        }, { passive: true });
 
         // 初始化
         attachImageClickEvents();

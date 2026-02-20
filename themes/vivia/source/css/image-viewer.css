@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .image-viewer-img {
@@ -53,10 +53,7 @@
     user-select: none;
     transition: transform 0.3s ease;
     cursor: zoom-in;
-}
-
-.image-viewer-img:active {
-    cursor: zoom-out;
+    -webkit-user-drag: none;
 }
 
 /* 关闭按钮 */
@@ -183,19 +180,17 @@
     }
 }
 
-/* 加载动画 */
-.image-viewer-img {
-    animation: imageZoomIn 0.3s ease;
+/* 打开动画 - 仅使用opacity避免与JS缩放transform冲突 */
+.image-viewer.active .image-viewer-img {
+    animation: imageFadeIn 0.3s ease;
 }
 
-@keyframes imageZoomIn {
+@keyframes imageFadeIn {
     from {
         opacity: 0;
-        transform: scale(0.8);
     }
     to {
         opacity: 1;
-        transform: scale(1);
     }
 }
 

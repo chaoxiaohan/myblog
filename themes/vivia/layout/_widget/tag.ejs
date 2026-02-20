@@ -1,4 +1,38 @@
-<% if (site.tags.length){ %>
+<% if (is_post() && page.categories && page.categories.length) { %>
+  <%
+    // 获取当前文章的分类名
+    var currentCategory = '';
+    page.categories.forEach(function(cat) {
+      currentCategory = cat.name;
+    });
+    // 获取同分类的所有文章，按日期降序
+    var sameCategoryPosts = [];
+    site.posts.forEach(function(post) {
+      post.categories.forEach(function(cat) {
+        if (cat.name === currentCategory) {
+          sameCategoryPosts.push(post);
+        }
+      });
+    });
+    sameCategoryPosts.sort(function(a, b) {
+      return b.date - a.date;
+    });
+  %>
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title"><%= currentCategory %> 系列文章</h3>
+      <ul class="same-category-posts">
+        <% sameCategoryPosts.forEach(function(post){ %>
+          <li class="same-category-item<%= (post._id === page._id) ? ' current-post' : '' %>">
+            <a href="<%- url_for(post.path) %>" title="<%- post.title %>">
+              <%= post.title || '(no title)' %>
+            </a>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+<% } else if (site.tags.length) { %>
   <div class="widget-wrap">
     <div class="widget">
       <h3 class="widget-title"><%= __('tags') %></h3>

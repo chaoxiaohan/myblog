@@ -73,3 +73,18 @@ $widget-nav-count
     text-wrap: nowrap
     text-overflow: ellipsis
     overflow: hidden  
+
+.same-category-posts
+  list-style: none
+  margin: 0
+  padding: 0
+  .same-category-item
+    a
+      @extend $widget-nav-link
+      text-wrap: nowrap
+      text-overflow: ellipsis
+      overflow: hidden
+    &.current-post a
+      color: var(--primary) !important
+      font-weight: bold
+      background: var(--btn-text-hover)
