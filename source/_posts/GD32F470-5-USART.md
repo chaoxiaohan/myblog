@@ -128,6 +128,8 @@ int fputc(int ch, FILE *f)
 
 GD32F4xx固件库提供了丰富的USART（通用同步异步收发器）函数，用于配置和管理串行通信。以下是主要USART函数的详细介绍，基于GD32F4xx_固件库使用指南_Rev1.2。
 
+![image-20260221164328644](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260221164328644.png)
+
 ### 1. USART初始化和配置函数
 
 #### usart_deinit

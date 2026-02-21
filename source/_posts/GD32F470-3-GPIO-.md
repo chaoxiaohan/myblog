@@ -1,566 +1,614 @@
 ---
-title: GD32F470入门教程（三）GPIO
-date: 2026-02-11 23:00:00
+title: GD32F470入门教程（四）中断（EXTI）
+date: 2026-02-12 00:00:00
 type: paper
 category: GD32F470xx
 photos: 
 tags:
-excerpt: GPIO是单片机通用输入输出端口的简称。本文介绍了GD32F470的GPIO功能，包括引脚配置、输入输出模式、信号流向，并提供了标准库使用方法和固件库函数详解，帮助开发者快速上手GPIO编程。
+excerpt: 该教程包括了GD32F470xx的中断配置、外部中断的使用、EXTI相关函数
 description: 
+
 ---
 
-# GPIO
+# 中断
 
-GPIO(general porpose intput output):单片机通用输入输出端口的简称。可以通过单片机烧录的程序代码控制单片机引脚输出高电平或者低电平，也可以读取引脚电平信号为高电平还是低电平。
+Cortex®-M4 集成了嵌套式矢量型中断控制器（Nested Vectored Interrupt Controller （NVIC））来实现高效的异常和中断处理。NVIC 实现了低延迟的异常和中断处理，以及电源管理控制。它和内核是紧密耦合的。更多关于NVIC 的说明请参考《Cortex®-M4 技术参考手册》。
 
-下面以GD32F470VET6的引脚图
+EXTI（中断/事件控制器）包括23 个相互独立的边沿检测电路并且能够向处理器内核产生中断请求或唤醒事件。EXTI 有三种触发类型：上升沿触发、下降沿触发和任意沿触发。EXTI 中的每一个边沿检测电路都可以独立配置和屏蔽。
 
-![image-20260211221038992](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260211221038992.png)
+## 中断向量表
 
-最多可支持140 个通用I/O 引脚（GPIO）（具体引脚数量见芯片具体型号），分别为PA0 ~ PA15，PB0 ~ PB15，PC0 ~ PC15，PD0 ~ PD15，PE0 ~ PE15，PF0 ~ PF15，PG0 ~ PG15，PH0 ~ PH15 和PI0 ~ PI11，各片上设备用其来实现逻辑输入/输出功能。每个GPIO 端口有相关的控制和配置寄存器以满足特定应用的需求。GPIO 引脚上的外部中断在中断/事件控制器（EXTI）中有相关的控制和配置寄存器。
+![image-20260212105823589](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212105823589.png)
 
-GPIO 端口和其他的备用功能（AFs）共用引脚，在特定的封装下获得最大的灵活性。GPIO 引脚通过配置相关的寄存器可以用作备用功能引脚，备用功能输入/输出都可以。每个GPIO 引脚可以由软件配置为输出（推挽或开漏）、输入、外设备用功能或者模拟模式。每个GPIO 引脚都可以配置为上拉、下拉或无上拉/下拉。**除模拟模式外，所有的GPIO 引脚都具备大电流驱动能力**。
+![image-20260212105912893](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212105912893.png)
 
-## GPIO功能描述
+![image-20260212105929109](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212105929109.png)
 
-每个通用 I/O 端口都可以通过 32 位控制寄存器（GPIOx_CTL）配置为 GPIO 输入，GPIO 输出，AF 功能或模拟模式。当选择 AF 功能时，引脚 AF 输入/输出是通过 AF 功能输出使能来选择。当端口配置为输出（GPIO 输出或 AFIO 输出）时，可以通过 GPIO 输出模式寄存器（GPIOx_OMODE）配置为推挽或开漏模式。输出端口的最大速度可以通过 GPIO 输出速度寄存器（GPIOx_OSPD）配置。每个端口可以通过 GPIO 上/下拉寄存器（GPIOx_PUD）配置为浮空（无上拉或下拉），上拉或下拉功能。
+## 外部中断按键点灯
 
-![image-20260211221442593](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260211221442593.png)
+### 1.开启时钟
 
-![image-20260211221457326](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260211221457326.png)
-
-**GD32单片机GPIO输入输出信号流向**
-如下图上半部分，就是一个GPIO推挽输出的信号流向：
-输出数据寄存器输出一个高电平时，P-MOS 管导通，N-MOS 管截止，对外输出高电平（3.3V）。
-输出数据寄存器输出一个低电平时，P-MOS 管截止，N-MOS 管导通，对外输出低电平（0V）。
-
-如下图下半部分，就是一个GPIO输入的信号流向：
-从单片机I/O引脚进来就连接到TTL施密特触发器就把电压信号转化为0、1的数字信号存储在输入数据寄存器。
-施密特触发器，当输入电压高于正向阈值电压，输出为1，当输入电压低于负向阈值电压，输出为0，当输入在正负向阈值电压之间，输出不改变。
-
-![image-20260211221650852](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260211221650852.png)
-
-## GPIO标准库使用
-
-使用GPIO一般有如下流程
-
-- 开启对应GPIO时钟
-- 配置GPIO模式
-- 配置GPIO输出
-
-### 1.开启对应GPIO时钟
-
-在`gd32f4xx_rcu.h`文件里有很详细的关于时钟的函数的声明，我们需要打开的时钟也在这里，我们找到rcu_periph_enum这个枚举，这里面可以看到里面定义了很多时钟，有 GPIO 时钟，DMA 时钟，定时器时钟等
+需要开启GPIO时钟和系统配置时钟
 
 ```C
-typedef enum
-{
-    /* AHB1 peripherals */
-    RCU_GPIOA     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 0U),                  /*!< GPIOA clock */
-    RCU_GPIOB     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 1U),                  /*!< GPIOB clock */
-    RCU_GPIOC     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 2U),                  /*!< GPIOC clock */
-    RCU_GPIOD     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 3U),                  /*!< GPIOD clock */
-    RCU_GPIOE     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 4U),                  /*!< GPIOE clock */
-    RCU_GPIOF     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 5U),                  /*!< GPIOF clock */
-    RCU_GPIOG     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 6U),                  /*!< GPIOG clock */
-    RCU_GPIOH     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 7U),                  /*!< GPIOH clock */
-    RCU_GPIOI     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 8U),                  /*!< GPIOI clock */
-    RCU_CRC       = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 12U),                 /*!< CRC clock */
-    RCU_BKPSRAM   = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 18U),                 /*!< BKPSRAM clock */
-    RCU_TCMSRAM   = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 20U),                 /*!< TCMSRAM clock */
-    RCU_DMA0      = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 21U),                 /*!< DMA0 clock */
-    RCU_DMA1      = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 22U),                 /*!< DMA1 clock */
-    RCU_IPA       = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 23U),                 /*!< IPA clock */
-    RCU_ENET      = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 25U),                 /*!< ENET clock */
-    RCU_ENETTX    = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 26U),                 /*!< ENETTX clock */
-    RCU_ENETRX    = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 27U),                 /*!< ENETRX clock */
-    RCU_ENETPTP   = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 28U),                 /*!< ENETPTP clock */
-    RCU_USBHS     = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 29U),                 /*!< USBHS clock */
-    RCU_USBHSULPI = RCU_REGIDX_BIT(AHB1EN_REG_OFFSET, 30U),                 /*!< USBHSULPI clock */
-    /* AHB2 peripherals */
-    RCU_DCI       = RCU_REGIDX_BIT(AHB2EN_REG_OFFSET, 0U),                  /*!< DCI clock */
-    RCU_TRNG      = RCU_REGIDX_BIT(AHB2EN_REG_OFFSET, 6U),                  /*!< TRNG clock */
-    RCU_USBFS     = RCU_REGIDX_BIT(AHB2EN_REG_OFFSET, 7U),                  /*!< USBFS clock */
-    /* AHB3 peripherals */
-    RCU_EXMC      = RCU_REGIDX_BIT(AHB3EN_REG_OFFSET, 0U),                  /*!< EXMC clock */
-    /* APB1 peripherals */
-    RCU_TIMER1    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 0U),                  /*!< TIMER1 clock */
-    RCU_TIMER2    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 1U),                  /*!< TIMER2 clock */
-    RCU_TIMER3    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 2U),                  /*!< TIMER3 clock */
-    RCU_TIMER4    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 3U),                  /*!< TIMER4 clock */
-    RCU_TIMER5    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 4U),                  /*!< TIMER5 clock */
-    RCU_TIMER6    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 5U),                  /*!< TIMER6 clock */
-    RCU_TIMER11   = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 6U),                  /*!< TIMER11 clock */
-    RCU_TIMER12   = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 7U),                  /*!< TIMER12 clock */
-    RCU_TIMER13   = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 8U),                  /*!< TIMER13 clock */   
-    RCU_WWDGT     = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 11U),                 /*!< WWDGT clock */
-    RCU_SPI1      = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 14U),                 /*!< SPI1 clock */
-    RCU_SPI2      = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 15U),                 /*!< SPI2 clock */
-    RCU_USART1    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 17U),                 /*!< USART1 clock */
-    RCU_USART2    = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 18U),                 /*!< USART2 clock */
-    RCU_UART3     = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 19U),                 /*!< UART3 clock */
-    RCU_UART4     = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 20U),                 /*!< UART4 clock */
-    RCU_I2C0      = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 21U),                 /*!< I2C0 clock */
-    RCU_I2C1      = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 22U),                 /*!< I2C1 clock */
-    RCU_I2C2      = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 23U),                 /*!< I2C2 clock */   
-    RCU_CAN0      = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 25U),                 /*!< CAN0 clock */
-    RCU_CAN1      = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 26U),                 /*!< CAN1 clock */
-    RCU_PMU       = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 28U),                 /*!< PMU clock */
-    RCU_DAC       = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 29U),                 /*!< DAC clock */
-    RCU_UART6     = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 30U),                 /*!< UART6 clock */
-    RCU_UART7     = RCU_REGIDX_BIT(APB1EN_REG_OFFSET, 31U),                 /*!< UART7 clock */
-    RCU_RTC       = RCU_REGIDX_BIT(BDCTL_REG_OFFSET, 15U),                  /*!< RTC clock */
-    /* APB2 peripherals */
-    RCU_TIMER0    = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 0U),                  /*!< TIMER0 clock */
-    RCU_TIMER7    = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 1U),                  /*!< TIMER7 clock */
-    RCU_USART0    = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 4U),                  /*!< USART0 clock */
-    RCU_USART5    = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 5U),                  /*!< USART5 clock */
-    RCU_ADC0      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 8U),                  /*!< ADC0 clock */
-    RCU_ADC1      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 9U),                  /*!< ADC1 clock */
-    RCU_ADC2      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 10U),                 /*!< ADC2 clock */
-    RCU_SDIO      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 11U),                 /*!< SDIO clock */
-    RCU_SPI0      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 12U),                 /*!< SPI0 clock */
-    RCU_SPI3      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 13U),                 /*!< SPI3 clock */
-    RCU_SYSCFG    = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 14U),                 /*!< SYSCFG clock */
-    RCU_TIMER8    = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 16U),                 /*!< TIMER8 clock */
-    RCU_TIMER9    = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 17U),                 /*!< TIMER9 clock */
-    RCU_TIMER10   = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 18U),                 /*!< TIMER10 clock */
-    RCU_SPI4      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 20U),                 /*!< SPI4 clock */
-    RCU_SPI5      = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 21U),                 /*!< SPI5 clock */
-    RCU_TLI       = RCU_REGIDX_BIT(APB2EN_REG_OFFSET, 26U),                 /*!< TLI clock */
-    /* APB1 additional peripherals */
-    RCU_CTC       = RCU_REGIDX_BIT(ADD_APB1EN_REG_OFFSET, 27U),             /*!< CTC clock */
-    RCU_IREF      = RCU_REGIDX_BIT(ADD_APB1EN_REG_OFFSET, 31U),             /*!< IREF clock */
-}rcu_periph_enum;
-
-```
-
-其中RCU_GPIOA就是GPIOA的时钟
-
-如果我们想要开启这个时钟，那对应的代码是
-
-```C
+/* 开启时钟 */
 rcu_periph_clock_enable(RCU_GPIOA);
+rcu_periph_clock_enable(RCU_SYSCFG); 
 ```
 
 ### 2.配置 GPIO 模式
 
-GPIO 的模式配置可分为两步，第一步就是通过调用库函数将 GPIO 配置为输入功能，输出功能，复用功能还是模拟功能。第二步就是通过调用库函数配置 GPIO 的上下拉模式或者浮空。
+```C
+/* 配置为输入模式 下拉模式 */
+gpio_mode_set(BSP_KEY_PORT, GPIO_MODE_INPUT, GPIO_PUPD_PULLDOWN, BSP_KEY_PIN);
+// 按键默认状态是低电平，配置为下拉
+```
 
-根据固件库手册，我们这里需要用到`gpio_mode_set`函数，他的函数原型是 `void gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pull_up_down, uint32_t pin);` 
+## 3.使能 NVIC 中断并配置优先级
 
-它有四个参数，第一个参数是配置的端口。
+#### 设置中断优先级分组
+
+使用`void nvic_priority_group_set(uint32_t nvic_prigroup);`
+
+![image-20260212133136765](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212133136765.png)
+
+关于优先级的选择根据系统功能的不同配置不同，选择一个合适的即可。这里就选择中间的作为讲解。
+
+设置优先级分组代码为：
 
 ```C
-/* GPIOx(x=A,B,C,D,E,F,G,H,I) definitions */
-#define GPIOA                      (GPIO_BASE + 0x00000000U)
-#define GPIOB                      (GPIO_BASE + 0x00000400U)
-#define GPIOC                      (GPIO_BASE + 0x00000800U)
-#define GPIOD                      (GPIO_BASE + 0x00000C00U)
-#define GPIOE                      (GPIO_BASE + 0x00001000U)
-#define GPIOF                      (GPIO_BASE + 0x00001400U)
-#define GPIOG                      (GPIO_BASE + 0x00001800U)
-#define GPIOH                      (GPIO_BASE + 0x00001C00U)
-#define GPIOI                      (GPIO_BASE + 0x00002000U)
+nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2);
+    // 设置中断优先级组  2位用于抢占优先级，2位用于响应优先级
 ```
 
-第二个参数是配置的模式。
+#### 配置优先级
+
+中断分组设置完成还需要配置中断的抢占优先级和响应优先级。
+
+`void nvic_irq_enable(uint8_t nvic_irq, uint8_t nvic_irq_pre_priority, uint8_t nvic_irq_sub_priority);`
+
+这个函数配置中断的优先级。有三个参数，第一个参数就是要配置的中断类型，第二个参数是抢占优先级，第三个参数是响应优先级。
+
+翻阅固件库手册，我们可以找到中断类型的枚举
+
+![image-20260212133833950](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212133833950.png)
+
+![image-20260212133849313](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212133849313.png)
+
+![image-20260212133906991](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212133906991.png)
+
+### {0}这里需要注意一下，关于 16 个 IO 中断的中断类型为 0-4 引脚配置为 EXTIx_IRQn(x=可取 1-4)，
+### {0}
+### {0}5-9 引脚配置为 EXTI5_9_IRQn，10-15 引脚配置为 EXTI10_15_IRQn 。
+
+上一步中断分组设置了 2 位抢占优先级，2 位响应优先级，那对应的抢占优先级等级为 0-3，响应优先级等级为 0-3，按键检测事件属于不是很紧急的任务，我们配置为最低优先级。配置代码为：
 
 ```C
-/* output mode definitions */
-#define CTL_CLTR(regval)           (BITS(0,1) & ((uint32_t)(regval) << 0))
-#define GPIO_MODE_INPUT            CTL_CLTR(0)               /*!< input mode */
-#define GPIO_MODE_OUTPUT           CTL_CLTR(1)               /*!< output mode */
-#define GPIO_MODE_AF               CTL_CLTR(2)               /*!< alternate function mode */
-#define GPIO_MODE_ANALOG           CTL_CLTR(3)               /*!< analog mode */
-
+/* 使能NVIC中断 中断分组为2位抢占优先级，2位子优先级
+*/nvic_irq_enable(EXTI0_IRQn,3U,3U);  // 抢占优先级3，子优先级3
 ```
 
-第三个参数是上下拉选择。
+### 4.配置 GPIO 中断
+
+在配置中断优先级之后，需要将中断线和 gpio 进行连接。
+
+我们需要使用`void syscfg_exti_line_config(uint8_t exti_port, uint8_t exti_pin);`
+
+这个函数配置 GPIO 作为中断使用，有两个参数，第一个参数就是对应的中断引脚资源端口，第二个参数就是对应的中断引脚。关于中断资源引脚定义，如下
+
+![image-20260212142934569](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212142934569.png)
+
+配置中断到 GPIO 可写为：
 
 ```C
-/* pull-up/ pull-down definitions */
-#define PUD_PUPD(regval)           (BITS(0,1) & ((uint32_t)(regval) << 0))
-#define GPIO_PUPD_NONE             PUD_PUPD(0)               /*!< floating mode, no pull-up and pull-down resistors */
-#define GPIO_PUPD_PULLUP           PUD_PUPD(1)               /*!< with pull-up resistor */
-#define GPIO_PUPD_PULLDOWN         PUD_PUPD(2)               /*!< with pull-down resistor */
-
+/* 连接中断线到GPIO */
+syscfg_exti_line_config( EXTI_SOURCE_GPIOA,EXTI_SOURCE_PIN0);
 ```
 
-第四个参数是要配置的引脚。
+配置好中断和 GPIO 连接之后，还需要对中断进行初始化，配置一些参数。在 gd32f4xx_exti.h 中有
+
+`void exti_init(exti_line_enum linex, exti_mode_enum mode, exti_trig_type_enum trig_type);`
+
+这个函数初始化中断配置。有三个参数，第一个参数是中断线，第二个参数是中断模式，第三个参数是触发类型。
+
+关于中断线一共有 23 个，查阅手册我们得知
+
+![image-20260212143234345](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212143234345.png)
+
+![image-20260212143254293](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212143254293.png)
+
+关于每个中断线对应的功能
+
+![img](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/interrupt_20240809_233101.jpeg)
+
+我们可知PA0 的中断线就是 EXTI_0。
+
+关于中断模式的可选选项和触发类型的可选选项
+
+![image-20260212143503808](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260212143503808.png)
+
+最终初始化中断线配置为中断模式，上升沿和下降沿均触发。
 
 ```C
-/* GPIO pin definitions */
-#define GPIO_PIN_0                 BIT(0)                    /*!< GPIO pin 0 */
-#define GPIO_PIN_1                 BIT(1)                    /*!< GPIO pin 1 */
-#define GPIO_PIN_2                 BIT(2)                    /*!< GPIO pin 2 */
-#define GPIO_PIN_3                 BIT(3)                    /*!< GPIO pin 3 */
-#define GPIO_PIN_4                 BIT(4)                    /*!< GPIO pin 4 */
-#define GPIO_PIN_5                 BIT(5)                    /*!< GPIO pin 5 */
-#define GPIO_PIN_6                 BIT(6)                    /*!< GPIO pin 6 */
-#define GPIO_PIN_7                 BIT(7)                    /*!< GPIO pin 7 */
-#define GPIO_PIN_8                 BIT(8)                    /*!< GPIO pin 8 */
-#define GPIO_PIN_9                 BIT(9)                    /*!< GPIO pin 9 */
-#define GPIO_PIN_10                BIT(10)                   /*!< GPIO pin 10 */
-#define GPIO_PIN_11                BIT(11)                   /*!< GPIO pin 11 */
-#define GPIO_PIN_12                BIT(12)                   /*!< GPIO pin 12 */
-#define GPIO_PIN_13                BIT(13)                   /*!< GPIO pin 13 */
-#define GPIO_PIN_14                BIT(14)                   /*!< GPIO pin 14 */
-#define GPIO_PIN_15                BIT(15)                   /*!< GPIO pin 15 */
-#define GPIO_PIN_ALL               BITS(0,15)                /*!< GPIO pin all */
-
+/* 初始化中断线 */
+exti_init(EXTI_0,EXTI_INTERRUPT,EXTI_TRIG_BOTH);
 ```
 
-要配置 PA1 为输出模式，浮空模式，只需要传入对应的参数即可。转换为代码为
+## 5.使能中断和清除中断标志位
+
+配置好中断之后，就可以开启中断了。
+
+`void exti_interrupt_enable(exti_line_enum linex);`
+
+这个函数使能中断，有一个参数就是中断线。
+
+配置如下：
+
+
+
+```
+/* 使能中断 */
+exti_interrupt_enable(BSP_KEY_EXTI_LINE);
+```
+
+在使用中断的时候先清一下中断标志位，确保中断是有效的。
+
+`void exti_interrupt_flag_clear(exti_line_enum linex);`
+
+这个函数是清除中断标志位，有一个参数就是中断线。
+
+配置如下：
 
 ```C
-gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO_PIN_1);
+/* 清除中断标志位 */
+exti_interrupt_flag_clear(EXTI_0);
 ```
 
-### 3.配置 GPIO 的输出
+### 1.1.6.编写中断服务函数
 
-配置 GPIO 的输出也分为两步，第一步配置输出模式是推挽输出还是开漏输出，第二步配置 GPIO 输出的速度。这配置的也是关于 GPIO 的操作，要到 gd32f4xx_gpio.h 去查找对应的函数。经过查找，发现 void gpio_output_options_set(uint32_t gpio_periph, uint8_t otype, uint32_t speed, uint32_t pin);这个函数满足我们的功能。
+使能中断之后，如果有中断触发，就会跳转到中断处理函数里面执行。需要编写中断处理函数。首先是中断函数名， 这个是固定的，在 startup_gd32f450_470.s 启动文件中有定义
 
-它有四个参数，第一个参数是配置的端口，见上文。
+#### C
 
-第二个参数是输出的类型。
+;               /* external interrupts handler */
+                DCD     WWDGT_IRQHandler                  ; 16:Window Watchdog Timer
+                DCD     LVD_IRQHandler                    ; 17:LVD through EXTI Line detect
+                DCD     TAMPER_STAMP_IRQHandler           ; 18:Tamper and TimeStamp through EXTI Line detect
+                DCD     RTC_WKUP_IRQHandler               ; 19:RTC Wakeup through EXTI Line
+                DCD     FMC_IRQHandler                    ; 20:FMC
+                DCD     RCU_CTC_IRQHandler                ; 21:RCU and CTC
+                DCD     EXTI0_IRQHandler                  ; 22:EXTI Line 0
+                DCD     EXTI1_IRQHandler                  ; 23:EXTI Line 1
+                DCD     EXTI2_IRQHandler                  ; 24:EXTI Line 2
+                DCD     EXTI3_IRQHandler                  ; 25:EXTI Line 3
+                DCD     EXTI4_IRQHandler                  ; 26:EXTI Line 4
+                DCD     DMA0_Channel0_IRQHandler          ; 27:DMA0 Channel0
+                DCD     DMA0_Channel1_IRQHandler          ; 28:DMA0 Channel1
+                DCD     DMA0_Channel2_IRQHandler          ; 29:DMA0 Channel2
+                DCD     DMA0_Channel3_IRQHandler          ; 30:DMA0 Channel3
+                DCD     DMA0_Channel4_IRQHandler          ; 31:DMA0 Channel4
+                DCD     DMA0_Channel5_IRQHandler          ; 32:DMA0 Channel5
+                DCD     DMA0_Channel6_IRQHandler          ; 33:DMA0 Channel6
+                DCD     ADC_IRQHandler                    ; 34:ADC
+                DCD     CAN0_TX_IRQHandler                ; 35:CAN0 TX
+                DCD     CAN0_RX0_IRQHandler               ; 36:CAN0 RX0
+                DCD     CAN0_RX1_IRQHandler               ; 37:CAN0 RX1
+                DCD     CAN0_EWMC_IRQHandler              ; 38:CAN0 EWMC
+                DCD     EXTI5_9_IRQHandler                ; 39:EXTI5 to EXTI9
+                DCD     TIMER0_BRK_TIMER8_IRQHandler      ; 40:TIMER0 Break and TIMER8
+                DCD     TIMER0_UP_TIMER9_IRQHandler       ; 41:TIMER0 Update and TIMER9
+                DCD     TIMER0_TRG_CMT_TIMER10_IRQHandler ; 42:TIMER0 Trigger and Commutation and TIMER10
+                DCD     TIMER0_Channel_IRQHandler         ; 43:TIMER0 Capture Compare
+                DCD     TIMER1_IRQHandler                 ; 44:TIMER1
+                DCD     TIMER2_IRQHandler                 ; 45:TIMER2
+                DCD     TIMER3_IRQHandler                 ; 46:TIMER3
+                DCD     I2C0_EV_IRQHandler                ; 47:I2C0 Event
+                DCD     I2C0_ER_IRQHandler                ; 48:I2C0 Error
+                DCD     I2C1_EV_IRQHandler                ; 49:I2C1 Event
+                DCD     I2C1_ER_IRQHandler                ; 50:I2C1 Error
+                DCD     SPI0_IRQHandler                   ; 51:SPI0
+                DCD     SPI1_IRQHandler                   ; 52:SPI1
+                DCD     USART0_IRQHandler                 ; 53:USART0
+                DCD     USART1_IRQHandler                 ; 54:USART1
+                DCD     USART2_IRQHandler                 ; 55:USART2
+                DCD     EXTI10_15_IRQHandler              ; 56:EXTI10 to EXTI15
+                DCD     RTC_Alarm_IRQHandler              ; 57:RTC Alarm
+                DCD     USBFS_WKUP_IRQHandler             ; 58:USBFS Wakeup
+                DCD     TIMER7_BRK_TIMER11_IRQHandler     ; 59:TIMER7 Break and TIMER11
+                DCD     TIMER7_UP_TIMER12_IRQHandler      ; 60:TIMER7 Update and TIMER12
+                DCD     TIMER7_TRG_CMT_TIMER13_IRQHandler ; 61:TIMER7 Trigger and Commutation and TIMER13
+                DCD     TIMER7_Channel_IRQHandler         ; 62:TIMER7 Channel Capture Compare
+                DCD     DMA0_Channel7_IRQHandler          ; 63:DMA0 Channel7
+                DCD     EXMC_IRQHandler                   ; 64:EXMC
+                DCD     SDIO_IRQHandler                   ; 65:SDIO
+                DCD     TIMER4_IRQHandler                 ; 66:TIMER4
+                DCD     SPI2_IRQHandler                   ; 67:SPI2
+                DCD     UART3_IRQHandler                  ; 68:UART3
+                DCD     UART4_IRQHandler                  ; 69:UART4
+                DCD     TIMER5_DAC_IRQHandler             ; 70:TIMER5 and DAC0 DAC1 Underrun error
+                DCD     TIMER6_IRQHandler                 ; 71:TIMER6
+                DCD     DMA1_Channel0_IRQHandler          ; 72:DMA1 Channel0
+                DCD     DMA1_Channel1_IRQHandler          ; 73:DMA1 Channel1
+                DCD     DMA1_Channel2_IRQHandler          ; 74:DMA1 Channel2
+                DCD     DMA1_Channel3_IRQHandler          ; 75:DMA1 Channel3
+                DCD     DMA1_Channel4_IRQHandler          ; 76:DMA1 Channel4
+                DCD     ENET_IRQHandler                   ; 77:Ethernet
+                DCD     ENET_WKUP_IRQHandler              ; 78:Ethernet Wakeup through EXTI Line
+                DCD     CAN1_TX_IRQHandler                ; 79:CAN1 TX
+                DCD     CAN1_RX0_IRQHandler               ; 80:CAN1 RX0
+                DCD     CAN1_RX1_IRQHandler               ; 81:CAN1 RX1
+                DCD     CAN1_EWMC_IRQHandler              ; 82:CAN1 EWMC
+                DCD     USBFS_IRQHandler                  ; 83:USBFS
+                DCD     DMA1_Channel5_IRQHandler          ; 84:DMA1 Channel5
+                DCD     DMA1_Channel6_IRQHandler          ; 85:DMA1 Channel6
+                DCD     DMA1_Channel7_IRQHandler          ; 86:DMA1 Channel7
+                DCD     USART5_IRQHandler                 ; 87:USART5
+                DCD     I2C2_EV_IRQHandler                ; 88:I2C2 Event
+                DCD     I2C2_ER_IRQHandler                ; 89:I2C2 Error
+                DCD     USBHS_EP1_Out_IRQHandler          ; 90:USBHS Endpoint 1 Out 
+                DCD     USBHS_EP1_In_IRQHandler           ; 91:USBHS Endpoint 1 in
+                DCD     USBHS_WKUP_IRQHandler             ; 92:USBHS Wakeup through EXTI Line
+                DCD     USBHS_IRQHandler                  ; 93:USBHS
+                DCD     DCI_IRQHandler                    ; 94:DCI
+                DCD     0                                 ; 95:Reserved
+                DCD     TRNG_IRQHandler                   ; 96:TRNG
+                DCD     FPU_IRQHandler                    ; 97:FPU
+                DCD     UART6_IRQHandler                  ; 98:UART6
+                DCD     UART7_IRQHandler                  ; 99:UART7
+                DCD     SPI3_IRQHandler                   ; 100:SPI3
+                DCD     SPI4_IRQHandler                   ; 101:SPI4
+                DCD     SPI5_IRQHandler                   ; 102:SPI5
+                DCD     0                                 ; 103:Reserved
+                DCD     TLI_IRQHandler                    ; 104:TLI
+                DCD     TLI_ER_IRQHandler                 ; 105:TLI Error
+                DCD     IPA_IRQHandler                    ; 106:IPA
+​
+__Vectors_End
+####
 
-```c
-/* GPIO output type */
-#define GPIO_OTYPE_PP              ((uint8_t)(0x00U))        /*!< push pull mode */
-#define GPIO_OTYPE_OD              ((uint8_t)(0x01U))        /*!< open drain mode */
+在中断处理函数里需要检测中断标志位是否被置位。
 
-```
+`FlagStatus exti_interrupt_flag_get(exti_line_enum linex);`
 
-第三个参数是 GPIO 的速度。
+这个函数是获取中断标志位。只有一个参数就是中断线。有一个返回值 FlagStatus，返回值的状态为 SET 和 RESET。需要注意的是每次中断执行完毕之后都需要清除一下中断标志位等待下一次中断发生。
 
-```C
-/* GPIO output max speed value */
-#define GPIO_OSPEED_2MHZ           GPIO_OSPEED_LEVEL0        /*!< output max speed 2MHz */
-#define GPIO_OSPEED_25MHZ          GPIO_OSPEED_LEVEL1        /*!< output max speed 25MHz */
-#define GPIO_OSPEED_50MHZ          GPIO_OSPEED_LEVEL2        /*!< output max speed 50MHz */
-#define GPIO_OSPEED_MAX            GPIO_OSPEED_LEVEL3        /*!< GPIO very high output speed, max speed more than 50MHz */
+中断服务函数编写代码格式实例：
 
-```
+- 
+void EXTI0_IRQHandler () {
+//中断代码
+}
+- 
 
-第四个参数是要配置的引脚，见上文。
+## EXTI相关固件库函数
 
-**若要配置GPIO为输入模式，函数可见下文固件库函数介绍**
+GD32F4xx固件库提供了丰富的EXTI（外部中断/事件控制器）和NVIC（嵌套向量中断控制器）函数，用于配置和管理中断系统。以下是主要EXTI和NVIC函数的详细介绍，基于GD32F4xx_固件库使用指南_Rev1.2。
 
-### 4.配置GPIO为高电平
+![image-20260221164208890](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260221164208890.png)
 
-可使用`gpio_bit_write`函数，函数原型是：`void gpio_bit_write(uint32_t gpio_periph, uint32_t pin, bit_status bit_value);`
+### 1. NVIC中断控制器函数
 
-```C
-gpio_bit_write(GPIOA,GPIO_PIN_1,0); //配置PA1引脚输出低电平
-```
+#### nvic_priority_group_set
 
-## GPIO固件库函数
-
-GD32F4xx固件库提供了丰富的GPIO函数，用于配置、读写GPIO引脚。以下是主要GPIO函数的详细介绍，基于GD32F4xx_固件库使用指南_Rev1.2。
-
-### 1. GPIO初始化和配置函数
-
-#### gpio_deinit
 **函数原型：**
+
 ```C
-void gpio_deinit(uint32_t gpio_periph);
+void nvic_priority_group_set(uint32_t nvic_prigroup);
 ```
 
 **功能描述：**
-将指定的GPIO端口重置为默认状态（模拟输入模式，无上下拉）。
+设置NVIC中断优先级分组。
 
 **参数：**
-- `gpio_periph`: GPIO端口，如GPIOA、GPIOB等。
+
+- `nvic_prigroup`: 优先级分组（NVIC_PRIGROUP_PRE0_SUB4 ~ NVIC_PRIGROUP_PRE4_SUB0）。
 
 **返回值：** 无
 
 **示例：**
+
 ```C
-gpio_deinit(GPIOA); // 重置GPIOA端口
+nvic_priority_group_set(NVIC_PRIGROUP_PRE2_SUB2); // 2位抢占优先级，2位子优先级
 ```
 
-#### gpio_mode_set
+#### nvic_irq_enable
+
 **函数原型：**
-```C
-void gpio_mode_set(uint32_t gpio_periph, uint32_t mode, uint32_t pull_up_down, uint32_t pin);
-```
+
+- 
+void nvic_irq_enable(uint8_t nvic_irq, uint8_t nvic_irq_pre_priority, uint8_t nvic_irq_sub_priority);
+- 
 
 **功能描述：**
-设置GPIO引脚的模式（输入、输出、复用、模拟）和上下拉配置。
+使能指定中断并设置优先级。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `mode`: 模式选择（GPIO_MODE_INPUT, GPIO_MODE_OUTPUT, GPIO_MODE_AF, GPIO_MODE_ANALOG）。
-- `pull_up_down`: 上下拉选择（GPIO_PUPD_NONE, GPIO_PUPD_PULLUP, GPIO_PUPD_PULLDOWN）。
-- `pin`: 要配置的引脚（GPIO_PIN_0 ~ GPIO_PIN_15 或 GPIO_PIN_ALL）。
+
+- `nvic_irq`: 中断类型（EXTI0_IRQn, EXTI1_IRQn等）。
+- `nvic_irq_pre_priority`: 抢占优先级。
+- `nvic_irq_sub_priority`: 子优先级。
 
 **返回值：** 无
 
 **示例：**
-```C
-gpio_mode_set(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO_PIN_1); // PA1输出模式，无上下拉
-```
 
-#### gpio_output_options_set
+#### C
+nvic_irq_enable(EXTI0_IRQn, 2, 1); // 使能EXTI0中断，抢占优先级2，子优先级1
+####
+
+#### nvic_irq_disable
+
 **函数原型：**
+
 ```C
-void gpio_output_options_set(uint32_t gpio_periph, uint8_t otype, uint32_t speed, uint32_t pin);
+void nvic_irq_disable(uint8_t nvic_irq);
 ```
 
 **功能描述：**
-设置GPIO输出引脚的输出类型（推挽/开漏）和速度。
+禁用指定中断。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `otype`: 输出类型（GPIO_OTYPE_PP: 推挽, GPIO_OTYPE_OD: 开漏）。
-- `speed`: 输出速度（GPIO_OSPEED_2MHZ, GPIO_OSPEED_25MHZ, GPIO_OSPEED_50MHZ, GPIO_OSPEED_MAX）。
-- `pin`: 要配置的引脚。
+
+- `nvic_irq`: 中断类型。
 
 **返回值：** 无
 
 **示例：**
+
 ```C
-gpio_output_options_set(GPIOA, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_1); // PA1推挽输出，50MHz速度
+nvic_irq_disable(EXTI0_IRQn); // 禁用EXTI0中断
 ```
 
-#### gpio_af_set
+### 2. SYSCFG系统配置函数
+
+#### syscfg_exti_line_config
+
 **函数原型：**
-```C
-void gpio_af_set(uint32_t gpio_periph, uint32_t alt_func_num, uint32_t pin);
-```
+
+#### C
+void syscfg_exti_line_config(uint8_t exti_port, uint8_t exti_pin);
+####
 
 **功能描述：**
-设置GPIO引脚的复用功能编号。
+将EXTI线连接到指定的GPIO引脚。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `alt_func_num`: 复用功能编号（0-15）。
-- `pin`: 要配置的引脚。
+
+- `exti_port`: GPIO端口源（EXTI_SOURCE_GPIOA ~ EXTI_SOURCE_GPIOI）。
+- `exti_pin`: 引脚源（EXTI_SOURCE_PIN0 ~ EXTI_SOURCE_PIN15）。
 
 **返回值：** 无
 
 **示例：**
+
 ```C
-gpio_af_set(GPIOA, GPIO_AF_7, GPIO_PIN_9 | GPIO_PIN_10); // PA9/PA10设置为USART0复用
+syscfg_exti_line_config(EXTI_SOURCE_GPIOA, EXTI_SOURCE_PIN0); // 将EXTI0连接到PA0
 ```
 
-#### gpio_af_get
+### 3. EXTI外部中断函数
+
+```exti_init
+
 **函数原型：**
-```C
-uint32_t gpio_af_get(uint32_t gpio_periph, uint32_t pin);
-```
+
+#### C
+void exti_init(exti_line_enum linex, exti_mode_enum mode, exti_trig_type_enum trig_type);
+####
 
 **功能描述：**
-获取GPIO引脚的当前复用功能编号。
+初始化EXTI线配置。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要查询的引脚。
 
-**返回值：** 复用功能编号。
-
-**示例：**
-```C
-uint32_t af = gpio_af_get(GPIOA, GPIO_PIN_9); // 获取PA9的复用功能
-```
-
-### 2. GPIO输出函数
-
-#### gpio_bit_write
-**函数原型：**
-```C
-void gpio_bit_write(uint32_t gpio_periph, uint32_t pin, bit_status bit_value);
-```
-
-**功能描述：**
-设置GPIO引脚的输出电平。
-
-**参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要设置的引脚。
-- `bit_value`: 电平值（SET: 高电平, RESET: 低电平）。
+- `linex`: EXTI线（EXTI_0 ~ EXTI_22）。
+- `mode`: 模式（EXTI_INTERRUPT: 中断模式, EXTI_EVENT: 事件模式）。
+- `trig_type`: 触发类型（EXTI_TRIG_RISING: 上升沿, EXTI_TRIG_FALLING: 下降沿, EXTI_TRIG_BOTH: 双边沿）。
 
 **返回值：** 无
 
 **示例：**
+
 ```C
-gpio_bit_write(GPIOA, GPIO_PIN_1, SET); // PA1输出高电平
-gpio_bit_write(GPIOA, GPIO_PIN_1, RESET); // PA1输出低电平
+exti_init(EXTI_0, EXTI_INTERRUPT, EXTI_TRIG_RISING); // EXTI0上升沿中断
 ```
 
-#### gpio_bit_set
+#### exti_interrupt_enable
+
 **函数原型：**
-```C
-void gpio_bit_set(uint32_t gpio_periph, uint32_t pin);
-```
+
+#### C
+void exti_interrupt_enable(exti_line_enum linex);
+####
 
 **功能描述：**
-设置GPIO引脚为高电平。
+使能EXTI中断。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要设置的引脚。
+
+- `linex`: EXTI线。
 
 **返回值：** 无
 
 **示例：**
+
 ```C
-gpio_bit_set(GPIOA, GPIO_PIN_1); // PA1置高
+exti_interrupt_enable(EXTI_0); // 使能EXTI0中断
 ```
 
-#### gpio_bit_reset
+#### exti_interrupt_disable
+
 **函数原型：**
+
 ```C
-void gpio_bit_reset(uint32_t gpio_periph, uint32_t pin);
+void exti_interrupt_disable(exti_line_enum linex);
 ```
 
 **功能描述：**
-设置GPIO引脚为低电平。
+禁用EXTI中断。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要设置的引脚。
+
+- `linex`: EXTI线。
 
 **返回值：** 无
 
 **示例：**
+
 ```C
-gpio_bit_reset(GPIOA, GPIO_PIN_1); // PA1置低
+exti_interrupt_disable(EXTI_0); // 禁用EXTI0中断
 ```
 
-#### gpio_bit_toggle
+#### exti_interrupt_flag_get
+
 **函数原型：**
+
 ```C
-void gpio_bit_toggle(uint32_t gpio_periph, uint32_t pin);
+FlagStatus exti_interrupt_flag_get(exti_line_enum linex);
 ```
 
 **功能描述：**
-翻转GPIO引脚的输出电平。
+获取EXTI中断标志位状态。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要翻转的引脚。
 
-**返回值：** 无
+```{0}`linex`: EXTI线。
 
-**示例：**
-```C
-gpio_bit_toggle(GPIOA, GPIO_PIN_1); // PA1电平翻转
-```
-
-#### gpio_port_write
-**函数原型：**
-```C
-void gpio_port_write(uint32_t gpio_periph, uint16_t data);
-```
-
-**功能描述：**
-同时设置整个GPIO端口的输出值。
-
-**参数：**
-- `gpio_periph`: GPIO端口。
-- `data`: 16位数据，位对应引脚0-15。
-
-**返回值：** 无
+**返回值：** SET（置位）或RESET（复位）。
 
 **示例：**
+
 ```C
-gpio_port_write(GPIOA, 0xFFFF); // GPIOA所有引脚输出高电平
-```
-
-### 3. GPIO输入函数
-
-#### gpio_input_bit_get
-**函数原型：**
-```C
-FlagStatus gpio_input_bit_get(uint32_t gpio_periph, uint32_t pin);
-```
-
-**功能描述：**
-读取GPIO引脚的输入电平状态。
-
-**参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要读取的引脚。
-
-**返回值：** SET（高电平）或RESET（低电平）。
-
-**示例：**
-```C
-FlagStatus status = gpio_input_bit_get(GPIOA, GPIO_PIN_1); // 读取PA1输入状态
-if (status == SET) {
-    // 高电平处理
+if (exti_interrupt_flag_get(EXTI_0) == SET) {
+    // 处理中断
 }
 ```
 
-#### gpio_input_port_get
+- 
+
 **函数原型：**
+
 ```C
-uint16_t gpio_input_port_get(uint32_t gpio_periph);
+void exti_interrupt_flag_clear(exti_line_enum linex);
 ```
 
 **功能描述：**
-读取整个GPIO端口的输入值。
+清除EXTI中断标志位。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
 
-**返回值：** 16位输入数据。
-
-**示例：**
-```C
-uint16_t port_value = gpio_input_port_get(GPIOA); // 读取GPIOA端口输入
-```
-
-### 4. GPIO锁定函数
-
-#### gpio_pin_lock
-**函数原型：**
-```C
-void gpio_pin_lock(uint32_t gpio_periph, uint32_t pin);
-```
-
-**功能描述：**
-锁定GPIO引脚的配置，防止意外修改。
-
-**参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要锁定的引脚。
+- `linex`: EXTI线。
 
 **返回值：** 无
 
-**注意：** 锁定后无法通过软件解锁，只能通过复位解除。
-
 **示例：**
+
 ```C
-gpio_pin_lock(GPIOA, GPIO_PIN_1); // 锁定PA1配置
+exti_interrupt_flag_clear(EXTI_0); // 清除EXTI0中断标志
 ```
 
-#### gpio_pin_lock_config
+#### exti_event_enable
+
 **函数原型：**
-```C
-void gpio_pin_lock_config(uint32_t gpio_periph, uint32_t pin);
-```
+
+- 
+void exti_event_enable(exti_line_enum linex);
+- 
 
 **功能描述：**
-配置GPIO引脚锁定（内部使用，通常不直接调用）。
+使能EXTI事件。
 
 **参数：**
-- `gpio_periph`: GPIO端口。
-- `pin`: 要配置的引脚。
+
+- `linex`: EXTI线。
 
 **返回值：** 无
 
-### 5. 其他相关宏定义
+**示例：**
 
-- **GPIO端口定义：** GPIOA, GPIOB, ..., GPIOI
-- **引脚定义：** GPIO_PIN_0 ~ GPIO_PIN_15, GPIO_PIN_ALL
-- **模式定义：** GPIO_MODE_INPUT, GPIO_MODE_OUTPUT, GPIO_MODE_AF, GPIO_MODE_ANALOG
-- **上下拉定义：** GPIO_PUPD_NONE, GPIO_PUPD_PULLUP, GPIO_PUPD_PULLDOWN
-- **输出类型：** GPIO_OTYPE_PP, GPIO_OTYPE_OD
-- **速度定义：** GPIO_OSPEED_2MHZ, GPIO_OSPEED_25MHZ, GPIO_OSPEED_50MHZ, GPIO_OSPEED_MAX
-- **复用功能：** GPIO_AF_0 ~ GPIO_AF_15（具体编号见数据手册）
+### C
+exti_event_enable(EXTI_0); // 使能EXTI0事件
+###
 
-在使用这些函数前，确保已开启相应GPIO端口的时钟（使用rcu_periph_clock_enable()）。所有函数都在gd32f4xx_gpio.h头文件中声明。
+#### exti_event_disable
+
+**函数原型：**
+
+```C
+void exti_event_disable(exti_line_enum linex);
+```
+
+**功能描述：**
+禁用EXTI事件。
+
+**参数：**
+
+- `linex`: EXTI线。
+
+**返回值：** 无
+
+**示例：**
+
+```C
+exti_event_disable(EXTI_0); // 禁用EXTI0事件
+```
+
+#### exti_event_flag_get
+
+**函数原型：**
+
+#### C
+FlagStatus exti_event_flag_get(exti_line_enum linex);
+####
+
+**功能描述：**
+获取EXTI事件标志位状态。
+
+**参数：**
+
+- `linex`: EXTI线。
+
+**返回值：** SET或RESET。
+
+**示例：**
+
+```C
+FlagStatus flag = exti_event_flag_get(EXTI_0);
+```
+
+#### exti_event_flag_clear
+
+**函数原型：**
+
+### C
+void exti_event_flag_clear(exti_line_enum linex);
+###
+
+**功能描述：**
+清除EXTI事件标志位。
+
+**参数：**
+
+```{0}`linex`: EXTI线。
+
+**返回值：** 无
+
+**示例：**
+
+```C
+exti_event_flag_clear(EXTI_0);
+```
+
+### 4. 相关宏定义和枚举
+
+- **NVIC优先级分组：** NVIC_PRIGROUP_PRE0_SUB4, NVIC_PRIGROUP_PRE1_SUB3, ..., NVIC_PRIGROUP_PRE4_SUB0
+
+- **中断类型：** EXTI0_IRQn ~ EXTI15_IRQn, EXTI5_9_IRQn, EXTI10_15_IRQn等
+- **EXTI线：** EXTI_0 ~ EXTI_22
+- **EXTI模式：** EXTI_INTERRUPT, EXTI_EVENT
+
+- **触发类型：** EXTI_TRIG_RISING, EXTI_TRIG_FALLING, EXTI_TRIG_BOTH
+- **GPIO端口源：** EXTI_SOURCE_GPIOA ~ EXTI_SOURCE_GPIOI
+- **引脚源：** EXTI_SOURCE_PIN0 ~ EXTI_SOURCE_PIN15
+
+在使用EXTI中断时，需要先配置NVIC优先级分组，使能NVIC中断，然后配置SYSCFG连接EXTI线到GPIO，最后初始化EXTI并使能中断。所有函数都在gd32f4xx_exti.h和gd32f4xx_misc.h头文件中声明。
 

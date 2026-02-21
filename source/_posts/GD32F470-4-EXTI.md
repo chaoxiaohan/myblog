@@ -283,6 +283,8 @@ void EXTI0_IRQHandler () {
 
 GD32F4xx固件库提供了丰富的EXTI（外部中断/事件控制器）和NVIC（嵌套向量中断控制器）函数，用于配置和管理中断系统。以下是主要EXTI和NVIC函数的详细介绍，基于GD32F4xx_固件库使用指南_Rev1.2。
 
+![image-20260221164208890](https://picgo-chaoxiaohan.oss-cn-qingdao.aliyuncs.com/img/image-20260221164208890.png)
+
 ### 1. NVIC中断控制器函数
 
 #### nvic_priority_group_set
