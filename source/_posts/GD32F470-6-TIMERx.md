@@ -5,7 +5,10 @@ type: paper
 category: GD32F470xx
 photos: 
 tags:
-excerpt: 这是摘要
+  - GD32F470
+  - Timer
+  - PWM
+excerpt: 深入探讨GD32F470的定时器（TIMER）功能，包含时钟源选择、基本定时中断配置以及固件库函数的使用示例。
 description: 
 ---
 

@@ -5,7 +5,10 @@ type: paper
 category: GD32F470xx
 photos: 
 tags:
-excerpt: 该教程包括了GD32F470xx的中断配置、外部中断的使用、EXTI相关函数
+  - GD32F470
+  - GPIO
+  - EXTI
+excerpt: 本文介绍了GD32F470的GPIO基本配置与外部中断（EXTI）配置，通过按键点灯实例演示了中断初始化及处理流程。
 description: 
 
 ---

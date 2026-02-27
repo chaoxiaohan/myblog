@@ -5,7 +5,10 @@ type: paper
 category: GD32F470xx
 photos: 
 tags:
-excerpt: 该教程包括了GD32F470xx的中断配置、外部中断的使用、EXTI相关函数
+  - GD32F470
+  - EXTI
+  - Interrupt
+excerpt: 深入了解GD32F470的中断系统，涵盖NVIC优先级配置、外部中断（EXTI）触发机制以及如何实现按键触发外部中断。
 description: 
 ---
 

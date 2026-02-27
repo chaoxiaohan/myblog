@@ -5,6 +5,9 @@ type: paper
 category: GD32F470xx
 photos: 
 tags:
+  - GD32F470
+  - USART
+  - UART
 excerpt: 本文介绍了GD32F470的USART串口通信，包括配置方法、数据收发、printf重定向及详细的固件库函数说明，帮助开发者快速实现串口应用。
 description: 
 ---

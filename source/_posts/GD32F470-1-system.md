@@ -5,7 +5,9 @@ type: paper
 category: GD32F470xx
 photos: 
 tags:
-excerpt: 这是摘要
+  - GD32F470
+  - System
+excerpt: 本文介绍了GD32F470系列MCU的系统架构，包括内核总线、存储器结构、时钟系统、片上外设以及安全管理等核心组成部分。
 description: 
 ---
 

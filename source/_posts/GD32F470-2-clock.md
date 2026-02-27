@@ -5,6 +5,8 @@ type: paper
 category: GD32F470xx
 photos: 
 tags:
+  - GD32F470
+  - Clock
 excerpt: GD32F470的时钟系统是其核心组成部分。本文解析了时钟树结构，包括外部晶振、内部RC振荡器、PLL倍频器及分频器，并详细说明了时钟分配到各模块的过程，确保系统高效运行。
 description: 
 ---
