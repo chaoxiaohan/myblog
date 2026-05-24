@@ -1,5 +1,5 @@
 ---
-title: GD32F470入门教程（三）（GPIO）
+title: GD32F470入门教程（三）GPIO
 date: 2026-02-12 00:00:00
 type: paper
 category: GD32F470xx
@@ -7,7 +7,7 @@ photos:
 tags:
   - GD32F470
   - GPIO
-excerpt: 
+excerpt: 该文档介绍了GD32F470单片机的GPIO（通用输入输出）功能，包括GPIO的基本概念、功能描述以及如何使用GD32F4xx固件库进行GPIO配置和操作。文档详细介绍了GPIO的模式设置、输出选项配置以及输入输出函数的使用方法，帮助读者快速掌握GD32F470单片机的GPIO功能。
 description: 
 
 ---
